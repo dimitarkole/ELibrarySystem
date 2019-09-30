@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ELibrarySystem.Common\ELibrarySystem.Common.csproj" />
+    <ProjectReference Include="..\..\Data\ELibrarySystem.Data.Common\ELibrarySystem.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Data\ELibrarySystem.Data.Models\ELibrarySystem.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\ELibrarySystem.Data\ELibrarySystem.Data.csproj" />
+    <ProjectReference Include="..\..\Services\ELibrarySystem.Services.Data\ELibrarySystem.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\ELibrarySystem.Services.Mapping\ELibrarySystem.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\ELibrarySystem.Services.Messaging\ELibrarySystem.Services.Messaging.csproj" />
+    <ProjectReference Include="..\..\Services\ELibrarySystem.Services\ELibrarySystem.Services.csproj" />
+  </ItemGroup>
+
+</Project>
