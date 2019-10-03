@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\ELibrarySystem.Data.Common\ELibrarySystem.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\ELibrarySystem.Data.Models\ELibrarySystem.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\ELibrarySystem.Web.ViewModels\ELibrarySystem.Web.ViewModels.csproj" />
     <ProjectReference Include="..\ELibrarySystem.Services.Mapping\ELibrarySystem.Services.Mapping.csproj" />
   </ItemGroup>
 

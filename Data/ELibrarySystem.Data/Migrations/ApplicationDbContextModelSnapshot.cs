@@ -60,6 +60,8 @@ namespace ELibrarySystem.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("Avatar");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -72,9 +74,17 @@ namespace ELibrarySystem.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName");
+
                     b.Property<string>("GetBookId");
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("LibararyName");
+
+                    b.Property<string>("LibraryLocation");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -97,6 +107,8 @@ namespace ELibrarySystem.Data.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("Type");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
@@ -123,6 +135,10 @@ namespace ELibrarySystem.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("ApplicationUserId1");
+
                     b.Property<string>("Author");
 
                     b.Property<string>("BookName");
@@ -138,6 +154,10 @@ namespace ELibrarySystem.Data.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId1");
 
                     b.HasIndex("GenreId");
 
@@ -324,6 +344,14 @@ namespace ELibrarySystem.Data.Migrations
 
             modelBuilder.Entity("ELibrarySystem.Data.Models.Book", b =>
                 {
+                    b.HasOne("ELibrarySystem.Data.Models.ApplicationUser")
+                        .WithMany("AddedBooks")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("ELibrarySystem.Data.Models.ApplicationUser")
+                        .WithMany("GettedBooks")
+                        .HasForeignKey("ApplicationUserId1");
+
                     b.HasOne("ELibrarySystem.Data.Models.Genre", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId");
