@@ -130,6 +130,7 @@
             this.ViewBag.UserType = "guest";
             this.ViewData["ReturnUrl"] = returnUrl;
             var registerModel = indexModel.RegisterViewModel;
+            HttpContext.Session.SetString("ads", "The Doctor");
             if (this.ModelState.IsValid)
             {
                 var userChack = this.context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
@@ -143,14 +144,13 @@
                         Type = type,
                         Avatar = " ",
                     };*/
-                    
-                    var user = new ApplicationUser { 
-                        UserName = registerModel.Email, 
+                    var user = new ApplicationUser {
+                        UserName = registerModel.Email,
                         Email = registerModel.Email,
+                        Type = type,
+                        Avatar= " ",
                     };
-                    this.ViewBag.RegisterErr = $"user.Email={user.Email} ";
-                    this.ViewBag.RegisterErr += $"user.UserName={user.UserName} ";
-                    this.ViewBag.RegisterErr += $"registerModel.Password={registerModel.Password} ";
+                    this.ViewBag.RegisterErr = $"user.Id={user.Id} ";
                     var result = await this.userManager.CreateAsync(user, registerModel.Password);
                     //var result = await this.userManager.CreateAsync(user, registerModel.Password);
                     this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
@@ -189,7 +189,6 @@
             return this.View(indexModel);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -199,15 +198,12 @@
             return this.RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Lockout()
         {
             return this.View();
         }
-
-
 
         public IActionResult Error()
         {
@@ -224,24 +220,18 @@
 
         private IActionResult RedirectToLocal(string userId, string type, string returnUrl)
         {
-            if (this.Url.IsLocalUrl(returnUrl))
+            this.HttpContext.Session.SetString("userId", userId);
+            if (type == "admin")
             {
-                return this.Redirect(returnUrl);
+                return this.RedirectToAction(nameof(AdminAccountController.Index), "AdminAccount");
             }
-            else
+            else if (type == "library")
             {
-                this.HttpContext.Session.SetString("userId", userId);
-                if (type == "admin")
-                {
-                    return this.RedirectToAction(nameof(AdminAccountController.Index), "AdminAccount");
-                }
-                else if (type == "library")
-                {
-                    return this.RedirectToAction(nameof(LibraryAccountController.Index), "LibraryAccount");
-                }
+                return this.RedirectToAction(nameof(LibraryAccountController.Index), "LibraryAccount");
+            }
 
-                return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
-            }
+            return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
+
         }
     }
 }

@@ -18,4 +18,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="LibrarySercive\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Web\ELibrarySystem.Web.ViewModels\ELibrarySystem.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>
