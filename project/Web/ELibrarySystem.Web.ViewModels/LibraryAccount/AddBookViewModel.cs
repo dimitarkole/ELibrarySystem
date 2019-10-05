@@ -7,14 +7,13 @@ namespace ELibrarySystem.Web.ViewModels.LibraryAccount
 {
     public class AddBookViewModel
     {
-        private readonly IGenreService addBookService;
+        // private readonly IGenreService addBookService;
 
         public AddBookViewModel()
         {
             this.BookId = " ";
-            
         }
-
+        
         public string BookId { get; set; }
 
         [Required]

@@ -16,11 +16,11 @@
 
         public string UserId { get => this.userId; set => this.userId = value; }
 
-        public LibraryAccountController(
+       /* public LibraryAccountController(
         ILibraryService addBookService)
         {
             this.libraryService = addBookService;
-        }
+        }*/
 
         public void StarUp()
         {
@@ -47,7 +47,7 @@
             this.StarUp();
             var viewModel = new AddBookViewModel()
             {
-                Genres = allGenres,
+                //Genres = allGenres,
             };
 
             return this.View(viewModel);
