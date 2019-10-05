@@ -76,67 +76,67 @@
         </div>
     </header>
 
-    <partial name="_CookieConsentPartial" />
+    <!--<partial name="_CookieConsentPartial" /> -->
     <div class=" container">
         @RenderBody()
         <hr />
     </div>
-        <!-- ***** Footer Area Start ***** -->
-        <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url('~/images/core-img/logo.png');">
+    <!-- ***** Footer Area Start ***** -->
+    <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url('~/images/core-img/logo.png');">
 
-            <!-- Copywrite Area -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="copywrite-content">
-                            <p>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                Copyright &copy;
-                                <script>document.write(new Date().getFullYear());</script> Всички права запазени | Сайтът е разработен от Екатерина и Димитър - Смолян <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            </p>
-                        </div>
+        <!-- Copywrite Area -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="copywrite-content">
+                        <p>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> Всички права запазени | Сайтът е разработен от Екатерина и Димитър - Смолян <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </p>
                     </div>
                 </div>
             </div>
-        </footer>
-        <!-- ***** Footer Area End ***** -->
+        </div>
+    </footer>
+    <!-- ***** Footer Area End ***** -->
 
 
 
-        <environment include="Development">
-            <script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-            <script src="~/css/js/site.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/css/js/site.js" asp-append-version="true"></script>
 
-        </environment>
-        <environment exclude="Development">
-            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery"
-                    crossorigin="anonymous"
-                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-            </script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                    crossorigin="anonymous"
-                    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-            </script>
-            <script src="~/css/js/site.js" asp-append-version="true"></script>
-        </environment>
-        <!-- ******* All JS ******* -->
-        <!-- jQuery js -->
-        <script src="~/js/jquery.min.js"></script>
-        <!-- Popper js-->
-        <script src="~/js/popper.min.js"></script>
-        <!-- Bootstrap js-->
-        <script src="~/js/bootstrap.min.js"></script>
-        <!-- All js-->
-        <script src="~/js/dento.bundle.js"></script>
-        <!-- Active js-->
-        <script src="~/js/default-assets/active.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/css/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <!-- ******* All JS ******* -->
+    <!-- jQuery js -->
+    <script src="~/js/jquery.min.js"></script>
+    <!-- Popper js-->
+    <script src="~/js/popper.min.js"></script>
+    <!-- Bootstrap js-->
+    <script src="~/js/bootstrap.min.js"></script>
+    <!-- All js-->
+    <script src="~/js/dento.bundle.js"></script>
+    <!-- Active js-->
+    <script src="~/js/default-assets/active.js"></script>
 
-        @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

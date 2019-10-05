@@ -8,6 +8,12 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="LibrarySercive\**" />
+    <EmbeddedResource Remove="LibrarySercive\**" />
+    <None Remove="LibrarySercive\**" />
+  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
@@ -19,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="LibrarySercive\" />
+    <ProjectReference Include="..\..\Web\ELibrarySystem.Web.ViewModels\ELibrarySystem.Web.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Web\ELibrarySystem.Web.ViewModels\ELibrarySystem.Web.ViewModels.csproj" />
+    <Folder Include="LibraryAccountServices\" />
   </ItemGroup>
 
 </Project>
