@@ -29,8 +29,4 @@
     <ProjectReference Include="..\..\Web\ELibrarySystem.Web.ViewModels\ELibrarySystem.Web.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="LibraryAccountServices\" />
-  </ItemGroup>
-
 </Project>

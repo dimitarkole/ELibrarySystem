@@ -7,6 +7,8 @@ namespace ELibrarySystem.Services.Contracts.LibraryAccount
 {
     public interface IAddBookService
     {
-        string CreateBook(AddBookViewModel model, string userId);
+        AddBookViewModel PreparedPage();
+
+        string AddBook(AddBookViewModel model, string userId);
     }
 }
