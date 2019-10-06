@@ -9,7 +9,9 @@
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Data.Repositories;
     using ELibrarySystem.Data.Seeding;
+    using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Services.Data;
+    using ELibrarySystem.Services.LibraryAccountServices;
     using ELibrarySystem.Services.Mapping;
     using ELibrarySystem.Services.Messaging;
     using ELibrarySystem.Web.ViewModels;
@@ -111,6 +113,11 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISmsSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+
+            services.AddTransient<IAddBookService, AddBookService>();
+            services.AddTransient<IGenreService, GenreService>();
+            services.AddTransient<IMessageService, MessageService>();
+
 
         }
 
