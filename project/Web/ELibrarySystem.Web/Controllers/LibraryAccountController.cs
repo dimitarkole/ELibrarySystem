@@ -12,15 +12,22 @@
     public class LibraryAccountController : Controller
     {
         private IAddBookService addBookService;
+        private IMessageService messageService;
+        private IGenreService genreService;
+
         private string userId;
 
         public string UserId { get => this.userId; set => this.userId = value; }
 
-       /* public LibraryAccountController(
-        ILibraryService addBookService)
+        public LibraryAccountController(
+            IAddBookService addBookService,
+            IMessageService messageService,
+            IGenreService genreService)
         {
-            this.libraryService = addBookService;
-        }*/
+            this.addBookService = addBookService;
+            this.messageService = messageService;
+            this.genreService = genreService;
+        }
 
         public void StarUp()
         {
@@ -45,11 +52,7 @@
         public IActionResult AllBooks()
         {
             this.StarUp();
-            var viewModel = new AddBookViewModel()
-            {
-                //Genres = allGenres,
-            };
-
+            var viewModel = this.addBookService.PreparedPage();
             return this.View(viewModel);
         }
     }
