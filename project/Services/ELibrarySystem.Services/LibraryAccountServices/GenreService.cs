@@ -10,6 +10,11 @@
     {
         public ApplicationDbContext context;
 
+        public GenreService(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
+
         public List<GenreListViewModel> GetAllGenres()
         {
             var genres = this.context.Genres.Select(g => new GenreListViewModel()

@@ -15,10 +15,11 @@
 
         public IGenreService genreService;
 
-
-        public AddBookService(ApplicationDbContext context)
+        public AddBookService(ApplicationDbContext context,
+            IGenreService genreService)
         {
             this.context = context;
+            this.genreService = genreService;
         }
 
         public string AddBook(AddBookViewModel model, string userId)

@@ -14,6 +14,7 @@
         private IAddBookService addBookService;
         private IMessageService messageService;
         private IGenreService genreService;
+        private IGetAllBooksServices getAllBooks;
 
         private string userId;
 
@@ -22,18 +23,20 @@
         public LibraryAccountController(
             IAddBookService addBookService,
             IMessageService messageService,
-            IGenreService genreService)
+            IGenreService genreService,
+            IGetAllBooksServices getAllBooks)
         {
             this.addBookService = addBookService;
             this.messageService = messageService;
             this.genreService = genreService;
+            this.getAllBooks= getAllBooks;
         }
 
         public void StarUp()
         {
             this.UserId = this.HttpContext.Session.GetString("userId");
             this.ViewBag.UserType = "libary";
-            this.HttpContext.Session.SetString("userId", this.UserId);
+            //this.HttpContext.Session.SetString("userId", this.UserId);
         }
 
         // Home Page
@@ -49,11 +52,44 @@
 
         [Authorize]
         [HttpGet]
+        public IActionResult AddBook()
+        {
+            this.StarUp();
+            var returnModel = this.addBookService.PreparedPage();
+            return this.View(returnModel);
+        }
+
+        //AddBook Page - view
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddBook(AddBookViewModel model)
+        {
+            this.StarUp();
+            this.ViewData["message"] = this.addBookService.AddBook(model, this.userId);
+            var returnModel = this.addBookService.PreparedPage();
+            return this.View(returnModel);
+        }
+
+        //AllBooks Page - view
+        [Authorize]
+        [HttpGet]
         public IActionResult AllBooks()
         {
             this.StarUp();
-            var viewModel = this.addBookService.PreparedPage();
-            return this.View(viewModel);
+            var returnModel = this.getAllBooks.PreparedPage(this.userId);
+            return this.View(returnModel);
         }
+
+        //AllBooks Page - search books
+        [Authorize]
+        [HttpPost]
+        public IActionResult AllBooksSearch(AllBooksViewModel model)
+        {
+            this.StarUp();
+            var returnModel = this.getAllBooks.GetBooks(model, this.userId);
+            return this.View(returnModel);
+        }
+
     }
 }

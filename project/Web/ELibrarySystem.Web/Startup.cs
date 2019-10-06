@@ -114,9 +114,12 @@
             services.AddTransient<ISmsSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
 
+            //Library Services
             services.AddTransient<IAddBookService, AddBookService>();
             services.AddTransient<IGenreService, GenreService>();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IGetAllBooksServices, GetAllBooksServices>();
+
 
 
         }

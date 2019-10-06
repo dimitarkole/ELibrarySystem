@@ -51,22 +51,42 @@
                             <div class="classycloseIcon">
                                 <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
                             </div>
-                            <!-- Nav Start -->
-                            <div class="classynav">
-                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                                    <ul id="nav">
-                                        <li><a asp-area="" asp-controller="LibraryAccount" asp-action="AllBooks">Всички книги</a></li>
-                                        <li><a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook">Добавяна на книга</a></li>
-                                        <li><a asp-area="" asp-controller="LibraryAccount" asp-action="GiveBook">Дай книга</a></li>
-                                        <li>
-                                            <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-                                        </li>
-                                        <li>
-                                            <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
-                                        </li>
 
-                                    </ul>
-                                </form>
+                            <div class="classynav">
+                                <ul id="nav">
+                                    <li>
+                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="Index" title="Manage">
+                                            Начало
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
+                                            Hello @UserManager.GetUserName(User)!
+                                        </a>
+                                        <ul class="dropdown">
+                                            <li>
+                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="AllBooks">
+                                                    Добавени книги
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="GiveBook">
+                                                    Дай книга
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook">
+                                            +Добавяна на книга
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form action="/" method="post">
+                                            <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </div>
                             <!-- Nav End -->
                         </div>
