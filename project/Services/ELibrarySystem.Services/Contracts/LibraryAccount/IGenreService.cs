@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ELibrarySystem.Services.Contracts.LibraryAccount
+﻿namespace ELibrarySystem.Services.Contracts.LibraryAccount
 {
-    interface IGenreService
+    using ELibrarySystem.Web.ViewModels.LibraryAccount;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+
+    public interface IGenreService
     {
-        string GetAllGenres();
+
+        List<GenreListViewModel> GetAllGenres();
     }
 }

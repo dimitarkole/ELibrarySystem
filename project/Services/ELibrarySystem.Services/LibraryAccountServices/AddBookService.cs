@@ -13,6 +13,9 @@
     {
         public ApplicationDbContext context;
 
+        public IGenreService genreService;
+
+
         public AddBookService(ApplicationDbContext context)
         {
             this.context = context;
@@ -57,7 +60,7 @@
 
         public AddBookViewModel PreparedPage()
         {
-            var genres = this.GetAllGenres().OrderByDescending(x => x.Name).ToList();
+            var genres = this.genreService.GetAllGenres();
 
             var genre = new GenreListViewModel()
             {
@@ -74,16 +77,5 @@
             return model;
         }
 
-        public List<GenreListViewModel> GetAllGenres()
-        {
-            var genres = this.context.Genres.Select(g => new GenreListViewModel()
-            {
-                Id = g.Id,
-                Name = g.Name
-            }).ToList();
-            var result = genres.OrderBy(x => x.Name).ToList();
-
-            return result;
-        }
     }
 }
