@@ -116,7 +116,7 @@
 
             var returnModel = new AllBooksViewModel()
             {
-                Books = viewBook,
+                Books = books,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,

@@ -99,5 +99,20 @@
             return this.View("AllBooks", returnModel);
         }
 
+        //AllBooks Page - Delete book
+
+        [Authorize]
+        [HttpPost]
+        /* public IActionResult DeleteBook(string bookName,
+             string author, string genreId, string SortMethodId,string id)*/
+        public IActionResult DeleteBook(AllBooksViewModel model, string id)
+        {
+            StarUp();
+            this.ViewData["message"] = "Успешно премахната книга";
+            var returnModel = this.getAllBooks.DeleteBook(this.UserId, model,id);
+
+            return View("AllBooks", returnModel);
+        }
+
     }
 }
