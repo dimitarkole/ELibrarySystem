@@ -107,12 +107,12 @@
                 maxCountPage++;
             }
 
-            var viewBook = books.Skip((countBooksOfPage - 1) * countBooksOfPage)
-                                .Take(countBooksOfPage);
+            /*var viewBook = books.Skip((countBooksOfPage - 1) * countBooksOfPage)
+                                .Take(countBooksOfPage);*/
 
             var returnModel = new AllBooksViewModel()
             {
-                Books = viewBook,
+                Books = books,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,

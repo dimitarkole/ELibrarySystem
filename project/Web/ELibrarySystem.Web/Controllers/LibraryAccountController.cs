@@ -9,34 +9,44 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Identity;
+    using ELibrarySystem.Data.Models;
+    using Unity;
+
     public class LibraryAccountController : Controller
     {
         private IAddBookService addBookService;
         private IMessageService messageService;
         private IGenreService genreService;
         private IGetAllBooksServices getAllBooks;
+        private SignInManager<ApplicationUser> SignInManager;
+        private UserManager<ApplicationUser> UserManager;
 
-        private string userId;
-
-        public string UserId { get => this.userId; set => this.userId = value; }
+        public string UserId;
 
         public LibraryAccountController(
             IAddBookService addBookService,
             IMessageService messageService,
             IGenreService genreService,
-            IGetAllBooksServices getAllBooks)
+            IGetAllBooksServices getAllBooks,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager)
         {
             this.addBookService = addBookService;
             this.messageService = messageService;
             this.genreService = genreService;
-            this.getAllBooks= getAllBooks;
+            this.getAllBooks = getAllBooks;
+            this.SignInManager = signInManager;
+            this.UserManager = userManager;
+
         }
 
         public void StarUp()
         {
-            this.UserId = this.HttpContext.Session.GetString("userId");
+            this.UserId = this.UserManager.GetUserId(this.User);
             this.ViewBag.UserType = "libary";
-            //this.HttpContext.Session.SetString("userId", this.UserId);
+           
+            this.HttpContext.Session.SetString("userId", this.UserId);
         }
 
         // Home Page
@@ -66,29 +76,30 @@
         public IActionResult AddBook(AddBookViewModel model)
         {
             this.StarUp();
-            this.ViewData["message"] = this.addBookService.AddBook(model, this.userId);
+            this.ViewData["message"] = this.addBookService.AddBook(model, this.UserId);
             var returnModel = this.addBookService.PreparedPage();
             return this.View(returnModel);
         }
 
-        //AllBooks Page - view
+        // AllBooks Page - view
         [Authorize]
         [HttpGet]
         public IActionResult AllBooks()
         {
             this.StarUp();
-            var returnModel = this.getAllBooks.PreparedPage(this.userId);
+            this.ViewData["message"] = this.UserId;
+            var returnModel = this.getAllBooks.PreparedPage(this.UserId);
             return this.View(returnModel);
         }
 
-        //AllBooks Page - search books
+        // AllBooks Page - search book
         [Authorize]
         [HttpPost]
         public IActionResult AllBooksSearch(AllBooksViewModel model)
         {
             this.StarUp();
-            var returnModel = this.getAllBooks.GetBooks(model, this.userId);
-            return this.View(returnModel);
+            var returnModel = this.getAllBooks.GetBooks(model, this.UserId);
+            return this.View("AllBooks", returnModel);
         }
 
     }
