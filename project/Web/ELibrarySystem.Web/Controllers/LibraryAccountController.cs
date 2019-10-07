@@ -45,8 +45,6 @@
         {
             this.UserId = this.UserManager.GetUserId(this.User);
             this.ViewBag.UserType = "libary";
-           
-            this.HttpContext.Session.SetString("userId", this.UserId);
         }
 
         // Home Page
@@ -87,7 +85,6 @@
         public IActionResult AllBooks()
         {
             this.StarUp();
-            this.ViewData["message"] = this.UserId;
             var returnModel = this.getAllBooks.PreparedPage(this.UserId);
             return this.View(returnModel);
         }

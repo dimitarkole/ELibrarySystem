@@ -15,11 +15,15 @@
 
         public IGenreService genreService;
 
+        public IMessageService messageService;
+
         public AddBookService(ApplicationDbContext context,
-            IGenreService genreService)
+            IGenreService genreService,
+            IMessageService messageService)
         {
             this.context = context;
             this.genreService = genreService;
+            this.messageService = messageService;
         }
 
         public string AddBook(AddBookViewModel model, string userId)
@@ -52,7 +56,7 @@
                 genreObj.Books.Add(newBook);
                 this.context.SaveChanges();
                 string result = "Успешно добавена книганата!";
-                //AddMessageAtDB(userId, result);
+                this.messageService.AddMessageAtDB(userId, result);
                 return result;
             }
 

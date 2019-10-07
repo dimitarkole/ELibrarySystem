@@ -11,5 +11,7 @@ namespace ELibrarySystem.Services.Contracts.LibraryAccount
         AllBooksViewModel PreparedPage(string userId);
 
         AllBooksViewModel GetBooks(AllBooksViewModel model, string userId);
+
+        AllBooksViewModel DeleteBook(string userId, AllBooksViewModel model, string bookId);
     }
 }

@@ -8,10 +8,14 @@
     using System.Linq;
     using System.Text;
 
-
     public class MessageService : IMessageService
     {
         public ApplicationDbContext context;
+
+        public MessageService(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
 
         public string AddMessageAtDB(string userId, string textOfMessage)
         {

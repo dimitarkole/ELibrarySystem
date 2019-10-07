@@ -14,11 +14,15 @@
 
         public IGenreService genreService;
 
+        public IMessageService messageService;
+
         public GetAllBooksServices(ApplicationDbContext context,
-            IGenreService genreService)
+            IGenreService genreService,
+            IMessageService messageService)
         {
             this.context = context;
             this.genreService = genreService;
+            this.messageService = messageService;
         }
 
         public AllBooksViewModel PreparedPage(string userId)
@@ -38,7 +42,7 @@
             var currentPage = model.CurrentPage;
 
 
-            var books = context.Books.Where(b =>
+            var books = this.context.Books.Where(b =>
               b.DeletedOn == null
               && b.UserId == userId)
               .Select(b => new BookViewModel()
@@ -90,7 +94,7 @@
                 books = books.OrderBy(b => b.BookName);
             }
 
-            var genres = genreService.GetAllGenres()
+            var genres = this.genreService.GetAllGenres()
                  .OrderByDescending(x => x.Name).ToList();
 
             var genre = new GenreListViewModel()
@@ -107,12 +111,12 @@
                 maxCountPage++;
             }
 
-            /*var viewBook = books.Skip((countBooksOfPage - 1) * countBooksOfPage)
-                                .Take(countBooksOfPage);*/
+            var viewBook = books.Skip((countBooksOfPage - 1) * countBooksOfPage)
+                                .Take(countBooksOfPage);
 
             var returnModel = new AllBooksViewModel()
             {
-                Books = books,
+                Books = viewBook,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,
@@ -128,6 +132,21 @@
         AllBooksViewModel IGetAllBooksServices.GetBooks(AllBooksViewModel model, string userId)
         {
             return this.GetBooks(model, userId);
+        }
+
+        public AllBooksViewModel DeleteBook(string userId, AllBooksViewModel model, string bookId)
+        {
+            var deleteBook = this.context.Books.FirstOrDefault(b => b.Id == bookId);
+            if (deleteBook != null)
+            {
+                deleteBook.DeletedOn = DateTime.UtcNow;
+                this.context.SaveChanges();
+                string result = "Успешно премахната книганата!";
+                this.messageService.AddMessageAtDB(userId, result);
+            }
+
+            var returnModel = this.GetBooks(model, userId);
+            return returnModel;
         }
     }
 }
