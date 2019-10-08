@@ -7,7 +7,6 @@
 
     public class AddBookViewModel
     {
-
         public AddBookViewModel()
         {
             this.BookId = " ";
