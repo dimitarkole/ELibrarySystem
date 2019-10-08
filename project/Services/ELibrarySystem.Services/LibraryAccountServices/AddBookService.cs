@@ -67,14 +67,6 @@
         {
             var genres = this.genreService.GetAllGenres();
 
-            var genre = new GenreListViewModel()
-            {
-                Id = null,
-                Name = "Изберете жанр",
-            };
-            genres.Add(genre);
-            genres.Reverse();
-
             var model = new AddBookViewModel()
             {
                 Genres = genres,

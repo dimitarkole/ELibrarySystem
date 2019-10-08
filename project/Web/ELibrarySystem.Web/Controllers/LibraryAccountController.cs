@@ -38,7 +38,6 @@
             this.getAllBooks = getAllBooks;
             this.SignInManager = signInManager;
             this.UserManager = userManager;
-
         }
 
         public void StarUp()
@@ -56,8 +55,7 @@
             return this.View();
         }
 
-        //AddBook Page - view
-
+        // AddBook Page - view
         [Authorize]
         [HttpGet]
         public IActionResult AddBook()
@@ -67,8 +65,7 @@
             return this.View(returnModel);
         }
 
-        //AddBook Page - view
-
+        // AddBook Page - view
         [Authorize]
         [HttpPost]
         public IActionResult AddBook(AddBookViewModel model)
@@ -99,20 +96,25 @@
             return this.View("AllBooks", returnModel);
         }
 
-        //AllBooks Page - Delete book
-
+        // AllBooks Page - Delete book
         [Authorize]
         [HttpPost]
         /* public IActionResult DeleteBook(string bookName,
              string author, string genreId, string SortMethodId,string id)*/
         public IActionResult DeleteBook(AllBooksViewModel model, string id)
         {
-            StarUp();
+            this.StarUp();
             this.ViewData["message"] = "Успешно премахната книга";
-            var returnModel = this.getAllBooks.DeleteBook(this.UserId, model,id);
+            var returnModel = this.getAllBooks.DeleteBook(this.UserId, model, id);
 
-            return View("AllBooks", returnModel);
+            return this.View("AllBooks", returnModel);
         }
 
+        public IActionResult ChangePageAllBook(AllBooksViewModel model, int id)
+        {
+            this.StarUp();
+            var returnModel = this.getAllBooks.ChangeActivePage(model, this.UserId, id);
+            return this.View("AllBooks", returnModel);
+        }
     }
 }
