@@ -115,7 +115,7 @@
             services.AddTransient<ISettingsService, SettingsService>();
 
             //Library Services
-            services.AddTransient<IAddBookService, AddBookService>();
+            services.AddTransient<IBookService, BookService>();
             services.AddTransient<IGenreService, GenreService>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IGetAllBooksServices, GetAllBooksServices>();

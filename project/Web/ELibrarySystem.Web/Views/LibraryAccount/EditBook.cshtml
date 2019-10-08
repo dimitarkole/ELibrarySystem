@@ -1,0 +1,58 @@
+﻿@model ELibrarySystem.Web.ViewModels.LibraryAccount.AddBookViewModel
+@{
+    ViewData["Title"] = "Редактиране на книга";
+}
+
+
+<div class=" container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Редактиране на книга</h2>
+        </div>
+        <div class="col-md-12">
+            <h3>@ViewData["message"]</h3>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="EditBook" asp-route-returnUrl="@ViewData["URL"]">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <label asp-for="BookName" class="control-label col-md-2">Заглавие на книгата</label>
+                    <input asp-for="BookName" class="form-control col-md-6" />
+                    <span asp-validation-for="BookName" class="text-danger col-md-4"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Author" class="control-label col-md-2">Автор</label>
+                    <input asp-for="Author" class="form-control col-md-6" />
+                    <span asp-validation-for="Author" class="text-danger col-md-4"></span>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="GenreId" class="control-label  col-md-2">Жанр</label>
+
+                    <select asp-for="GenreId" class="col-md-6">
+
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+
+                        }
+                    </select>
+                    <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Редактирай" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+

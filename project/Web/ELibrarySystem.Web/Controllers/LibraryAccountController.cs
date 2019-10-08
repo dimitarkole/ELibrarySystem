@@ -15,7 +15,7 @@
 
     public class LibraryAccountController : Controller
     {
-        private IAddBookService addBookService;
+        private IBookService addBookService;
         private IMessageService messageService;
         private IGenreService genreService;
         private IGetAllBooksServices getAllBooks;
@@ -25,7 +25,7 @@
         public string UserId;
 
         public LibraryAccountController(
-            IAddBookService addBookService,
+            IBookService addBookService,
             IMessageService messageService,
             IGenreService genreService,
             IGetAllBooksServices getAllBooks,
@@ -115,6 +115,35 @@
             this.StarUp();
             var returnModel = this.getAllBooks.ChangeActivePage(model, this.UserId, id);
             return this.View("AllBooks", returnModel);
+        }
+
+        // AllBooks Page - Edit book
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditBookAllBook(string id)
+        {
+            this.StarUp();
+            var model = this.addBookService.GetBookData(id);
+            this.HttpContext.Session.SetString("editBookId", id);
+            return View("EditBook", model);
+        }
+
+        // AllBooks Page - Edit book
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditBook(AddBookViewModel model)
+        {
+            StarUp();
+            var bookId = HttpContext.Session.GetString("editBookId");
+
+            ViewData["message"] = this.libraryService.EditBook(
+                model.BookName, model.Author, model.GenreId, userId, bookId);
+            var allGenres = this.libraryService.GetAllGenres();
+            var viewModel = new AddBookViewModel()
+            {
+                Genres = allGenres,
+            };
+            return View(viewModel);
         }
     }
 }
