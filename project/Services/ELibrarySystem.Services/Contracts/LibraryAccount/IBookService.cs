@@ -7,13 +7,12 @@
 
     public interface IBookService
     {
-        AddBookViewModel PreparedPage();
+        AddBookViewModel PreparedAddBookPage();
 
         string AddBook(AddBookViewModel model, string userId);
 
-        AddBookViewModel GetBookData(string bookId);
+        AddBookViewModel GetBookDataById(string bookId);
 
-        string EditBook(AddBookViewModel model, string userId);
-
+        List<object> EditBook(AddBookViewModel model, string userId);
     }
 }

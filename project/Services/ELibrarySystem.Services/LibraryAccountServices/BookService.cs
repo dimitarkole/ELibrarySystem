@@ -63,7 +63,7 @@
             return "Книганата същесвува в библиотеката Ви!";
         }
 
-        public string EditBook(AddBookViewModel model, string userId)
+        public List<object> EditBook(AddBookViewModel model, string userId)
         {
             var genreId = model.GenreId;
             var bookId = model.BookId;
@@ -72,8 +72,12 @@
             var genreObj = this.context.Genres.FirstOrDefault(g =>
                g.Id == genreId
                && g.DeletedOn == null);
-            var book = this.context.Books.FirstOrDefault(b =>
-                b.Id == bookId);
+            var book = this.context.Books.FirstOrDefault(b => b.Id == bookId);
+            model.Genres = this.genreService.GetAllGenres();
+            model.BookId = bookId;
+            var result = new List<object>();
+            result.Add(model);
+            string resultTitle = "Успешно редактирана книганата!";
             if (book != null)
             {
                 var checkDublicateBook = this.context.Books.FirstOrDefault(b =>
@@ -89,33 +93,38 @@
                     book.UserId = userId;
                     genreObj.Books.Add(book);
                     this.context.SaveChanges();
-                    string result = "Успешно редактирана книганата!";
-                    this.messageService.AddMessageAtDB(userId, result);
-                    return result;
+                    resultTitle = "Успешно редактирана книганата!";
+                    this.messageService.AddMessageAtDB(userId, resultTitle);
                 }
-
-                return "Редакцията на книгата дублира друга книга!";
+                else
+                {
+                    resultTitle = "Редакцията на книгата дублира друга книга!";
+                }
+            }
+            else
+            {
+                resultTitle = "Книганата не същесвува в библиотеката Ви!";
             }
 
-            return "Книганата не същесвува в библиотеката Ви!";
+            result.Add(resultTitle);
+            return result;
         }
 
-        public AddBookViewModel GetBookData(string bookId)
+        public AddBookViewModel GetBookDataById(string bookId)
         {
             var book = this.context.Books.FirstOrDefault(b => b.Id == bookId);
             var genres = this.genreService.GetAllGenres();
-            var model = new AddBookViewModel()
+            var model = new AddBookViewModel(bookId)
             {
                 Author = book.Author,
                 BookName = book.BookName,
                 GenreId = book.GenreId,
                 Genres = genres,
-                BookId = bookId,
             };
             return model;
         }
 
-        public AddBookViewModel PreparedPage()
+        public AddBookViewModel PreparedAddBookPage()
         {
             var genres = this.genreService.GetAllGenres();
 
@@ -125,6 +134,5 @@
             };
             return model;
         }
-
     }
 }
