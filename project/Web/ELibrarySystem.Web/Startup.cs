@@ -10,10 +10,12 @@
     using ELibrarySystem.Data.Repositories;
     using ELibrarySystem.Data.Seeding;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
+    using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Services.Data;
     using ELibrarySystem.Services.LibraryAccountServices;
     using ELibrarySystem.Services.Mapping;
     using ELibrarySystem.Services.Messaging;
+    using ELibrarySystem.Services.UserAccount;
     using ELibrarySystem.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -114,13 +116,14 @@
             services.AddTransient<ISmsSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
 
-            //Library Services
+            // Library Services
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<IGenreService, GenreService>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IGetAllBooksServices, GetAllBooksServices>();
 
-
+            // User Services
+            services.AddTransient<ITakenBooksService, TakenBooksService>();
 
         }
 
