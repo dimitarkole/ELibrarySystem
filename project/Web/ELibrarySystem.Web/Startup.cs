@@ -121,10 +121,11 @@
             services.AddTransient<IGenreService, GenreService>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IGetAllBooksServices, GetAllBooksServices>();
+            services.AddTransient<IGiveBookService, GiveBookService>();
+            services.AddTransient<IUserService, UserService>();
 
             // User Services
             services.AddTransient<ITakenBooksService, TakenBooksService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
