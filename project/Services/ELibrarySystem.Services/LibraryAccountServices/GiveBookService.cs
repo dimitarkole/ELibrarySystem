@@ -13,24 +13,27 @@
 
         public IGetAllBooksServices getAllBooksServices;
 
-        public IGenreService genreService;
+        public IUserService userService;
 
         public IMessageService messageService;
 
         public GiveBookService(ApplicationDbContext context,
-            IGenreService genreService,
+            IUserService userService,
             IMessageService messageService,
             IGetAllBooksServices getAllBooksServices)
         {
             this.context = context;
-            this.genreService = genreService;
+            this.userService = userService;
             this.messageService = messageService;
             this.getAllBooksServices = getAllBooksServices;
         }
 
         public GiveBookViewModel PreparedPage(string userId)
         {
-            throw new NotImplementedException();
+            var model = new GiveBookViewModel();
+            model.AllBooks = this.getAllBooksServices.PreparedPage(userId);
+            model.AllUsers = this.userService.PreparedPage();
+            return model;
         }
     }
 }

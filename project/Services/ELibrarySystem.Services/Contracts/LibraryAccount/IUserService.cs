@@ -7,6 +7,6 @@
 
     public interface IUserService
     {
-        AllUsersViewModel PreparedPage(string userId);
+        AllUsersViewModel PreparedPage();
     }
 }

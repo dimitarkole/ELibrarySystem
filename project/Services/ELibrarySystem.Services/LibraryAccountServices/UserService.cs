@@ -25,14 +25,14 @@
             this.messageService = messageService;
         }
 
-        public AllUsersViewModel PreparedPage(string userId)
+        public AllUsersViewModel PreparedPage()
         {
             var model = new AllUsersViewModel();
-            var returnModel = this.GetUsers(model, userId);
+            var returnModel = this.GetUsers(model);
             return returnModel;
         }
 
-        private AllUsersViewModel GetUsers(AllUsersViewModel model, string userId)
+        private AllUsersViewModel GetUsers(AllUsersViewModel model)
         {
             var userName = model.UserName;
             var firstName = model.FirstName;
