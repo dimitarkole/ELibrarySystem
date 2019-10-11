@@ -41,7 +41,6 @@
             var countBooksOfPage = model.CountBooksOfPage;
             var currentPage = model.CurrentPage;
 
-
             var books = this.context.Books.Where(b =>
               b.DeletedOn == null
               && b.UserId == userId)

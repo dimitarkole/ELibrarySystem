@@ -146,14 +146,14 @@
             return this.View(returnModel);
         }
 
-        // Home Page
+        // GiveBook Page
         [Authorize]
         [HttpGet]
         public IActionResult GiveBook()
         {
             this.StarUp();
             var model = this.giveBookService.PreparedPage(this.UserId);
-            return this.View();
+            return this.View(model);
         }
     }
 }
