@@ -20,6 +20,7 @@
         private IGenreService genreService;
         private IAllBooksServices getAllBooks;
         private IGiveBookService giveBookService;
+        private IUserService userService;
         private SignInManager<ApplicationUser> SignInManager;
         private UserManager<ApplicationUser> UserManager;
 
@@ -32,7 +33,8 @@
             IAllBooksServices getAllBooks,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            IGiveBookService giveBookService)
+            IGiveBookService giveBookService,
+            IUserService userService)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -41,6 +43,7 @@
             this.SignInManager = signInManager;
             this.UserManager = userManager;
             this.giveBookService = giveBookService;
+            this.userService = userService;
         }
 
         public void StarUp()
@@ -147,7 +150,7 @@
         [Authorize]
         [HttpGet]
         public IActionResult GiveBook()
-        { 
+        {
             this.StarUp();
             var model = this.giveBookService.PreparedPage(this.UserId);
             return this.View();

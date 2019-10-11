@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
+
     using ELibrarySystem.Data;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
@@ -11,7 +12,7 @@
     {
         public ApplicationDbContext context;
 
-        public IAllBooksServices getAllBooksServices;
+        public IAllBooksServices allBooksServices;
 
         public IUserService userService;
 
@@ -20,18 +21,18 @@
         public GiveBookService(ApplicationDbContext context,
             IUserService userService,
             IMessageService messageService,
-            IAllBooksServices getAllBooksServices)
+            IAllBooksServices allBooksServices)
         {
             this.context = context;
             this.userService = userService;
             this.messageService = messageService;
-            this.getAllBooksServices = getAllBooksServices;
+            this.allBooksServices = allBooksServices;
         }
 
         public GiveBookViewModel PreparedPage(string userId)
         {
             var model = new GiveBookViewModel();
-            model.AllBooks = this.getAllBooksServices.PreparedPage(userId);
+            model.AllBooks = this.allBooksServices.PreparedPage(userId);
             model.AllUsers = this.userService.PreparedPage();
             return model;
         }
