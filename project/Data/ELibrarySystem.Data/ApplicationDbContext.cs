@@ -27,11 +27,8 @@
         public DbSet<Setting> Settings { get; set; }
 
         public DbSet<Book> Books { get; set; }
-
         public DbSet<Genre> Genres { get; set; }
-
         public DbSet<GetBook> GetBooks { get; set; }
-
         public DbSet<Message> Messages { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
