@@ -8,10 +8,15 @@
     public class AddBookViewModel
     {
         public AddBookViewModel()
+            : this(null)
         {
-            this.BookId = " ";
         }
-        
+
+        public AddBookViewModel(string bookId)
+        {
+            this.BookId = bookId;
+        }
+
         public string BookId { get; set; }
 
         [Required]

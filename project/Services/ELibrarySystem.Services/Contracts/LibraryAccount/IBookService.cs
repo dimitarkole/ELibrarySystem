@@ -5,10 +5,14 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public interface IAddBookService
+    public interface IBookService
     {
-        AddBookViewModel PreparedPage();
+        AddBookViewModel PreparedAddBookPage();
 
         string AddBook(AddBookViewModel model, string userId);
+
+        AddBookViewModel GetBookDataById(string bookId);
+
+        List<object> EditBook(AddBookViewModel model, string userId);
     }
 }

@@ -15,30 +15,29 @@
 
     public class LibraryAccountController : Controller
     {
-        private IAddBookService addBookService;
+        private IBookService bookService;
         private IMessageService messageService;
         private IGenreService genreService;
-        private IGetAllBooksServices getAllBooks;
+        private IAllBooksServices getAllBooks;
         private SignInManager<ApplicationUser> SignInManager;
         private UserManager<ApplicationUser> UserManager;
 
         public string UserId;
 
         public LibraryAccountController(
-            IAddBookService addBookService,
+            IBookService bookService,
             IMessageService messageService,
             IGenreService genreService,
-            IGetAllBooksServices getAllBooks,
+            IAllBooksServices getAllBooks,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager)
         {
-            this.addBookService = addBookService;
+            this.bookService = bookService;
             this.messageService = messageService;
             this.genreService = genreService;
             this.getAllBooks = getAllBooks;
             this.SignInManager = signInManager;
             this.UserManager = userManager;
-
         }
 
         public void StarUp()
@@ -56,26 +55,24 @@
             return this.View();
         }
 
-        //AddBook Page - view
-
+        // AddBook Page - view
         [Authorize]
         [HttpGet]
         public IActionResult AddBook()
         {
             this.StarUp();
-            var returnModel = this.addBookService.PreparedPage();
+            var returnModel = this.bookService.PreparedAddBookPage();
             return this.View(returnModel);
         }
 
-        //AddBook Page - view
-
+        // AddBook Page - view
         [Authorize]
         [HttpPost]
         public IActionResult AddBook(AddBookViewModel model)
         {
             this.StarUp();
-            this.ViewData["message"] = this.addBookService.AddBook(model, this.UserId);
-            var returnModel = this.addBookService.PreparedPage();
+            this.ViewData["message"] = this.bookService.AddBook(model, this.UserId);
+            var returnModel = this.bookService.PreparedAddBookPage();
             return this.View(returnModel);
         }
 
@@ -99,20 +96,50 @@
             return this.View("AllBooks", returnModel);
         }
 
-        //AllBooks Page - Delete book
-
+        // AllBooks Page - Delete book
         [Authorize]
         [HttpPost]
         /* public IActionResult DeleteBook(string bookName,
              string author, string genreId, string SortMethodId,string id)*/
         public IActionResult DeleteBook(AllBooksViewModel model, string id)
         {
-            StarUp();
+            this.StarUp();
             this.ViewData["message"] = "Успешно премахната книга";
-            var returnModel = this.getAllBooks.DeleteBook(this.UserId, model,id);
+            var returnModel = this.getAllBooks.DeleteBook(this.UserId, model, id);
 
-            return View("AllBooks", returnModel);
+            return this.View("AllBooks", returnModel);
         }
 
+        public IActionResult ChangePageAllBook(AllBooksViewModel model, int id)
+        {
+            this.StarUp();
+            var returnModel = this.getAllBooks.ChangeActivePage(model, this.UserId, id);
+            return this.View("AllBooks", returnModel);
+        }
+
+        // AllBooks Page - Edit book
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditBookAllBook(string id)
+        {
+            this.StarUp();
+            var model = this.bookService.GetBookDataById(id);
+            this.HttpContext.Session.SetString("editBookId", id);
+            return this.View("EditBook", model);
+        }
+
+        // AllBooks Page - Edit book
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditBook(AddBookViewModel model)
+        {
+            this.StarUp();
+            var bookId = this.HttpContext.Session.GetString("editBookId");
+            model.BookId = bookId;
+            var result = this.bookService.EditBook(model, this.UserId);
+            var returnModel = result[0];
+            this.ViewData["message"] = result[1];
+            return this.View(returnModel);
+        }
     }
 }

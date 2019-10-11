@@ -8,7 +8,7 @@
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
 
-    public class GetAllBooksServices : IGetAllBooksServices
+    public class AllBooksServices : IAllBooksServices
     {
         public ApplicationDbContext context;
 
@@ -16,7 +16,7 @@
 
         public IMessageService messageService;
 
-        public GetAllBooksServices(ApplicationDbContext context,
+        public AllBooksServices(ApplicationDbContext context,
             IGenreService genreService,
             IMessageService messageService)
         {
@@ -111,12 +111,12 @@
                 maxCountPage++;
             }
 
-            var viewBook = books.Skip((countBooksOfPage - 1) * countBooksOfPage)
+            var viewBook = books.Skip((currentPage - 1) * countBooksOfPage)
                                 .Take(countBooksOfPage);
 
             var returnModel = new AllBooksViewModel()
             {
-                Books = books,
+                Books = viewBook,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,
@@ -129,7 +129,7 @@
             return returnModel;
         }
 
-        AllBooksViewModel IGetAllBooksServices.GetBooks(AllBooksViewModel model, string userId)
+        AllBooksViewModel IAllBooksServices.GetBooks(AllBooksViewModel model, string userId)
         {
             return this.GetBooks(model, userId);
         }
@@ -147,6 +147,12 @@
 
             var returnModel = this.GetBooks(model, userId);
             return returnModel;
+        }
+
+        public AllBooksViewModel ChangeActivePage(AllBooksViewModel model, string userId, int newPage)
+        {
+            model.CurrentPage = newPage;
+            return this.GetBooks(model, userId);
         }
     }
 }

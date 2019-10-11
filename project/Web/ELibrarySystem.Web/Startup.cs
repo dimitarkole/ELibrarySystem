@@ -10,10 +10,12 @@
     using ELibrarySystem.Data.Repositories;
     using ELibrarySystem.Data.Seeding;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
+    using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Services.Data;
     using ELibrarySystem.Services.LibraryAccountServices;
     using ELibrarySystem.Services.Mapping;
     using ELibrarySystem.Services.Messaging;
+    using ELibrarySystem.Services.UserAccount;
     using ELibrarySystem.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -114,14 +116,16 @@
             services.AddTransient<ISmsSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
 
-            //Library Services
-            services.AddTransient<IAddBookService, AddBookService>();
+            // Library Services
+            services.AddTransient<IBookService, BookService>();
             services.AddTransient<IGenreService, GenreService>();
             services.AddTransient<IMessageService, MessageService>();
-            services.AddTransient<IGetAllBooksServices, GetAllBooksServices>();
+            services.AddTransient<IAllBooksServices, AllBooksServices>();
+            services.AddTransient<IGiveBookService, GiveBookService>();
+            services.AddTransient<IUserService, UserService>();
 
-
-
+            // User Services
+            services.AddTransient<ITakenBooksService, TakenBooksService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

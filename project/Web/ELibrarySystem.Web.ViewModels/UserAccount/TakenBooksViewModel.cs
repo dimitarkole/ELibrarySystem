@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ELibrarySystem.Web.ViewModels.UserAccount
+﻿namespace ELibrarySystem.Web.ViewModels.UserAccount
 {
-    public class GetBooksViewModel
+    using ELibrarySystem.Web.ViewModels.LibraryAccount;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    public class TakenBooksViewModel
     {
-        public AllBooksViewModel()
+        public TakenBooksViewModel()
         {
-            /*this.SortMethods = new List<string>();
+            this.SortMethods = new List<string>();
             this.SortMethods.Add("Име на книгата а-я");
             this.SortMethods.Add("Име на книгата я-а");
             this.SortMethods.Add("Име на автора а-я");
@@ -28,10 +29,10 @@ namespace ELibrarySystem.Web.ViewModels.UserAccount
 
             this.BookName = null;
             this.Author = null;
-            this.GenreId = null;*/
+            this.GenreId = null;
         }
 
-        /*public string BookName { get; set; }
+        public string BookName { get; set; }
 
         public string Author { get; set; }
 
@@ -42,9 +43,9 @@ namespace ELibrarySystem.Web.ViewModels.UserAccount
         public List<string> SortMethods { get; set; }
 
         public List<GenreListViewModel> Genres { get; set; }
-       */
-        public IEnumerable<GetBookViewModel> Books { get; set; }
-/*
+
+        public IEnumerable<TakenBookViewModel> Books { get; set; }
+
         public int CurrentPage { get; set; }
 
         public int MaxCountPage { get; set; }
@@ -52,6 +53,5 @@ namespace ELibrarySystem.Web.ViewModels.UserAccount
         public int CountBooksOfPage { get; set; }
 
         public List<int> CountBooksOfPageList { get; set; }
-    */
     }
 }
