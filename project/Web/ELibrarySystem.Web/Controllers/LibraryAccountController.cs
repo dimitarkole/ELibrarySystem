@@ -19,6 +19,7 @@
         private IMessageService messageService;
         private IGenreService genreService;
         private IAllBooksServices getAllBooks;
+        private IGiveBookService giveBookService;
         private SignInManager<ApplicationUser> SignInManager;
         private UserManager<ApplicationUser> UserManager;
 
@@ -30,7 +31,8 @@
             IGenreService genreService,
             IAllBooksServices getAllBooks,
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IGiveBookService giveBookService)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -38,6 +40,7 @@
             this.getAllBooks = getAllBooks;
             this.SignInManager = signInManager;
             this.UserManager = userManager;
+            this.giveBookService = giveBookService;
         }
 
         public void StarUp()
@@ -99,8 +102,6 @@
         // AllBooks Page - Delete book
         [Authorize]
         [HttpPost]
-        /* public IActionResult DeleteBook(string bookName,
-             string author, string genreId, string SortMethodId,string id)*/
         public IActionResult DeleteBook(AllBooksViewModel model, string id)
         {
             this.StarUp();
@@ -140,6 +141,16 @@
             var returnModel = result[0];
             this.ViewData["message"] = result[1];
             return this.View(returnModel);
+        }
+
+        // Home Page
+        [Authorize]
+        [HttpGet]
+        public IActionResult GiveBook()
+        { 
+            this.StarUp();
+            var model = this.giveBookService.PreparedPage(this.UserId);
+            return this.View();
         }
     }
 }
