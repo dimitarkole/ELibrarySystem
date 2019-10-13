@@ -32,7 +32,7 @@
             return returnModel;
         }
 
-        private AllBooksViewModel GetBooks(AllBooksViewModel model, string userId)
+        public AllBooksViewModel GetBooks(AllBooksViewModel model, string userId)
         {
             var bookName = model.BookName;
             var author = model.Author;
@@ -128,10 +128,6 @@
             return returnModel;
         }
 
-        AllBooksViewModel IAllBooksServices.GetBooks(AllBooksViewModel model, string userId)
-        {
-            return this.GetBooks(model, userId);
-        }
 
         public AllBooksViewModel DeleteBook(string userId, AllBooksViewModel model, string bookId)
         {

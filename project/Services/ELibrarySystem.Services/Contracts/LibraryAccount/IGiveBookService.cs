@@ -9,5 +9,7 @@
     public interface IGiveBookService
     {
         GiveBookViewModel PreparedPage(string userId);
+
+        GiveBookViewModel GiveBookSearchBook(GiveBookViewModel model, string userId);
     }
 }

@@ -155,5 +155,15 @@
             var model = this.giveBookService.PreparedPage(this.UserId);
             return this.View(model);
         }
+
+        // GiveBook Page - GiveBookSearchBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult GiveBookSearchBook(GiveBookViewModel model)
+        {
+            this.StarUp();
+            var returnModel = this.giveBookService.GiveBookSearchBook(model, this.UserId); */
+            return this.View("GiveBook", returnModel);
+        }
     }
 }

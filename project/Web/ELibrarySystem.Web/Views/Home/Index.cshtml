@@ -26,39 +26,38 @@
                                 <div class="col-md-6">
 
                                     <h3 style="color:white">Вход</h3>
-                                  <form asp-route-returnUrl="ViewData["ReturnUrl"]" method="post">
-                                      <div class="container">
-                                          <div class="text-danger">@ViewBag.LoginErr </div>
-                                          <div class="form-group row">
-                                              <label asp-for="LoginViewModel.Email" class="control-label col-md-4"></label>
-                                              <input asp-for="LoginViewModel.Email" value="library@abv.bg" class="form-control col-md-8" />
-                                              <span asp-validation-for="LoginViewModel.Email" class="text-danger col-md-12"></span>
-                                          </div>
-                                          <div class="form-group row">
-                                              <label asp-for="LoginViewModel.Password" class="control-label col-md-4">Парола</label>
-                                              <input asp-for="LoginViewModel.Password" value="Password1!" class="form-control col-md-8" />
-                                              <span asp-validation-for="LoginViewModel.Password" class="text-danger col-md-12"></span>
-                                          </div>
+                                    <form asp-route-returnUrl="ViewData[" ReturnUrl"]" method="post">
+                                        
+                                        <div class="container">
+                                            <div class="text-danger">@ViewBag.LoginErr </div>
+                                            <div class="form-group row">
+                                                <label asp-for="LoginViewModel.Email" class="control-label col-md-4"></label>
+                                                <input asp-for="LoginViewModel.Email" value="library@abv.bg" class="form-control col-md-8" />
+                                                <span asp-validation-for="LoginViewModel.Email" class="text-danger col-md-12"></span>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="LoginViewModel.Password" class="control-label col-md-4">Парола</label>
+                                                <input asp-for="LoginViewModel.Password" value="Password1!" class="form-control col-md-8" />
+                                                <span asp-validation-for="LoginViewModel.Password" class="text-danger col-md-12"></span>
+                                            </div>
 
-                                          <label asp-for="LoginViewModel.RememberMe">
-                                              <input asp-for="LoginViewModel.RememberMe" />
-                                               @Html.DisplayNameFor(m => m.LoginViewModel.RememberMe)
-                                          </label>
+                                            <label asp-for="LoginViewModel.RememberMe">
+                                                <input asp-for="LoginViewModel.RememberMe" />
+                                                @Html.DisplayNameFor(m => m.LoginViewModel.RememberMe)
+                                            </label>
 
-                                          <div class="form-group">
-                                              <input type="submit" value="Влез" class="btn btn-default" />
-                                          </div>
-                                      </div>
-                                  </form>
+                                            <div class="form-group">
+                                                <input type="submit" value="Влез" class="btn dento-btn booking-btn" />
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
 
                                 <div class="col-md-6">
-
                                     <h3 style="color:white">Регистрация</h3>
 
                                     <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
                                         <div class="container">
-                                            ViewData["err"]=@ViewData["err"]
                                             <div class="text-danger">@ViewBag.RegisterErr </div>
 
                                             <div class="form-group row">

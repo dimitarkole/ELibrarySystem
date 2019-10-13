@@ -21,6 +21,7 @@
 
             this.CountUsersOfPage = this.CountUsersOfPageList[0];
             this.SortMethodId = this.SortMethods[0];
+            this.CurrentPage = 1;
         }
 
         public string UserName { get; set; }

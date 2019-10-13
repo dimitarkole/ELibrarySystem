@@ -41,9 +41,8 @@
             var currentPage = model.CurrentPage;
             var countUsersOfPage = model.CountUsersOfPage;
 
-            var users = this.context.Users.Where(u =>
-                 u.UserName == null
-                 && u.Type == "user")
+            var users = this.context.Users
+                .Where(u => u.Type == "user")
                 .Select(u => new UserViewModel()
                 {
                     FirstName = u.FirstName,

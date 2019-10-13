@@ -29,6 +29,14 @@
             this.allBooksServices = allBooksServices;
         }
 
+        public GiveBookViewModel GiveBookSearchBook(GiveBookViewModel model, string userId)
+        {
+            var returnModel = new GiveBookViewModel();
+            returnModel.AllBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+            returnModel.AllUsers = model.AllUsers;
+            return model;
+        }
+
         public GiveBookViewModel PreparedPage(string userId)
         {
             var model = new GiveBookViewModel();
