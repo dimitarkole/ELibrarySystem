@@ -34,7 +34,7 @@
             var returnModel = new GiveBookViewModel();
             returnModel.AllBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
             returnModel.AllUsers = model.AllUsers;
-            return model;
+            return returnModel;
         }
 
         public GiveBookViewModel PreparedPage(string userId)

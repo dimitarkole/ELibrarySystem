@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Identity;
     using ELibrarySystem.Data.Models;
     using Unity;
+    using System.Text;
 
     public class LibraryAccountController : Controller
     {
@@ -159,11 +160,23 @@
         // GiveBook Page - GiveBookSearchBook
         [Authorize]
         [HttpPost]
-        public IActionResult GiveBookSearchBook(GiveBookViewModel model)
+        public IActionResult GiveBookSearchBook(AllBooksViewModel bookViewModel, AllUsersViewModel usersViewModel)
         {
+            var model = new GiveBookViewModel()
+            {
+                AllBooks = bookViewModel,
+                AllUsers = usersViewModel,
+            };
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookSearchBook(model, this.UserId); */
+            var bookName = model.AllBooks.BookName;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"bookName={bookName}");
+            sb.AppendLine($"Author={model.AllBooks.Author}");
+            sb.AppendLine($"GenreId={model.AllBooks.GenreId}");
+            this.ViewData["message"] = sb.ToString().Trim();
+            var returnModel = this.giveBookService.GiveBookSearchBook(model, this.UserId);
             return this.View("GiveBook", returnModel);
         }
+
     }
 }

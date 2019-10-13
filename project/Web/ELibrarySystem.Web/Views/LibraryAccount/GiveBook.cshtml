@@ -4,7 +4,7 @@
 @model ELibrarySystem.Web.ViewModels.LibraryAccount.GiveBookViewModel
 <div class=" container">
     <h2>Дай книга</h2><br />
-    <h3>@ViewData["message"]</h3>
+    <h3>ViewData["message"]=@ViewData["message"]</h3>
     <hr />
     <form asp-action="GiveBook" asp-route-returnUrl="@ViewData["URL"]">
 
