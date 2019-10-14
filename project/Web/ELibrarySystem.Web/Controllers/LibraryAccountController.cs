@@ -62,7 +62,7 @@
             return this.View();
         }
 
-        // AddBook Page - view
+        // AddBook Page - HttpGet
         [Authorize]
         [HttpGet]
         public IActionResult AddBook()
@@ -72,7 +72,7 @@
             return this.View(returnModel);
         }
 
-        // AddBook Page - view
+        // AddBook Page - HttpPost
         [Authorize]
         [HttpPost]
         public IActionResult AddBook(AddBookViewModel model)
@@ -115,6 +115,7 @@
             return this.View("AllBooks", returnModel);
         }
 
+        [Authorize]
         public IActionResult ChangePageAllBook(AllBooksViewModel model, int id)
         {
             this.StarUp();
@@ -153,30 +154,63 @@
         public IActionResult GiveBook()
         {
             this.StarUp();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"HttpGet GiveBook");
+            this.ViewData["message"] = sb.ToString().Trim();
             var model = this.giveBookService.PreparedPage(this.UserId);
             return this.View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult GiveBook2()
+        {
+            this.StarUp();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"HttpGet GiveBook");
+            this.ViewData["message"] = sb.ToString().Trim();
+            var model = this.giveBookService.PreparedPage(this.UserId);
+            return this.View(model);
+        }
+
+        // GiveBook Page - GiveBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult GiveBook2(AllBooksViewModel bookModel)
+        {
+            this.StarUp();
+            var returnBookModel = this.getAllBooks.GetBooks(bookModel, this.UserId);
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = returnBookModel,
+               //BookPage AllUsers = new AllUsersViewModel(),
+            };
+            // this.giveBookService.GiveBookSearchBook(bookModel, this.UserId);
+            return this.View(returnModel);
         }
 
         // GiveBook Page - GiveBookSearchBook
         [Authorize]
         [HttpPost]
-        public IActionResult GiveBookSearchBook(AllBooksViewModel bookViewModel, AllUsersViewModel usersViewModel)
+        public IActionResult GiveBookSearchBook(AllUsersViewModel usersModel,AllBooksViewModel booksModel)
         {
+            this.StarUp();
             var model = new GiveBookViewModel()
             {
-                AllBooks = bookViewModel,
-                AllUsers = usersViewModel,
+                AllUsers = usersModel,
+                AllBooks = booksModel,
             };
-            this.StarUp();
-            var bookName = model.AllBooks.BookName;
+
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"bookName={bookName}");
-            sb.AppendLine($"Author={model.AllBooks.Author}");
-            sb.AppendLine($"GenreId={model.AllBooks.GenreId}");
+            string a = model.AllBooks.BookName == null ? "NULl" : "Notnull";
+            sb.AppendLine($"HttpPost GiveBookSearchBook {a}");
+
+            sb.AppendLine($"bookName={model.AllBooks.BookName} ");
+            sb.AppendLine($"Author={model.AllBooks.Author} ");
+            sb.AppendLine($"GenreId={model.AllBooks.GenreId} ");
             this.ViewData["message"] = sb.ToString().Trim();
             var returnModel = this.giveBookService.GiveBookSearchBook(model, this.UserId);
             return this.View("GiveBook", returnModel);
         }
-
     }
 }

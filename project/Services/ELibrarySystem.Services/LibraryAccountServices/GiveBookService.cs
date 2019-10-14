@@ -31,17 +31,29 @@
 
         public GiveBookViewModel GiveBookSearchBook(GiveBookViewModel model, string userId)
         {
-            var returnModel = new GiveBookViewModel();
-            returnModel.AllBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
-            returnModel.AllUsers = model.AllUsers;
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+            var allUsers = model.AllUsers;
+            var selectedBook = model.SelectedBook;
+            var selectedUser = model.SelectedUser;
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = allBooks,
+                AllUsers = allUsers,
+                SelectedBook = selectedBook,
+                SelectedUser = selectedUser,
+            };
             return returnModel;
         }
 
         public GiveBookViewModel PreparedPage(string userId)
         {
-            var model = new GiveBookViewModel();
-            model.AllBooks = this.allBooksServices.PreparedPage(userId);
-            model.AllUsers = this.userService.PreparedPage();
+            var allBooks = this.allBooksServices.PreparedPage(userId);
+            var allUsers = this.userService.PreparedPage();
+            var model = new GiveBookViewModel()
+            {
+                AllBooks = allBooks,
+                AllUsers = allUsers,
+            };
             return model;
         }
     }

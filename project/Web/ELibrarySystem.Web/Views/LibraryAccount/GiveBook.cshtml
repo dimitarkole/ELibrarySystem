@@ -2,289 +2,304 @@
     ViewData["Title"] = "GiveBook";
 }
 @model ELibrarySystem.Web.ViewModels.LibraryAccount.GiveBookViewModel
-<div class=" container">
-    <h2>Дай книга</h2><br />
-    <h3>ViewData["message"]=@ViewData["message"]</h3>
-    <hr />
-    <form asp-action="GiveBook" asp-route-returnUrl="@ViewData["URL"]">
+    <div class=" container">
+        <h2>Дай книга</h2><br />
+        <h3>@ViewData["message"]</h3>
 
-        <!--Select Book-->
-        <div class="row">
-            <div class="col-md-12">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group row">
-                    <label asp-for="AllBooks.BookName" class="control-label col-md-2">Заглавие на книгата</label>
-                    <input asp-for="AllBooks.BookName" class="form-control col-md-6" />
-                    <span asp-validation-for="AllBooks.BookName" class="text-danger col-md-4"></span>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="AllBooks.Author" class="control-label col-md-2">Автор</label>
-                    <input asp-for="AllBooks.Author" class="form-control col-md-6" />
-                    <span asp-validation-for="AllBooks.Author" class="text-danger col-md-4"></span>
-                </div>
-
-                <div class="form-group row">
-                    <label asp-for="AllBooks.GenreId" class="control-label  col-md-2">Жанр</label>
-
-                    <select asp-for="AllBooks.GenreId" class="col-md-6">
-                        @if (Model.AllBooks.Genres != null)
-                        {
-                            @foreach (var genre in Model.AllBooks.Genres)
-                            {
-                                <option value="@genre.Id">@genre.Name</option>
-
-                            }
-                        }
-
-                    </select>
-                    <span asp-validation-for="AllBooks.GenreId" class="text-danger col-md-4"></span>
-                </div>
+        <hr />
 
 
-
-                <div class="form-group row">
-                    <label asp-for="AllBooks.SortMethodId" class="control-label  col-md-2">Сортирай по</label>
-
-                    <select asp-for="AllBooks.SortMethodId" class="col-md-6">
-                        @foreach (var SortMethod in Model.AllBooks.SortMethods)
-                        {
-                            <option value="@SortMethod">@SortMethod</option>
-                        }
-                    </select>
-                    <span asp-validation-for="AllBooks.GenreId" class="text-danger col-md-4"></span>
-                </div>
-
-                <div class="form-group row">
-                    <label asp-for="AllBooks.CountBooksOfPage" class="control-label  col-md-2">Брой книги на една станица</label>
-
-                    <select asp-for="AllBooks.CountBooksOfPage" class="col-md-6">
-                        @foreach (var count in Model.AllBooks.CountBooksOfPageList)
-                        {
-                            <option value="@count">@count</option>
-
-                        }
-                    </select>
-                    <span asp-validation-for="AllBooks.CountBooksOfPage" class="text-danger col-md-4"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Търси" asp-action="GiveBookSearchBook" class="btn btn-default" />
-
-                </div>
-
-
-            </div>
-        </div>
-        @if (Model.AllBooks.Books != null)
-        {
-            @foreach (var book in @Model.AllBooks.Books)
-            {
-                <div class="row">
-
-                    @book.BookName @book.Author @book.GenreName<br />
-                    <input type="submit" value="Избери" asp-action="EditBookAllBook" asp-route-id="@book.BookId" class="btn btn-default" />
-                    <br />
-                </div>
-            }
+        <form asp-action="GiveBook" asp-route-returnUrl="@ViewData["URL"]">
             <div class="row">
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group" role="group" aria-label="First group">
-                        @if (Model.AllBooks.CurrentPage > 1)
-                        {
-                            @if (Model.AllBooks.CurrentPage >= 2)
+                <div class="col-md-12">
+                    избрана книга: <br>
+                    @Model.SelectedBook.BookName @Model.SelectedBook.Author @Model.SelectedBook.GenreName
+                </div>
+
+                <div class="col-md-12">
+                    избрана потребител: <br>
+                    @Model.SelectedUser.FirstName @Model.SelectedUser.LastName @Model.SelectedUser.UserName
+                </div>
+            </div>
+
+
+            <!--Select Book-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group row">
+                        <label asp-for="AllBooks.BookName" class="control-label col-md-2">Заглавие на книгата</label>
+                        <input asp-for="AllBooks.BookName" class="form-control col-md-6" />
+                        <span asp-validation-for="AllBooks.BookName" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="AllBooks.Author" class="control-label col-md-2">Автор</label>
+                        <input asp-for="AllBooks.Author" class="form-control col-md-6" />
+                        <span asp-validation-for="AllBooks.Author" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="AllBooks.GenreId" class="control-label  col-md-2">Жанр</label>
+
+                        <select asp-for="AllBooks.GenreId" class="col-md-6">
+                            @if (Model.AllBooks.Genres != null)
                             {
-                                <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePageAllBook" class="btn btn-default" />
-                            }
-                            <input type="submit" value="<" asp-route-id="@(Model.AllBooks.CurrentPage-1)" asp-action="ChangePageAllBook" class="btn btn-default" />
-
-                        }
-
-                    </div>
-
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Last Pages group">
-                        @for (int i = Math.Max(Model.AllBooks.CurrentPage - 5, 1); i < Model.AllBooks.CurrentPage; i++)
-                        {
-                            <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
-                        }
-                    </div>
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Active Page group">
-                        <input type="submit" value="@Model.AllBooks.CurrentPage" asp-route-id="@Model.AllBooks.CurrentPage" asp-action="ChangePageAllBook" class="btn btn-default" />
-
-                    </div>
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Upcoming Page group">
-                        @for (int i = Model.AllBooks.CurrentPage + 1;
-                        i <= Math.Min(Model.AllBooks.CurrentPage + 5, Model.AllBooks.MaxCountPage); i++)
-                        {
-                            <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
-
-                        }
-
-                    </div>
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Fourth group">
-                        <div class="btn-group" role="group" aria-label="First group">
-                            @if (Model.AllBooks.CurrentPage < Model.AllBooks.MaxCountPage)
-                            {
-                                <input type="submit" value=">" asp-route-id="@(Model.AllBooks.CurrentPage+1)" asp-action="ChangePageAllBook" class="btn btn-default" />
-                                @if (Model.AllBooks.CurrentPage < Model.AllBooks.MaxCountPage - 1)
+                                @foreach (var genre in Model.AllBooks.Genres)
                                 {
-                                    <input type="submit" value=">|" asp-route-id="@Model.AllBooks.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                    <option value="@genre.Id">@genre.Name</option>
+
                                 }
+                            }
+
+                        </select>
+                        <span asp-validation-for="AllBooks.GenreId" class="text-danger col-md-4"></span>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <label asp-for="AllBooks.SortMethodId" class="control-label  col-md-2">Сортирай по</label>
+
+                        <select asp-for="AllBooks.SortMethodId" class="col-md-6">
+                            @foreach (var SortMethod in Model.AllBooks.SortMethods)
+                            {
+                                <option value="@SortMethod">@SortMethod</option>
+                            }
+                        </select>
+                        <span asp-validation-for="AllBooks.GenreId" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="AllBooks.CountBooksOfPage" class="control-label  col-md-2">Брой книги на една станица</label>
+
+                        <select asp-for="AllBooks.CountBooksOfPage" class="col-md-6">
+                            @foreach (var count in Model.AllBooks.CountBooksOfPageList)
+                            {
+                                <option value="@count">@count</option>
+
+                            }
+                        </select>
+                        <span asp-validation-for="AllBooks.CountBooksOfPage" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Търси" class="btn btn-default" asp-action="GiveBookSearchBook" />
+
+                    </div>
+
+
+                </div>
+            </div>
+            @if (Model.AllBooks.Books != null)
+            {
+                @foreach (var book in @Model.AllBooks.Books)
+                {
+                    <div class="row">
+
+                        @book.BookName @book.Author @book.GenreName<br />
+                        <input type="submit" value="Избери" asp-action="EditBookAllBook" asp-route-id="@book.BookId" class="btn btn-default" />
+                        <br />
+                    </div>
+                }
+                <div class="row">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group" role="group" aria-label="First group">
+                            @if (Model.AllBooks.CurrentPage > 1)
+                            {
+                                @if (Model.AllBooks.CurrentPage >= 2)
+                                {
+                                    <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                }
+                                <input type="submit" value="<" asp-route-id="@(Model.AllBooks.CurrentPage-1)" asp-action="ChangePageAllBook" class="btn btn-default" />
 
                             }
 
                         </div>
-                    </div>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="row">
-                <div class="col-md-12">
-                    Все още нямате добавена книга към Вашата библиотека
-                </div>
-            </div>
-        }
 
-
-        <br />
-        <br />
-        <br />
-
-
-        <!--Select User-->
-        <div class="row">
-            <div class="col-md-12">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group row">
-                    <label asp-for="AllUsers.UserName" class="control-label col-md-2">Потрбителско име</label>
-                    <input asp-for="AllUsers.UserName" class="form-control col-md-6" />
-                    <span asp-validation-for="AllUsers.UserName" class="text-danger col-md-4"></span>
-                </div>
-
-                <div class="form-group row">
-                    <label asp-for="AllUsers.FirstName" class="control-label col-md-2">Първо име</label>
-                    <input asp-for="AllUsers.FirstName" class="form-control col-md-6" />
-                    <span asp-validation-for="AllUsers.FirstName" class="text-danger col-md-4"></span>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="AllUsers.LastName" class="control-label col-md-2">Фамилие</label>
-                    <input asp-for="AllUsers.LastName" class="form-control col-md-6" />
-                    <span asp-validation-for="AllUsers.FirstName" class="text-danger col-md-4"></span>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="AllUsers.SortMethodId" class="control-label  col-md-2">Сортирай по</label>
-
-                    <select asp-for="AllUsers.SortMethodId" class="col-md-6">
-                        @foreach (var SortMethod in Model.AllUsers.SortMethods)
-                        {
-                            <option value="@SortMethod">@SortMethod</option>
-                        }
-                    </select>
-                    <span asp-validation-for="AllUsers.SortMethodId" class="text-danger col-md-4"></span>
-                </div>
-
-                <div class="form-group row">
-                    <label asp-for="AllUsers.CountUsersOfPage" class="control-label  col-md-2">Брой книги на една станица</label>
-
-                    <select asp-for="AllUsers.CountUsersOfPage" class="col-md-6">
-                        @foreach (var count in Model.AllUsers.CountUsersOfPageList)
-                        {
-                            <option value="@count">@count</option>
-
-                        }
-                    </select>
-                    <span asp-validation-for="AllUsers.CountUsersOfPage" class="text-danger col-md-4"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Търси" asp-action="AllBooksSearch" class="btn btn-default" />
-
-                </div>
-
-
-            </div>
-        </div>
-        @if (Model.AllUsers.Users != null)
-        {
-            @foreach (var user in @Model.AllUsers.Users)
-            {
-                <div class="row">
-
-                    @user.UserName @user.FirstName @user.LastName<br />
-                    <input type="submit" value="Избери" asp-action="EditBookAllBook" asp-route-id="@user.UserId" class="btn btn-default" />
-                    <br />
-
-                </div>
-            }
-            <div class="row">
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group" role="group" aria-label="First group">
-                        @if (Model.AllUsers.CurrentPage > 1)
-                        {
-                            @if (Model.AllUsers.CurrentPage >= 2)
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Last Pages group">
+                            @for (int i = Math.Max(Model.AllBooks.CurrentPage - 5, 1); i < Model.AllBooks.CurrentPage; i++)
                             {
-                                <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
                             }
-                            <input type="submit" value="<" asp-route-id="@(Model.AllUsers.CurrentPage-1)" asp-action="ChangePageAllBook" class="btn btn-default" />
+                        </div>
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Active Page group">
+                            <input type="submit" value="@Model.AllBooks.CurrentPage" asp-route-id="@Model.AllBooks.CurrentPage" asp-action="ChangePageAllBook" class="btn btn-default" />
 
-                        }
-
-                    </div>
-
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Last Pages group">
-                        @for (int i = Math.Max(Model.AllUsers.CurrentPage - 5, 1);
-                          i < Model.AllUsers.CurrentPage; i++)
-                        {
-                            <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
-                        }
-                    </div>
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Active Page group">
-                        <input type="submit" value="@Model.AllUsers.CurrentPage" asp-route-id="@Model.AllUsers.CurrentPage" asp-action="ChangePageAllBook" class="btn btn-default" />
-
-                    </div>
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Upcoming Page group">
-                        @for (int i = Model.AllUsers.CurrentPage + 1;
-                        i <= Math.Min(Model.AllUsers.CurrentPage + 5, Model.AllUsers.MaxCountPage); i++)
-                        {
-                            <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
-
-                        }
-
-                    </div>
-                    <pre> </pre>
-                    <div class="btn-group" role="group" aria-label="Fourth group">
-                        <div class="btn-group" role="group" aria-label="First group">
-                            @if (Model.AllUsers.CurrentPage < Model.AllUsers.MaxCountPage)
+                        </div>
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Upcoming Page group">
+                            @for (int i = Model.AllBooks.CurrentPage + 1;
+                   i <= Math.Min(Model.AllBooks.CurrentPage + 5, Model.AllBooks.MaxCountPage); i++)
                             {
-                                <input type="submit" value=">" asp-route-id="@(Model.AllUsers.CurrentPage+1)" asp-action="ChangePageAllBook" class="btn btn-default" />
-                                @if (Model.AllUsers.CurrentPage < Model.AllUsers.MaxCountPage - 1)
-                                {
-                                    <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
-                                    <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
-                                }
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
 
                             }
 
                         </div>
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Fourth group">
+                            <div class="btn-group" role="group" aria-label="First group">
+                                @if (Model.AllBooks.CurrentPage < Model.AllBooks.MaxCountPage)
+                                {
+                                    <input type="submit" value=">" asp-route-id="@(Model.AllBooks.CurrentPage+1)" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                    @if (Model.AllBooks.CurrentPage < Model.AllBooks.MaxCountPage - 1)
+                                    {
+                                        <input type="submit" value=">|" asp-route-id="@Model.AllBooks.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-        else
-        {
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        Все още нямате добавена книга към Вашата библиотека
+                    </div>
+                </div>
+            }
+
+
+            <br />
+            <br />
+            <br />
+
+
+            <!--Select User-->
             <div class="row">
                 <div class="col-md-12">
-                    Все още нямате добавена книга към Вашата библиотека
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group row">
+                        <label asp-for="AllUsers.UserName" class="control-label col-md-2">Потрбителско име</label>
+                        <input asp-for="AllUsers.UserName" class="form-control col-md-6" />
+                        <span asp-validation-for="AllUsers.UserName" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="AllUsers.FirstName" class="control-label col-md-2">Първо име</label>
+                        <input asp-for="AllUsers.FirstName" class="form-control col-md-6" />
+                        <span asp-validation-for="AllUsers.FirstName" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="AllUsers.LastName" class="control-label col-md-2">Фамилие</label>
+                        <input asp-for="AllUsers.LastName" class="form-control col-md-6" />
+                        <span asp-validation-for="AllUsers.FirstName" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="AllUsers.SortMethodId" class="control-label  col-md-2">Сортирай по</label>
+
+                        <select asp-for="AllUsers.SortMethodId" class="col-md-6">
+                            @foreach (var SortMethod in Model.AllUsers.SortMethods)
+                            {
+                                <option value="@SortMethod">@SortMethod</option>
+                            }
+                        </select>
+                        <span asp-validation-for="AllUsers.SortMethodId" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="AllUsers.CountUsersOfPage" class="control-label  col-md-2">Брой книги на една станица</label>
+
+                        <select asp-for="AllUsers.CountUsersOfPage" class="col-md-6">
+                            @foreach (var count in Model.AllUsers.CountUsersOfPageList)
+                            {
+                                <option value="@count">@count</option>
+
+                            }
+                        </select>
+                        <span asp-validation-for="AllUsers.CountUsersOfPage" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Търси" asp-action="AllBooksSearch" class="btn btn-default" />
+
+                    </div>
+
+
                 </div>
             </div>
-        }
-    </form>
+            @if (Model.AllUsers.Users != null)
+            {
+                @foreach (var user in @Model.AllUsers.Users)
+                {
+                    <div class="row">
 
-</div>
+                        @user.UserName @user.FirstName @user.LastName<br />
+                        <input type="submit" value="Избери" asp-action="EditBookAllBook" asp-route-id="@user.UserId" class="btn btn-default" />
+                        <br />
+
+                    </div>
+                }
+                <div class="row">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group" role="group" aria-label="First group">
+                            @if (Model.AllUsers.CurrentPage > 1)
+                            {
+                                @if (Model.AllUsers.CurrentPage >= 2)
+                                {
+                                    <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                }
+                                <input type="submit" value="<" asp-route-id="@(Model.AllUsers.CurrentPage-1)" asp-action="ChangePageAllBook" class="btn btn-default" />
+
+                            }
+
+                        </div>
+
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Last Pages group">
+                            @for (int i = Math.Max(Model.AllUsers.CurrentPage - 5, 1);
+                     i < Model.AllUsers.CurrentPage; i++)
+                            {
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
+                            }
+                        </div>
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Active Page group">
+                            <input type="submit" value="@Model.AllUsers.CurrentPage" asp-route-id="@Model.AllUsers.CurrentPage" asp-action="ChangePageAllBook" class="btn btn-default" />
+
+                        </div>
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Upcoming Page group">
+                            @for (int i = Model.AllUsers.CurrentPage + 1;
+                   i <= Math.Min(Model.AllUsers.CurrentPage + 5, Model.AllUsers.MaxCountPage); i++)
+                            {
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
+
+                            }
+
+                        </div>
+                        <pre> </pre>
+                        <div class="btn-group" role="group" aria-label="Fourth group">
+                            <div class="btn-group" role="group" aria-label="First group">
+                                @if (Model.AllUsers.CurrentPage < Model.AllUsers.MaxCountPage)
+                                {
+                                    <input type="submit" value=">" asp-route-id="@(Model.AllUsers.CurrentPage+1)" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                    @if (Model.AllUsers.CurrentPage < Model.AllUsers.MaxCountPage - 1)
+                                    {
+                                        <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                        <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        Все още нямате добавена книга към Вашата библиотека
+                    </div>
+                </div>
+            }
+        </form>
+
+    </div>
 
