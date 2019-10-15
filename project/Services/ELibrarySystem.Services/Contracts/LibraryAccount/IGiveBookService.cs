@@ -18,6 +18,8 @@
 
         GiveBookViewModel GiveBookChangeUserPage(GiveBookViewModel model, int newPage);
 
+        GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string bookId);
 
+        GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId);
     }
 }
