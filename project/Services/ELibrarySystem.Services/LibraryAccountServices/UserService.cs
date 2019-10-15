@@ -24,7 +24,7 @@
             this.genreService = genreService;
             this.messageService = messageService;
         }
-
+        
         public AllUsersViewModel PreparedPage()
         {
             var model = new AllUsersViewModel();
@@ -32,7 +32,7 @@
             return returnModel;
         }
 
-        private AllUsersViewModel GetUsers(AllUsersViewModel model)
+        public AllUsersViewModel GetUsers(AllUsersViewModel model)
         {
             var userName = model.UserName;
             var firstName = model.FirstName;
@@ -97,6 +97,12 @@
                 CountUsersOfPage = countUsersOfPage,
             };
             return returnModel;
+        }
+
+        public AllUsersViewModel ChangeActivePage(AllUsersViewModel model, int newPage)
+        {
+            model.CurrentPage = newPage;
+            return this.GetUsers(model);
         }
     }
 }
