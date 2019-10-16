@@ -53,45 +53,9 @@
                   GenreId = b.GenreId,
               });
 
-            if (bookName != null)
-            {
-                books = books.Where(b => b.BookName.Contains(bookName));
-            }
+            books = this.SelectBooks(bookName, author, genreId, books);
 
-            if (author != null)
-            {
-                books = books.Where(b => b.Author.Contains(author));
-            }
-
-            if (genreId != null)
-            {
-                books = books.Where(b => b.GenreId == genreId);
-            }
-
-            if (sortMethodId == "Име на книгата я-а")
-            {
-                books = books.OrderByDescending(b => b.BookName);
-            }
-            else if (sortMethodId == "Име на автора а-я")
-            {
-                books = books.OrderBy(b => b.Author);
-            }
-            else if (sortMethodId == "Име на автора я-а")
-            {
-                books = books.OrderByDescending(b => b.Author);
-            }
-            else if (sortMethodId == "Жанр а-я")
-            {
-                books = books.OrderBy(b => b.GenreName);
-            }
-            else if (sortMethodId == "Жанр я-а")
-            {
-                books = books.OrderByDescending(b => b.GenreName);
-            }
-            else
-            {
-                books = books.OrderBy(b => b.BookName);
-            }
+            books = this.SortBooks(sortMethodId, books);
 
             var genres = this.genreService.GetAllGenres()
                  .OrderByDescending(x => x.Name).ToList();
@@ -128,8 +92,10 @@
             return returnModel;
         }
 
-
-        public AllBooksViewModel DeleteBook(string userId, AllBooksViewModel model, string bookId)
+        public AllBooksViewModel DeleteBook(
+           string userId,
+           AllBooksViewModel model,
+           string bookId)
         {
             var deleteBook = this.context.Books.FirstOrDefault(b => b.Id == bookId);
             if (deleteBook != null)
@@ -148,6 +114,62 @@
         {
             model.CurrentPage = newPage;
             return this.GetBooks(model, userId);
+        }
+
+        private IQueryable<BookViewModel> SortBooks(
+            string sortMethodId,
+            IQueryable<BookViewModel> books)
+        {
+            if (sortMethodId == "Име на книгата я-а")
+            {
+                books = books.OrderByDescending(b => b.BookName);
+            }
+            else if (sortMethodId == "Име на автора а-я")
+            {
+                books = books.OrderBy(b => b.Author);
+            }
+            else if (sortMethodId == "Име на автора я-а")
+            {
+                books = books.OrderByDescending(b => b.Author);
+            }
+            else if (sortMethodId == "Жанр а-я")
+            {
+                books = books.OrderBy(b => b.GenreName);
+            }
+            else if (sortMethodId == "Жанр я-а")
+            {
+                books = books.OrderByDescending(b => b.GenreName);
+            }
+            else
+            {
+                books = books.OrderBy(b => b.BookName);
+            }
+
+            return books;
+        }
+
+        private IQueryable<BookViewModel> SelectBooks(
+          string bookName,
+          string author,
+          string genreId,
+          IQueryable<BookViewModel> books)
+        {
+            if (bookName != null)
+            {
+                books = books.Where(b => b.BookName.Contains(bookName));
+            }
+
+            if (author != null)
+            {
+                books = books.Where(b => b.Author.Contains(author));
+            }
+
+            if (genreId != null)
+            {
+                books = books.Where(b => b.GenreId == genreId);
+            }
+
+            return books;
         }
     }
 }

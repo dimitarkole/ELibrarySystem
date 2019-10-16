@@ -24,7 +24,6 @@
             this.genreService = genreService;
             this.messageService = messageService;
         }
-        
         public AllUsersViewModel PreparedPage()
         {
             var model = new AllUsersViewModel();
@@ -40,6 +39,7 @@
             var sortMethodId = model.SortMethodId;
             var currentPage = model.CurrentPage;
             var countUsersOfPage = model.CountUsersOfPage;
+            var email = model.Email;
 
             var users = this.context.Users
                 .Where(u => u.Type == "user")
@@ -49,32 +49,11 @@
                     LastName = u.LastName,
                     UserId = u.Id,
                     UserName = u.UserName,
+                    Email = u.Email,
                 });
 
-            if (userName != null)
-            {
-                users = users.Where(u => u.UserName.Contains(userName));
-            }
-
-            if (firstName != null)
-            {
-                users = users.Where(u => u.FirstName.Contains(firstName));
-            }
-
-            if (lastName != null)
-            {
-                users = users.Where(u => u.LastName.Contains(lastName));
-            }
-
-
-            if (sortMethodId == "Потребителско име а-я")
-            {
-                users = users.OrderBy(u => u.UserName);
-            }
-            else if (sortMethodId == "Потребителско име я-а")
-            {
-                users = users.OrderByDescending(u => u.UserName);
-            }
+            users = this.SelectUsers(userName, firstName, lastName, email, users);
+            users = this.SortUsers(sortMethodId, users);
 
             int maxCountPage = users.Count() / countUsersOfPage;
             if (users.Count() % countUsersOfPage != 0)
@@ -103,6 +82,52 @@
         {
             model.CurrentPage = newPage;
             return this.GetUsers(model);
+        }
+
+        private IQueryable<UserViewModel> SelectUsers(
+          string userName,
+          string firstName,
+          string lastName,
+          string email,
+          IQueryable<UserViewModel> users)
+        {
+            if (userName != null)
+            {
+                users = users.Where(u => u.UserName.Contains(userName));
+            }
+
+            if (firstName != null)
+            {
+                users = users.Where(u => u.FirstName.Contains(firstName));
+            }
+
+            if (lastName != null)
+            {
+                users = users.Where(u => u.LastName.Contains(lastName));
+            }
+
+            if (email != null)
+            {
+                users = users.Where(u => u.Email.Contains(email));
+            }
+
+            return users;
+        }
+
+        private IQueryable<UserViewModel> SortUsers(
+          string sortMethodId,
+          IQueryable<UserViewModel> users)
+        {
+            if (sortMethodId == "Потребителско име а-я")
+            {
+                users = users.OrderBy(u => u.UserName);
+            }
+            else if (sortMethodId == "Потребителско име я-а")
+            {
+                users = users.OrderByDescending(u => u.UserName);
+            }
+
+            return users;
         }
     }
 }

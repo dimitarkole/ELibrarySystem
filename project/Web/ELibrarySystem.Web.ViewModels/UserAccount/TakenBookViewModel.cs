@@ -6,16 +6,19 @@
 
     public class TakenBookViewModel
     {
+        public string Id { get; set; }
+
         public string BookName { get; set; }
 
         public string Author { get; set; }
 
-        public string GenreName { get; set; }
+        public string Genre { get; set; }
 
         public string GenreId { get; set; }
 
-        public string GetBookId { get; set; }
 
-        public DateTime? Returned { get; set; }
+        public virtual DateTime CreatedOn { get; set; }
+
+        public virtual DateTime? ReturnedOn { get; set; }
     }
 }

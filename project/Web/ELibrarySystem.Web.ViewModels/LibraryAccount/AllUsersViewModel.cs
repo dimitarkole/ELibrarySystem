@@ -18,13 +18,14 @@
             this.CountUsersOfPageList.Add(15);
             this.CountUsersOfPageList.Add(20);
 
-
             this.CountUsersOfPage = this.CountUsersOfPageList[0];
             this.SortMethodId = this.SortMethods[0];
             this.CurrentPage = 1;
         }
 
         public string UserName { get; set; }
+
+        public string Email { get; set; }
 
         public string FirstName { get; set; }
 

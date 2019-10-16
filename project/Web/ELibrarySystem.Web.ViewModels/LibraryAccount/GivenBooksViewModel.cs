@@ -1,14 +1,12 @@
-﻿namespace ELibrarySystem.Web.ViewModels.UserAccount
+﻿namespace ELibrarySystem.Web.ViewModels.LibraryAccount
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
-    using ELibrarySystem.Web.ViewModels.LibraryAccount;
-
-    public class TakenBooksViewModel
+    public class GivenBooksViewModel
     {
-        public TakenBooksViewModel()
+        public GivenBooksViewModel()
         {
             this.SortMethods = new List<string>();
             this.SortMethods.Add("Име на книгата а-я");
@@ -39,13 +37,21 @@
 
         public string GenreId { get; set; }
 
+        public string UserName { get; set; }
+
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public string SortMethodId { get; set; }
 
         public List<string> SortMethods { get; set; }
 
         public List<GenreListViewModel> Genres { get; set; }
 
-        public IEnumerable<TakenBookViewModel> Books { get; set; }
+        public IEnumerable<GivenBookViewModel> Books { get; set; }
 
         public int CurrentPage { get; set; }
 

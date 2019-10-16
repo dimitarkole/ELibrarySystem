@@ -10,6 +10,5 @@
 
         AllUsersViewModel ChangeActivePage(AllUsersViewModel model, int newPage);
 
-
     }
 }

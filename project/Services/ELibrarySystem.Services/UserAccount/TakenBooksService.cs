@@ -61,52 +61,15 @@
                 .Select(b => new TakenBookViewModel()
                 {
                     Author = b.Book.Author,
-                    GetBookId = b.Id,
+                    Id = b.Id,
                     BookName = b.Book.BookName,
-                    GenreName = b.Book.Genre.Name,
+                    Genre = b.Book.Genre.Name,
                     GenreId = b.Book.GenreId,
-                    Returned = b.ReturnedOn,
+                    CreatedOn = b.CreatedOn,
+                    ReturnedOn = b.ReturnedOn,
                 });
-
-            if (bookName != null)
-            {
-                getbooks = getbooks.Where(b => b.BookName.Contains(bookName));
-            }
-
-            if (author != null)
-            {
-                getbooks = getbooks.Where(b => b.Author.Contains(author));
-            }
-
-            if (genreId != null)
-            {
-                getbooks = getbooks.Where(b => b.GenreId == genreId);
-            }
-
-            if (sortMethodId == "Име на книгата я-а")
-            {
-                getbooks = getbooks.OrderByDescending(b => b.BookName);
-            }
-            else if (sortMethodId == "Име на автора а-я")
-            {
-                getbooks = getbooks.OrderBy(b => b.Author);
-            }
-            else if (sortMethodId == "Име на автора я-а")
-            {
-                getbooks = getbooks.OrderByDescending(b => b.Author);
-            }
-            else if (sortMethodId == "Жанр а-я")
-            {
-                getbooks = getbooks.OrderBy(b => b.GenreName);
-            }
-            else if (sortMethodId == "Жанр я-а")
-            {
-                getbooks = getbooks.OrderByDescending(b => b.GenreName);
-            }
-            else
-            {
-                getbooks = getbooks.OrderBy(b => b.BookName);
-            }
+            getbooks = this.SelectBooks(bookName, author, genreId, getbooks);
+            getbooks = this.SortBooks(sortMethodId, getbooks);
 
             var genres = this.genreService.GetAllGenres()
                  .OrderByDescending(x => x.Name).ToList();
@@ -140,6 +103,68 @@
                 CountBooksOfPage = countBooksOfPage,
             };
             return returnModel;
+        }
+
+        private IQueryable<TakenBookViewModel> SelectBooks(
+         string bookName,
+         string author,
+         string genreId,
+         IQueryable<TakenBookViewModel> getbooks)
+        {
+            if (bookName != null)
+            {
+                getbooks = getbooks.Where(b => b.BookName.Contains(bookName));
+            }
+
+            if (getbooks != null)
+            {
+                getbooks = getbooks.Where(b => b.Author.Contains(author));
+            }
+
+            if (genreId != null)
+            {
+                getbooks = getbooks.Where(b => b.Genre == genreId);
+            }
+
+            return getbooks;
+        }
+
+        private IQueryable<TakenBookViewModel> SortBooks(
+         string sortMethodId,
+         IQueryable<TakenBookViewModel> getbooks)
+        {
+            if (sortMethodId == "Име на книгата я-а")
+            {
+                getbooks = getbooks.OrderByDescending(b => b.ReturnedOn)
+                    .ThenByDescending(b => b.BookName);
+            }
+            else if (sortMethodId == "Име на автора а-я")
+            {
+                getbooks = getbooks.OrderByDescending(b => b.ReturnedOn)
+                    .ThenBy(b => b.Author);
+            }
+            else if (sortMethodId == "Име на автора я-а")
+            {
+                getbooks = getbooks.OrderByDescending(b => b.ReturnedOn)
+                    .ThenByDescending(b => b.Author);
+            }
+            else if (sortMethodId == "Жанр а-я")
+            {
+                getbooks = getbooks.OrderByDescending(b => b.ReturnedOn)
+                    .ThenBy(b => b.Genre);
+            }
+            else if (sortMethodId == "Жанр я-а")
+            {
+                getbooks = getbooks.OrderByDescending(b => b.ReturnedOn)
+                    .ThenByDescending(b => b.Genre);
+            }
+            else
+            {
+                getbooks = getbooks.OrderByDescending(b => b.ReturnedOn)
+                    .ThenBy(b => b.BookName);
+            }
+
+            return getbooks;
         }
     }
 }

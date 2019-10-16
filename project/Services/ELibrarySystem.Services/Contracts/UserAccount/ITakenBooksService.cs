@@ -1,9 +1,10 @@
 ﻿namespace ELibrarySystem.Services.Contracts.UserAccount
 {
-    using ELibrarySystem.Web.ViewModels.UserAccount;
     using System;
     using System.Collections.Generic;
     using System.Text;
+
+    using ELibrarySystem.Web.ViewModels.UserAccount;
 
     public interface ITakenBooksService
     {

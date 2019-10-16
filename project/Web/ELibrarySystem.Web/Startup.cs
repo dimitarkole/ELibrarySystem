@@ -49,6 +49,7 @@
                 // Set a short timeout for easy testing.
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.HttpOnly = true;
+
                 // Make the session cookie essential
                 options.Cookie.IsEssential = true;
             });
@@ -123,6 +124,7 @@
             services.AddTransient<IAllBooksServices, AllBooksServices>();
             services.AddTransient<IGiveBookService, GiveBookService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IGiveBookService, GiveBookService>();
 
             // User Services
             services.AddTransient<ITakenBooksService, TakenBooksService>();
