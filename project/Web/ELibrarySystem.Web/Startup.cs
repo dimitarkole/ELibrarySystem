@@ -125,6 +125,7 @@
             services.AddTransient<IGiveBookService, GiveBookService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IGiveBookService, GiveBookService>();
+            services.AddTransient<IIndexService, IndexService>();
 
             // User Services
             services.AddTransient<ITakenBooksService, TakenBooksService>();
