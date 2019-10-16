@@ -24,6 +24,7 @@
             {
                 CountAddedBooks = this.CountAddedBooks(userId),
                 CountGettedBooks = this.CountAddedBooks(userId),
+                CountTakenBooks = this.CountTakenBooks(userId),
             };
             return model;
         }
@@ -42,6 +43,15 @@
             int count = this.context
                 .GetBooks
                 .Where(b => b.Book.UserId == userId)
+                .Count();
+            return count;
+        }
+
+        private int CountTakenBooks(string userId)
+        {
+            int count = this.context
+                .GetBooks
+                .Where(b => b.Book.UserId == userId && b.ReturnedOn == null)
                 .Count();
             return count;
         }

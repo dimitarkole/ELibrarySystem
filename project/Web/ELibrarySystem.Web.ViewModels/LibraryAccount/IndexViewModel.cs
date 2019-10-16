@@ -10,5 +10,8 @@
 
         public int CountGettedBooks { get; set; }
 
+        public int CountTakenBooks { get; set; }
+
+
     }
 }
