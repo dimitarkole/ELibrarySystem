@@ -6,20 +6,12 @@
 
     public class GiveBookViewModel
     {
-        public BookViewModel SelectedBook;
+        public BookViewModel SelectedBook { get; set; }
 
-        public UserViewModel SelectedUser;
+        public UserViewModel SelectedUser { get; set; }
 
-        public AllBooksViewModel AllBooks;
+        public AllBooksViewModel AllBooks { get; set; }
 
-        public AllUsersViewModel AllUsers;
-
-        public GiveBookViewModel()
-        {
-            this.SelectedBook = new BookViewModel();
-            this.SelectedUser = new UserViewModel();
-            this.AllBooks = new AllBooksViewModel();
-            this.AllUsers = new AllUsersViewModel();
-        }
+        public AllUsersViewModel AllUsers { get; set; }
     }
 }

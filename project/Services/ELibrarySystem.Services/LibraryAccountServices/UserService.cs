@@ -12,18 +12,11 @@
     {
         public ApplicationDbContext context;
 
-        public IGenreService genreService;
-
-        public IMessageService messageService;
-
-        public UserService(ApplicationDbContext context,
-            IGenreService genreService,
-            IMessageService messageService)
+        public UserService(ApplicationDbContext context)
         {
             this.context = context;
-            this.genreService = genreService;
-            this.messageService = messageService;
         }
+
         public AllUsersViewModel PreparedPage()
         {
             var model = new AllUsersViewModel();

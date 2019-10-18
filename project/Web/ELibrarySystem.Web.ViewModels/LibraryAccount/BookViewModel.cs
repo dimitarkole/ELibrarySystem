@@ -6,6 +6,15 @@
 
     public class BookViewModel
     {
+        public BookViewModel()
+        {
+            this.BookName = null;
+            this.Author = null;
+            this.GenreName = null;
+            this.GenreId = null;
+            this.BookId = null;
+        }
+
         public string BookName { get; set; }
 
         public string Author { get; set; }

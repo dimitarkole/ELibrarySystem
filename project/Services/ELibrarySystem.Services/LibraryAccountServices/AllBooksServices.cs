@@ -16,7 +16,8 @@
 
         public IMessageService messageService;
 
-        public AllBooksServices(ApplicationDbContext context,
+        public AllBooksServices(
+            ApplicationDbContext context,
             IGenreService genreService,
             IMessageService messageService)
         {

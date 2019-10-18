@@ -161,55 +161,23 @@
             return this.View(model);
         }
 
-        [Authorize]
-        [HttpGet]
-        public IActionResult GiveBook2()
-        {
-            this.StarUp();
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"HttpGet GiveBook");
-            this.ViewData["message"] = sb.ToString().Trim();
-            var model = this.giveBookService.PreparedPage(this.UserId);
-            return this.View(model);
-        }
-
-        // GiveBook Page - GiveBook
+        // GiveBook Page - GiveBookSearchBook
         [Authorize]
         [HttpPost]
-        public IActionResult GiveBook2(AllBooksViewModel bookModel)
+        public IActionResult GiveBookSearchBook(GiveBookViewModel model)
         {
             this.StarUp();
-            var returnBookModel = this.getAllBooks.GetBooks(bookModel, this.UserId);
-            var returnModel = new GiveBookViewModel()
-            {
-                AllBooks = returnBookModel,
-               //BookPage AllUsers = new AllUsersViewModel(),
-            };
-            // this.giveBookService.GiveBookSearchBook(bookModel, this.UserId);
-            return this.View(returnModel);
+            var returnModel = this.giveBookService.GiveBookSearchBook(model, this.UserId);
+            return this.View("GiveBook", returnModel);
         }
 
         // GiveBook Page - GiveBookSearchBook
         [Authorize]
         [HttpPost]
-        public IActionResult GiveBookSearchBook(AllUsersViewModel usersModel,AllBooksViewModel booksModel)
+        public IActionResult ChangePageBook(GiveBookViewModel model, int id)
         {
             this.StarUp();
-            var model = new GiveBookViewModel()
-            {
-                AllUsers = usersModel,
-                AllBooks = booksModel,
-            };
-
-            StringBuilder sb = new StringBuilder();
-            string a = model.AllBooks.BookName == null ? "NULl" : "Notnull";
-            sb.AppendLine($"HttpPost GiveBookSearchBook {a}");
-
-            sb.AppendLine($"bookName={model.AllBooks.BookName} ");
-            sb.AppendLine($"Author={model.AllBooks.Author} ");
-            sb.AppendLine($"GenreId={model.AllBooks.GenreId} ");
-            this.ViewData["message"] = sb.ToString().Trim();
-            var returnModel = this.giveBookService.GiveBookSearchBook(model, this.UserId);
+            var returnModel = this.giveBookService.GiveBookChangeBookPage(model, this.UserId, id);
             return this.View("GiveBook", returnModel);
         }
     }

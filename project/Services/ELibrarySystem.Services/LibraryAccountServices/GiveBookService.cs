@@ -40,8 +40,8 @@
             {
                 AllBooks = allBooks,
                 AllUsers = allUsers,
-                SelectedBook = selectedBook,
-                SelectedUser = selectedUser,
+                SelectedBook = new BookViewModel(),
+                SelectedUser = new UserViewModel(),
             };
             return returnModel;
         }
@@ -53,8 +53,8 @@
             {
                 AllBooks = allBooks,
                 AllUsers = model.AllUsers,
-                SelectedBook = model.SelectedBook,
-                SelectedUser = model.SelectedUser,
+                SelectedBook = new BookViewModel(), //model.SelectedBook,
+                SelectedUser = new UserViewModel(),
             };
             return returnModel;
         }
@@ -66,8 +66,8 @@
             {
                 AllBooks = model.AllBooks,
                 AllUsers = allUsers,
-                SelectedBook = model.SelectedBook,
-                SelectedUser = model.SelectedUser,
+                SelectedBook = new BookViewModel(), //model.SelectedBook,
+                SelectedUser = new UserViewModel(),
             };
             return returnModel;
         }
@@ -93,8 +93,8 @@
             {
                 AllBooks = model.AllBooks,
                 AllUsers = allUsers,
-                SelectedBook = model.SelectedBook,
-                SelectedUser = model.SelectedUser,
+                SelectedBook = new BookViewModel(),
+                SelectedUser = new UserViewModel(),
             };
             return returnModel;
         }
