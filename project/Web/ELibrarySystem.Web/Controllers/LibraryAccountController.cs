@@ -175,17 +175,27 @@
             return this.View("GiveBook", returnModel);
         }
 
-        // GiveBook Page - GiveBookSearchBook
+        // GiveBook Page - GiveBookChangePageBook
         [Authorize]
         [HttpPost]
-        public IActionResult ChangePageBook(GiveBookViewModel model, int id)
+        public IActionResult GiveBookChangePageBook(GiveBookViewModel model, int id)
         {
             this.StarUp();
             var returnModel = this.giveBookService.GiveBookChangeBookPage(model, this.UserId, id);
             return this.View("GiveBook", returnModel);
         }
 
-        // GiveBook Page - GiveBookSearchBook
+        // GiveBook Page - GiveBookChangePageUser
+        [Authorize]
+        [HttpPost]
+        public IActionResult GiveBookChangePageUser(GiveBookViewModel model, int id)
+        {
+            this.StarUp();
+            var returnModel = this.giveBookService.GiveBookChangeUserPage(model, id);
+            return this.View("GiveBook", returnModel);
+        }
+
+        // GivenBooks Page - GiveBookSearchBook
         [Authorize]
         [HttpGet]
         public IActionResult GivenBooks()

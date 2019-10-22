@@ -18,7 +18,7 @@
 
                 <div class="col-md-12">
                     избрана потребител: <br>
-                    @Model.SelectedUser.FirstName @Model.SelectedUser.LastName @Model.SelectedUser.UserName
+                    @Model.SelectedUser.FirstName @Model.SelectedUser.LastName @Model.SelectedUser.Email
                 </div>
             </div>
 
@@ -107,9 +107,9 @@
                             {
                                 @if (Model.AllBooks.CurrentPage >= 2)
                                 {
-                                    <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePageBook" class="btn btn-default" />
+                                    <input type="submit" value="|<" asp-route-id="1" asp-action="GiveBookChangePageBook" class="btn btn-default" />
                                 }
-                                <input type="submit" value="<" asp-route-id="@(Model.AllBooks.CurrentPage-1)" asp-action="ChangePageBook" class="btn btn-default" />
+                                <input type="submit" value="<" asp-route-id="@(Model.AllBooks.CurrentPage-1)" asp-action="GiveBookChangePageBook" class="btn btn-default" />
 
                             }
 
@@ -119,12 +119,12 @@
                         <div class="btn-group" role="group" aria-label="Last Pages group">
                             @for (int i = Math.Max(Model.AllBooks.CurrentPage - 5, 1); i < Model.AllBooks.CurrentPage; i++)
                             {
-                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageBook" class="btn btn-default" />
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="GiveBookChangePageBook" class="btn btn-default" />
                             }
                         </div>
                         <pre> </pre>
                         <div class="btn-group" role="group" aria-label="Active Page group">
-                            <input type="submit" value="@Model.AllBooks.CurrentPage" asp-route-id="@Model.AllBooks.CurrentPage" asp-action="ChangePageBook" class="btn btn-default" />
+                            <input type="submit" value="@Model.AllBooks.CurrentPage" asp-route-id="@Model.AllBooks.CurrentPage" asp-action="GiveBookChangePageBook" class="btn btn-default" />
 
                         </div>
                         <pre> </pre>
@@ -132,7 +132,7 @@
                             @for (int i = Model.AllBooks.CurrentPage + 1;
                    i <= Math.Min(Model.AllBooks.CurrentPage + 5, Model.AllBooks.MaxCountPage); i++)
                             {
-                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageBook" class="btn btn-default" />
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="GiveBookChangePageBook" class="btn btn-default" />
 
                             }
 
@@ -142,10 +142,10 @@
                             <div class="btn-group" role="group" aria-label="First group">
                                 @if (Model.AllBooks.CurrentPage < Model.AllBooks.MaxCountPage)
                                 {
-                                    <input type="submit" value=">" asp-route-id="@(Model.AllBooks.CurrentPage+1)" asp-action="ChangePageBook" class="btn btn-default" />
+                                    <input type="submit" value=">" asp-route-id="@(Model.AllBooks.CurrentPage+1)" asp-action="GiveBookChangePageBook" class="btn btn-default" />
                                     @if (Model.AllBooks.CurrentPage < Model.AllBooks.MaxCountPage - 1)
                                     {
-                                        <input type="submit" value=">|" asp-route-id="@Model.AllBooks.MaxCountPage" asp-action="ChangePageBook" class="btn btn-default" />
+                                        <input type="submit" value=">|" asp-route-id="@Model.AllBooks.MaxCountPage" asp-action="GiveBookChangePageBook" class="btn btn-default" />
                                     }
 
                                 }
@@ -175,9 +175,9 @@
                 <div class="col-md-12">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group row">
-                        <label asp-for="AllUsers.UserName" class="control-label col-md-2">Потрбителско име</label>
-                        <input asp-for="AllUsers.UserName" class="form-control col-md-6" />
-                        <span asp-validation-for="AllUsers.UserName" class="text-danger col-md-4"></span>
+                        <label asp-for="AllUsers.Email" class="control-label col-md-2">Email адрес</label>
+                        <input asp-for="AllUsers.Email" class="form-control col-md-6" />
+                        <span asp-validation-for="AllUsers.Email" class="text-danger col-md-4"></span>
                     </div>
 
                     <div class="form-group row">
@@ -228,7 +228,7 @@
                 {
                     <div class="row">
 
-                        @user.UserName @user.FirstName @user.LastName<br />
+                         @user.Email @user.FirstName @user.LastName<br />
                         <input type="submit" value="Избери" asp-action="EditBookAllBook" asp-route-id="@user.UserId" class="btn btn-default" />
                         <br />
 
@@ -241,9 +241,9 @@
                             {
                                 @if (Model.AllUsers.CurrentPage >= 2)
                                 {
-                                    <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                    <input type="submit" value="|<" asp-route-id="1" asp-action="GiveBookChangePageUser" class="btn btn-default" />
                                 }
-                                <input type="submit" value="<" asp-route-id="@(Model.AllUsers.CurrentPage-1)" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                <input type="submit" value="<" asp-route-id="@(Model.AllUsers.CurrentPage-1)" asp-action="GiveBookChangePageUser" class="btn btn-default" />
 
                             }
 
@@ -254,12 +254,12 @@
                             @for (int i = Math.Max(Model.AllUsers.CurrentPage - 5, 1);
                      i < Model.AllUsers.CurrentPage; i++)
                             {
-                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="GiveBookChangePageUser" class="btn btn-default" />
                             }
                         </div>
                         <pre> </pre>
                         <div class="btn-group" role="group" aria-label="Active Page group">
-                            <input type="submit" value="@Model.AllUsers.CurrentPage" asp-route-id="@Model.AllUsers.CurrentPage" asp-action="ChangePageAllBook" class="btn btn-default" />
+                            <input type="submit" value="@Model.AllUsers.CurrentPage" asp-route-id="@Model.AllUsers.CurrentPage" asp-action="GiveBookChangePageUser" class="btn btn-default" />
 
                         </div>
                         <pre> </pre>
@@ -267,7 +267,7 @@
                             @for (int i = Model.AllUsers.CurrentPage + 1;
                    i <= Math.Min(Model.AllUsers.CurrentPage + 5, Model.AllUsers.MaxCountPage); i++)
                             {
-                                <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                <input type="submit" value="@i" asp-route-id="@i" asp-action="GiveBookChangePageUser" class="btn btn-default" />
 
                             }
 
@@ -280,8 +280,8 @@
                                     <input type="submit" value=">" asp-route-id="@(Model.AllUsers.CurrentPage+1)" asp-action="ChangePageAllBook" class="btn btn-default" />
                                     @if (Model.AllUsers.CurrentPage < Model.AllUsers.MaxCountPage - 1)
                                     {
-                                        <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
-                                        <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="ChangePageAllBook" class="btn btn-default" />
+                                        <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="GiveBookChangePageUser" class="btn btn-default" />
+                                        <input type="submit" value=">|" asp-route-id="@Model.AllUsers.MaxCountPage" asp-action="GiveBookChangePageUser" class="btn btn-default" />
                                     }
 
                                 }

@@ -23,12 +23,10 @@ namespace ELibrarySystem.Data.Models
 
         public DateTime? ModifiedOn { get; set; }
 
-        public string Type{ get; set; }
-
+        public string Type { get; set; }
 
         // Deletable entity
         public bool IsDeleted { get; set; }
-
 
         public DateTime? DeletedOn { get; set; }
 
@@ -37,9 +35,6 @@ namespace ELibrarySystem.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
-
-
-
 
         public virtual string Avatar { get; set; }
 

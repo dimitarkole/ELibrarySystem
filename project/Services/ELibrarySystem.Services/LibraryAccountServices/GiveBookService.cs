@@ -128,7 +128,7 @@
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserId = user.Id,
-                UserName = user.UserName,
+                Email = user.Email,
             };
             var returnModel = new GiveBookViewModel()
             {

@@ -26,7 +26,6 @@
 
         public AllUsersViewModel GetUsers(AllUsersViewModel model)
         {
-            var userName = model.UserName;
             var firstName = model.FirstName;
             var lastName = model.LastName;
             var sortMethodId = model.SortMethodId;
@@ -41,11 +40,10 @@
                     FirstName = u.FirstName,
                     LastName = u.LastName,
                     UserId = u.Id,
-                    UserName = u.UserName,
                     Email = u.Email,
                 });
 
-            users = this.SelectUsers(userName, firstName, lastName, email, users);
+            users = this.SelectUsers(firstName, lastName, email, users);
             users = this.SortUsers(sortMethodId, users);
 
             int maxCountPage = users.Count() / countUsersOfPage;
@@ -60,7 +58,7 @@
             var returnModel = new AllUsersViewModel()
             {
                 Users = viewUsers,
-                UserName = userName,
+                Email = email,
                 FirstName = firstName,
                 LastName = lastName,
                 SortMethodId = sortMethodId,
@@ -78,16 +76,11 @@
         }
 
         private IQueryable<UserViewModel> SelectUsers(
-          string userName,
           string firstName,
           string lastName,
           string email,
           IQueryable<UserViewModel> users)
         {
-            if (userName != null)
-            {
-                users = users.Where(u => u.UserName.Contains(userName));
-            }
 
             if (firstName != null)
             {
@@ -111,13 +104,13 @@
           string sortMethodId,
           IQueryable<UserViewModel> users)
         {
-            if (sortMethodId == "Потребителско име а-я")
+            if (sortMethodId == "Email адрес а-я")
             {
-                users = users.OrderBy(u => u.UserName);
+                users = users.OrderBy(u => u.Email);
             }
-            else if (sortMethodId == "Потребителско име я-а")
+            else if (sortMethodId == "Email адрес я-а")
             {
-                users = users.OrderByDescending(u => u.UserName);
+                users = users.OrderByDescending(u => u.Email);
             }
 
             return users;

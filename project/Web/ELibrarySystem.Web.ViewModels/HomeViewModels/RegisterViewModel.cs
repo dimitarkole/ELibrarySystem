@@ -22,15 +22,10 @@ namespace ELibrarySystem.Web.ViewModels.HomeViewModels
 
         public string ReturnUrl { get; set; }
 
-
         [Required(ErrorMessage = "Моля въведете правилен email адрес!")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
-        [Required(ErrorMessage = "Моля въведете потребителско име!")]
-        [Display(Name = "Потребителко име")]
-        public string UserName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Дължината на паролата {0} трябва да бъде между {2} и {1} знака!", MinimumLength = 6)]
