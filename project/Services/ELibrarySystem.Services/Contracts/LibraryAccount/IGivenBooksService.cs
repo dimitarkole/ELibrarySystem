@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public interface IGevenBooksService
+    public interface IGivenBooksService
     {
         GivenBooksViewModel PreparedPage(string userId);
 

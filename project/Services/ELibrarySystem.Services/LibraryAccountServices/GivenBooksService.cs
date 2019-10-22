@@ -8,13 +8,13 @@
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
 
-    public class GevenBooksService : IGevenBooksService
+    public class GivenBooksService : IGivenBooksService
     {
         public ApplicationDbContext context;
 
         public IGenreService genreService;
 
-        public GevenBooksService(ApplicationDbContext context,
+        public GivenBooksService(ApplicationDbContext context,
             IGenreService genreService)
         {
             this.context = context;
@@ -45,11 +45,11 @@
               && gb.Book.UserId == userId)
               .Select(gb => new GivenBookViewModel()
               {
-                  BookAuthor = gb.Book.Author,
+                  Author = gb.Book.Author,
                   Id = gb.Book.Id,
                   BookName = gb.Book.BookName,
-                  BookGenre = gb.Book.Genre.Name,
-                  BookGenreId = gb.Book.GenreId,
+                  GenreName= gb.Book.Genre.Name,
+                  GenreId = gb.Book.GenreId,
 
                   FirstName = gb.User.FirstName,
                   LastName = gb.User.LastName,
@@ -151,12 +151,12 @@
 
             if (givenBooks != null)
             {
-                givenBooks = givenBooks.Where(b => b.BookAuthor.Contains(author));
+                givenBooks = givenBooks.Where(b => b.Author.Contains(author));
             }
 
             if (genreId != null)
             {
-                givenBooks = givenBooks.Where(b => b.BookGenre == genreId);
+                givenBooks = givenBooks.Where(b => b.GenreName == genreId);
             }
 
 
@@ -195,22 +195,22 @@
             else if (sortMethodId == "Име на автора а-я")
             {
                 givenBooks = givenBooks.OrderByDescending(x => x.ReturnedOn)
-                    .ThenBy(b => b.BookAuthor);
+                    .ThenBy(b => b.Author);
             }
             else if (sortMethodId == "Име на автора я-а")
             {
                 givenBooks = givenBooks.OrderByDescending(x => x.ReturnedOn)
-                    .ThenByDescending(b => b.BookAuthor);
+                    .ThenByDescending(b => b.Author);
             }
             else if (sortMethodId == "Жанр а-я")
             {
                 givenBooks = givenBooks.OrderByDescending(x => x.ReturnedOn)
-                    .ThenBy(b => b.BookGenre);
+                    .ThenBy(b => b.GenreName);
             }
             else if (sortMethodId == "Жанр я-а")
             {
                 givenBooks = givenBooks.OrderByDescending(x => x.ReturnedOn)
-                    .ThenByDescending(b => b.BookGenre);
+                    .ThenByDescending(b => b.GenreName);
             }
             else
             {

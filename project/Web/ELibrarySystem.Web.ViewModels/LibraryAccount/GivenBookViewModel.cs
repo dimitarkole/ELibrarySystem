@@ -8,11 +8,11 @@
 
         public string BookName { get; set; }
 
-        public string BookAuthor { get; set; }
+        public string Author { get; set; }
 
-        public string BookGenre { get; set; }
+        public string GenreName { get; set; }
 
-        public string BookGenreId { get; set; }
+        public string GenreId { get; set; }
 
         public string UserName { get; set; }
 
