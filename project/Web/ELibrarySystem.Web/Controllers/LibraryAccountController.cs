@@ -175,6 +175,16 @@
             return this.View("GiveBook", returnModel);
         }
 
+        // GiveBook Page - GiveBookSearchUser
+        [Authorize]
+        [HttpPost]
+        public IActionResult GiveBookSearchUser(GiveBookViewModel model)
+        {
+            this.StarUp();
+            var returnModel = this.giveBookService.GiveBookSearchUser(model);
+            return this.View("GiveBook", returnModel);
+        }
+
         // GiveBook Page - GiveBookChangePageBook
         [Authorize]
         [HttpPost]
