@@ -89,7 +89,7 @@
 
                 </div>
             </div>
-            @if (Model.AllBooks.Books.Count() > 0)
+            @if (Model.AllBooks.Books != null)
             {
                 @foreach (var book in @Model.AllBooks.Books)
                 {
@@ -222,7 +222,7 @@
 
                 </div>
             </div>
-            @if (Model.AllUsers.Users.Count() > 0)
+            @if (Model.AllUsers.Users != null)
             {
                 @foreach (var user in @Model.AllUsers.Users)
                 {
