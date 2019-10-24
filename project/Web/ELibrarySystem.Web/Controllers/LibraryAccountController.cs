@@ -13,6 +13,8 @@
     using ELibrarySystem.Data.Models;
     using Unity;
     using System.Text;
+    using Microsoft.Extensions.Logging;
+    using ELibrarySystem.Web.Areas.Identity.Pages.Account;
 
     public class LibraryAccountController : Controller
     {
@@ -26,7 +28,8 @@
         private IUserService userService;
         private SignInManager<ApplicationUser> SignInManager;
         private UserManager<ApplicationUser> UserManager;
-
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly ILogger<LogoutModel> logger;
         public string UserId;
 
         public LibraryAccountController(
@@ -38,7 +41,8 @@
             UserManager<ApplicationUser> userManager,
             IGiveBookService giveBookService,
             IUserService userService,
-            IGivenBooksService givenBooksService)
+            IGivenBooksService givenBooksService,
+            ILogger<LogoutModel> logger)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -49,12 +53,25 @@
             this.giveBookService = giveBookService;
             this.userService = userService;
             this.givenBooksService = givenBooksService;
+            this.signInManager = signInManager;
+            this.logger = logger;
         }
 
         public void StarUp()
         {
             this.UserId = this.UserManager.GetUserId(this.User);
             this.ViewBag.UserType = "libary";
+        }
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> LogOut()
+        {
+            await this.signInManager.SignOutAsync();
+            this.logger.LogInformation("User logged out.");
+
+            return this.RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         // Home Page
