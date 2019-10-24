@@ -13,12 +13,45 @@
             <div class="row">
                 <div class="col-md-12">
                     избрана книга: <br>
-                    @Model.SelectedBook.BookName @Model.SelectedBook.Author @Model.SelectedBook.GenreName
+                    <div class="form-group row">
+                        <label asp-for="SelectedBook.BookName" class="control-label col-md-2">SelectedBook.BookName</label>
+                        <input asp-for="SelectedBook.BookName" class="form-control col-md-6" />
+                        <span asp-validation-for="SelectedBook.BookName" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="SelectedBook.Author" class="control-label col-md-2">SelectedBook.Author</label>
+                        <input asp-for="SelectedBook.Author" class="form-control col-md-6" />
+                        <span asp-validation-for="SelectedBook.Author" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="SelectedBook.GenreName" class="control-label col-md-2">SelectedBook.GenreName</label>
+                        <input asp-for="SelectedBook.GenreName" class="form-control col-md-6" />
+                        <span asp-validation-for="SelectedBook.GenreName" class="text-danger col-md-4"></span>
+                    </div>
+
                 </div>
 
                 <div class="col-md-12">
                     избрана потребител: <br>
-                    @Model.SelectedUser.FirstName @Model.SelectedUser.LastName @Model.SelectedUser.Email
+                    избрана книга: <br>
+                    <div class="form-group row">
+                        <label asp-for="SelectedUser.FirstName" class="control-label col-md-2">SelectedUser.FirstName</label>
+                        <input asp-for="SelectedUser.FirstName" class="form-control col-md-6" />
+                        <span asp-validation-for="SelectedUser.FirstName" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="SelectedUser.LastName" class="control-label col-md-2">SelectedUser.FirstName</label>
+                        <input asp-for="SelectedUser.LastName" class="form-control col-md-6" />
+                        <span asp-validation-for="SelectedUser.LastName" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="SelectedUser.Email" class="control-label col-md-2">SelectedUser.FirstName</label>
+                        <input asp-for="SelectedUser.Email" class="form-control col-md-6" />
+                        <span asp-validation-for="SelectedUser.Email" class="text-danger col-md-4"></span>
+                    </div>
+
                 </div>
             </div>
 

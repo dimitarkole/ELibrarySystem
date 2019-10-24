@@ -14,11 +14,11 @@
 
         GiveBookViewModel GiveBookChangeBookPage(GiveBookViewModel model, string userId, int newPage);
 
-        GiveBookViewModel GiveBookSearchUser(GiveBookViewModel model);
+        GiveBookViewModel GiveBookSearchUser(GiveBookViewModel model, string userId);
 
-        GiveBookViewModel GiveBookChangeUserPage(GiveBookViewModel model, int newPage);
+        GiveBookViewModel GiveBookChangeUserPage(GiveBookViewModel model, string userId, int newPage);
 
-        GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string bookId);
+        GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string userId, string bookId);
 
         GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId);
     }

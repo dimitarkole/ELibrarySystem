@@ -30,48 +30,6 @@
             this.allBooksServices = allBooksServices;
         }
 
-        public GiveBookViewModel GiveBookChangeBookPage(GiveBookViewModel model, string userId, int newPage)
-        {
-            var allBooks = this.allBooksServices.ChangeActivePage(model.AllBooks, userId, newPage);
-            var allUsers = model.AllUsers;
-            var selectedBook = model.SelectedBook;
-            var selectedUser = model.SelectedUser;
-            var returnModel = new GiveBookViewModel()
-            {
-                AllBooks = allBooks,
-                AllUsers = allUsers,
-                SelectedBook = new BookViewModel(),
-                SelectedUser = new UserViewModel(),
-            };
-            return returnModel;
-        }
-
-        public GiveBookViewModel GiveBookSearchBook(GiveBookViewModel model, string userId)
-        {
-            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
-            var returnModel = new GiveBookViewModel()
-            {
-                AllBooks = allBooks,
-                AllUsers = model.AllUsers,
-                SelectedBook = new BookViewModel(), //model.SelectedBook,
-                SelectedUser = new UserViewModel(),
-            };
-            return returnModel;
-        }
-
-        public GiveBookViewModel GiveBookSearchUser(GiveBookViewModel model)
-        {
-            var allUsers = this.userService.GetUsers(model.AllUsers);
-            var returnModel = new GiveBookViewModel()
-            {
-                AllBooks = model.AllBooks,
-                AllUsers = allUsers,
-                SelectedBook = new BookViewModel(), //model.SelectedBook,
-                SelectedUser = new UserViewModel(),
-            };
-            return returnModel;
-        }
-
         public GiveBookViewModel PreparedPage(string userId)
         {
             var allBooks = this.allBooksServices.PreparedPage(userId);
@@ -86,9 +44,56 @@
             return model;
         }
 
-        public GiveBookViewModel GiveBookChangeUserPage(GiveBookViewModel model, int newPage)
+        public GiveBookViewModel GiveBookSearchBook(GiveBookViewModel model, string userId)
+        {
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+            var allUsers = this.userService.GetUsers(model.AllUsers);
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = allBooks,
+                AllUsers = allUsers,
+                SelectedBook = new BookViewModel(),  // model.SelectedBook,
+                SelectedUser = new UserViewModel(),
+            };
+            return returnModel;
+        }
+
+        public GiveBookViewModel GiveBookChangeBookPage(GiveBookViewModel model, string userId, int newPage)
+        {
+            var allBooks = this.allBooksServices.ChangeActivePage(model.AllBooks, userId, newPage);
+            var allUsers = this.userService.GetUsers(model.AllUsers);
+            var selectedBook = model.SelectedBook;
+            var selectedUser = model.SelectedUser;
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = allBooks,
+                AllUsers = allUsers,
+                SelectedBook = new BookViewModel(),
+                SelectedUser = new UserViewModel(),
+            };
+            return returnModel;
+        }
+
+        public GiveBookViewModel GiveBookSearchUser(GiveBookViewModel model, string userId)
+        {
+            var allUsers = this.userService.GetUsers(model.AllUsers);
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = model.AllBooks,
+                AllUsers = allUsers,
+                SelectedBook = new BookViewModel(), //model.SelectedBook,
+                SelectedUser = new UserViewModel(),
+            };
+            return returnModel;
+        }
+
+        public GiveBookViewModel GiveBookChangeUserPage(GiveBookViewModel model, string userId, int newPage)
         {
             var allUsers = this.userService.ChangeActivePage(model.AllUsers, newPage);
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+
             var returnModel = new GiveBookViewModel()
             {
                 AllBooks = model.AllBooks,
@@ -99,7 +104,7 @@
             return returnModel;
         }
 
-        public GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string bookId)
+        public GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string userId, string bookId)
         {
             var book = this.context.Books.FirstOrDefault(b => b.Id == bookId);
             var selectedBook = new BookViewModel()

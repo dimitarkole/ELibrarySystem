@@ -198,7 +198,7 @@
         public IActionResult GiveBookSearchUser(GiveBookViewModel model)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookSearchUser(model);
+            var returnModel = this.giveBookService.GiveBookSearchUser(model, this.UserId);
             return this.View("GiveBook", returnModel);
         }
 
@@ -218,7 +218,7 @@
         public IActionResult GiveBookChangePageUser(GiveBookViewModel model, int id)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookChangeUserPage(model, id);
+            var returnModel = this.giveBookService.GiveBookChangeUserPage(model, this.UserId, id);
             return this.View("GiveBook", returnModel);
         }
 
