@@ -20,6 +20,6 @@
 
         GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string userId, string bookId);
 
-        GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId);
+        GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId, string selectUserId);
     }
 }

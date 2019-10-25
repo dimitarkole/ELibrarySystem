@@ -125,7 +125,7 @@
             return returnModel;
         }
 
-        public GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId)
+        public GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId, string selectUserId)
         {
             var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
             var selectedUser = new UserViewModel()

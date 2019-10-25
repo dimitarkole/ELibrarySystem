@@ -222,6 +222,26 @@
             return this.View("GiveBook", returnModel);
         }
 
+        // GiveBook Page - GiveBookChangePageUser
+        [Authorize]
+        [HttpPost]
+        public IActionResult SelectBookGiveBookPage(GiveBookViewModel model, string id)
+        {
+            this.StarUp();
+            var returnModel = this.giveBookService.GiveBookSelectedBook(model, this.UserId, id);
+            return this.View("GiveBook", returnModel);
+        }
+
+        // GiveBook Page - SelectUserGiveBookPage
+        [Authorize]
+        [HttpPost]
+        public IActionResult SelectUserGiveBookPage(GiveBookViewModel model, string id)
+        {
+            this.StarUp();
+            var returnModel = this.giveBookService.GiveBookSelectedUser(model, this.UserId, id);
+            return this.View("GiveBook", returnModel);
+        }
+
         // GivenBooks Page - GiveBookSearchBook
         [Authorize]
         [HttpGet]
