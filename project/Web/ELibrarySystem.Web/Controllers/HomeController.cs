@@ -124,13 +124,11 @@
 
         }
 
-
         public async Task<IActionResult> Register(IndexViewModel indexModel, string returnUrl = null)
         {
             this.ViewBag.UserType = "guest";
             this.ViewData["ReturnUrl"] = returnUrl;
             var registerModel = indexModel.RegisterViewModel;
-            HttpContext.Session.SetString("ads", "The Doctor");
             if (this.ModelState.IsValid)
             {
                 var userChack = this.context.Users.FirstOrDefault(u => u.Email == registerModel.Email);

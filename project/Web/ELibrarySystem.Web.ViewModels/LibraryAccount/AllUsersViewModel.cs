@@ -42,5 +42,7 @@
         public int CountUsersOfPage { get; set; }
 
         public List<int> CountUsersOfPageList { get; set; }
+
+     
     }
 }

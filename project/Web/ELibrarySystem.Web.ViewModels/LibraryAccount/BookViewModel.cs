@@ -24,5 +24,6 @@
         public string GenreId { get; set; }
 
         public string BookId { get; set; }
+
     }
 }

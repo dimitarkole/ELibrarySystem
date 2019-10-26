@@ -188,7 +188,10 @@
         public IActionResult GiveBookSearchBook(GiveBookViewModel model)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookSearchBook(model, this.UserId);
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookSearchBook(
+                model, this.UserId, selectedBookId, selectedUserId);
             return this.View("GiveBook", returnModel);
         }
 
@@ -198,7 +201,10 @@
         public IActionResult GiveBookSearchUser(GiveBookViewModel model)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookSearchUser(model, this.UserId);
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookSearchUser(
+                model, this.UserId, selectedBookId, selectedUserId);
             return this.View("GiveBook", returnModel);
         }
 
@@ -208,7 +214,10 @@
         public IActionResult GiveBookChangePageBook(GiveBookViewModel model, int id)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookChangeBookPage(model, this.UserId, id);
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookChangeBookPage(
+                model, this.UserId, id, selectedBookId, selectedUserId);
             return this.View("GiveBook", returnModel);
         }
 
@@ -218,7 +227,10 @@
         public IActionResult GiveBookChangePageUser(GiveBookViewModel model, int id)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookChangeUserPage(model, this.UserId, id);
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookChangeUserPage(
+                model, this.UserId, id, selectedBookId, selectedUserId);
             return this.View("GiveBook", returnModel);
         }
 
@@ -228,7 +240,10 @@
         public IActionResult SelectBookGiveBookPage(GiveBookViewModel model, string id)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookSelectedBook(model, this.UserId, id);
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookSelectedBook(
+                model, this.UserId, id, selectedUserId);
+            this.HttpContext.Session.SetString("SelectedBookId", returnModel.SelectedBook.BookId);
             return this.View("GiveBook", returnModel);
         }
 
@@ -238,7 +253,11 @@
         public IActionResult SelectUserGiveBookPage(GiveBookViewModel model, string id)
         {
             this.StarUp();
-            var returnModel = this.giveBookService.GiveBookSelectedUser(model, this.UserId, id);
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+
+            var returnModel = this.giveBookService.GiveBookSelectedBook(
+                model, this.UserId, id, selectedBookId);
+            this.HttpContext.Session.SetString("SelectedUserId", returnModel.SelectedUser.UserId);
             return this.View("GiveBook", returnModel);
         }
 
@@ -249,6 +268,7 @@
         {
             this.StarUp();
             var returnModel = this.givenBooksService.PreparedPage(this.UserId);
+
             return this.View(returnModel);
         }
     }

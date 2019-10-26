@@ -10,16 +10,49 @@
     {
         GiveBookViewModel PreparedPage(string userId);
 
-        GiveBookViewModel GiveBookSearchBook(GiveBookViewModel model, string userId);
+        GiveBookViewModel GiveBookSearchBook(
+            GiveBookViewModel model, 
+            string userId,
+            string selectedBookId,
+            string selectedUserId);
 
-        GiveBookViewModel GiveBookChangeBookPage(GiveBookViewModel model, string userId, int newPage);
+        GiveBookViewModel GiveBookChangeBookPage(
+            GiveBookViewModel model,
+            string userId,
+            int newPage,
+            string selectedBookId,
+            string selectedUserId);
 
-        GiveBookViewModel GiveBookSearchUser(GiveBookViewModel model, string userId);
+        GiveBookViewModel GiveBookSearchUser(
+            GiveBookViewModel model,
+            string userId,
+            string selectedBookId,
+            string selectedUserId);
 
-        GiveBookViewModel GiveBookChangeUserPage(GiveBookViewModel model, string userId, int newPage);
+        GiveBookViewModel GiveBookChangeUserPage(
+            GiveBookViewModel model,
+            string userId,
+            int newPage,
+            string selectedBookId,
+            string selectedUserId);
 
-        GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string userId, string bookId);
+        GiveBookViewModel GiveBookSelectedBook(
+            GiveBookViewModel model,
+            string userId,
+            string bookId,
+            string selectedUserId);
 
-        GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId, string selectUserId);
+        GiveBookViewModel GiveBookSelectedUser(
+            GiveBookViewModel model,
+            string userId,
+            string selectUserId,
+            string selectedBookId);
+
+        GiveBookViewModel GivingBook(
+          GiveBookViewModel model,
+          string userId,
+          string selectUserId,
+          string selectedBookId,
+          string selectedUserId);
     }
 }

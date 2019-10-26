@@ -6,6 +6,7 @@
     using System.Text;
 
     using ELibrarySystem.Data;
+    using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
 
@@ -34,6 +35,7 @@
         {
             var allBooks = this.allBooksServices.PreparedPage(userId);
             var allUsers = this.userService.PreparedPage();
+
             var model = new GiveBookViewModel()
             {
                 AllBooks = allBooks,
@@ -44,67 +46,167 @@
             return model;
         }
 
-        public GiveBookViewModel GiveBookSearchBook(GiveBookViewModel model, string userId)
+        public GiveBookViewModel GiveBookSearchBook(
+            GiveBookViewModel model,
+            string userId,
+            string selectedBookId,
+            string selectedUserId)
         {
             var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
             var allUsers = this.userService.GetUsers(model.AllUsers);
+            var selectedUser = this.SelectingUser(selectedUserId);
+            var selectedBook = this.SelectingBook(selectedBookId);
             var returnModel = new GiveBookViewModel()
             {
                 AllBooks = allBooks,
                 AllUsers = allUsers,
-                SelectedBook = new BookViewModel(),  // model.SelectedBook,
-                SelectedUser = new UserViewModel(),
+                SelectedBook = selectedBook, 
+                SelectedUser = selectedUser,
             };
             return returnModel;
         }
 
-        public GiveBookViewModel GiveBookChangeBookPage(GiveBookViewModel model, string userId, int newPage)
+        public GiveBookViewModel GiveBookChangeBookPage(
+            GiveBookViewModel model,
+            string userId,
+            int newPage,
+            string selectedBookId,
+            string selectedUserId)
         {
             var allBooks = this.allBooksServices.ChangeActivePage(model.AllBooks, userId, newPage);
             var allUsers = this.userService.GetUsers(model.AllUsers);
-            var selectedBook = model.SelectedBook;
-            var selectedUser = model.SelectedUser;
+            var selectedUser = this.SelectingUser(selectedUserId);
+            var selectedBook = this.SelectingBook(selectedBookId);
             var returnModel = new GiveBookViewModel()
             {
                 AllBooks = allBooks,
                 AllUsers = allUsers,
-                SelectedBook = new BookViewModel(),
-                SelectedUser = new UserViewModel(),
+                SelectedBook = selectedBook,
+                SelectedUser = selectedUser,
             };
             return returnModel;
         }
 
-        public GiveBookViewModel GiveBookSearchUser(GiveBookViewModel model, string userId)
+        public GiveBookViewModel GiveBookSearchUser(
+            GiveBookViewModel model,
+            string userId,
+            string selectedBookId,
+            string selectedUserId)
         {
+            var allUsers = this.userService.GetUsers(model.AllUsers);
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+            var selectedUser = this.SelectingUser(selectedUserId);
+            var selectedBook = this.SelectingBook(selectedBookId);
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = model.AllBooks,
+                AllUsers = allUsers,
+                SelectedBook = selectedBook,
+                SelectedUser = selectedUser,
+            };
+            return returnModel;
+        }
+
+        public GiveBookViewModel GiveBookChangeUserPage(
+            GiveBookViewModel model,
+            string userId,
+            int newPage,
+            string selectedBookId,
+            string selectedUserId)
+        {
+            var allUsers = this.userService.ChangeActivePage(model.AllUsers, newPage);
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+            var selectedUser = this.SelectingUser(selectedUserId);
+            var selectedBook = this.SelectingBook(selectedBookId);
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = model.AllBooks,
+                AllUsers = allUsers,
+                SelectedBook = selectedBook,
+                SelectedUser = selectedUser,
+            };
+            return returnModel;
+        }
+
+        public GiveBookViewModel GiveBookSelectedBook(
+            GiveBookViewModel model,
+            string userId,
+            string bookId,
+            string selectedUserId)
+        {
+            var book = this.SelectingBook(bookId);
+            var selectedUser = this.SelectingUser(selectedUserId);
+
             var allUsers = this.userService.GetUsers(model.AllUsers);
             var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
 
             var returnModel = new GiveBookViewModel()
             {
-                AllBooks = model.AllBooks,
+                AllBooks = allBooks,
                 AllUsers = allUsers,
-                SelectedBook = new BookViewModel(), //model.SelectedBook,
-                SelectedUser = new UserViewModel(),
+                SelectedBook = book,
+                SelectedUser = selectedUser,
             };
             return returnModel;
         }
 
-        public GiveBookViewModel GiveBookChangeUserPage(GiveBookViewModel model, string userId, int newPage)
+        public GiveBookViewModel GiveBookSelectedUser(
+           GiveBookViewModel model,
+           string userId,
+           string selectUserId,
+           string selectedBookId)
         {
-            var allUsers = this.userService.ChangeActivePage(model.AllUsers, newPage);
+
+            var user = this.SelectingUser(selectUserId);
+            var selectedBook = this.SelectingBook(selectedBookId);
+
+            var allUsers = this.userService.GetUsers(model.AllUsers);
             var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
 
             var returnModel = new GiveBookViewModel()
             {
-                AllBooks = model.AllBooks,
+                AllBooks = allBooks,
                 AllUsers = allUsers,
-                SelectedBook = new BookViewModel(),
-                SelectedUser = new UserViewModel(),
+                SelectedBook = selectedBook,
+                SelectedUser = user,
             };
             return returnModel;
         }
 
-        public GiveBookViewModel GiveBookSelectedBook(GiveBookViewModel model, string userId, string bookId)
+        public GiveBookViewModel GivingBook(
+            GiveBookViewModel model,
+            string userId,
+            string selectUserId,
+            string selectedBookId,
+            string selectedUserId)
+        {
+            var allUsers = this.userService.GetUsers(model.AllUsers);
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+            var selectedUser = this.SelectingUser(selectedUserId);
+            var selectedBook = this.SelectingBook(selectedBookId);
+
+            var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
+            var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
+            GetBook getBook = new GetBook()
+            {
+                Book = book,
+                BookId = selectedUserId,
+                User = user,
+                UserId = selectedUserId,
+            };
+            this.context.GetBooks.Add(getBook);
+            this.context.SaveChanges();
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = model.AllBooks,
+                AllUsers = allUsers,
+                SelectedBook = selectedBook,
+                SelectedUser = selectedUser,
+            };
+            return returnModel;
+        }
+
+        private BookViewModel SelectingBook(string bookId)
         {
             var book = this.context.Books.FirstOrDefault(b => b.Id == bookId);
             var selectedBook = new BookViewModel()
@@ -115,17 +217,10 @@
                 GenreName = book.Genre.Name,
                 GenreId = book.GenreId,
             };
-            var returnModel = new GiveBookViewModel()
-            {
-                AllBooks = model.AllBooks,
-                AllUsers = model.AllUsers,
-                SelectedBook = selectedBook,
-                SelectedUser = model.SelectedUser,
-            };
-            return returnModel;
+            return selectedBook;
         }
 
-        public GiveBookViewModel GiveBookSelectedUser(GiveBookViewModel model, string userId, string selectUserId)
+        private UserViewModel SelectingUser(string userId)
         {
             var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
             var selectedUser = new UserViewModel()
@@ -135,14 +230,9 @@
                 UserId = user.Id,
                 Email = user.Email,
             };
-            var returnModel = new GiveBookViewModel()
-            {
-                AllBooks = model.AllBooks,
-                AllUsers = model.AllUsers,
-                SelectedBook = model.SelectedBook,
-                SelectedUser = selectedUser,
-            };
-            return returnModel;
+            return selectedUser;
         }
+
+      
     }
 }
