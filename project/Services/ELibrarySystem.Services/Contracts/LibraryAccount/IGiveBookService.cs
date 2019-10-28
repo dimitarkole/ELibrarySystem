@@ -51,7 +51,6 @@
         GiveBookViewModel GivingBook(
           GiveBookViewModel model,
           string userId,
-          string selectUserId,
           string selectedBookId,
           string selectedUserId);
     }

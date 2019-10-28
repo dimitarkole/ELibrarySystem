@@ -77,13 +77,14 @@
             model.BookId = bookId;
             var result = new List<object>();
             result.Add(model);
-            string resultTitle = "Успешно редактирана книганата!";
+            string resultTitle = "";
             if (book != null)
             {
                 var checkDublicateBook = this.context.Books.FirstOrDefault(b =>
                      b.Id != bookId
                      && b.BookName == bookName
-                     && b.Author == author);
+                     && b.Author == author
+                     && b.GenreId == genreId);
                 if (checkDublicateBook == null)
                 {
                     book.BookName = bookName;
@@ -93,7 +94,7 @@
                     book.UserId = userId;
                     genreObj.Books.Add(book);
                     this.context.SaveChanges();
-                    resultTitle = "Успешно редактирана книганата!";
+                    resultTitle = "Успешно редактирана книгана!";
                     this.messageService.AddMessageAtDB(userId, resultTitle);
                 }
                 else

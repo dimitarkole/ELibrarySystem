@@ -14,9 +14,9 @@
 
             this.CountUsersOfPageList = new List<int>();
 
-            this.CountUsersOfPageList.Add(1);
-            this.CountUsersOfPageList.Add(2);
-            this.CountUsersOfPageList.Add(3);
+            this.CountUsersOfPageList.Add(10);
+            this.CountUsersOfPageList.Add(20);
+            this.CountUsersOfPageList.Add(30);
 
             this.CountUsersOfPage = this.CountUsersOfPageList[0];
             this.SortMethodId = this.SortMethods[0];

@@ -21,7 +21,6 @@ namespace ELibrarySystem.Data.Models
 
         public virtual Book Book { get; set; }
 
-
         public virtual DateTime CreatedOn { get; set; }
 
         public virtual DateTime? ReturnedOn { get; set; }

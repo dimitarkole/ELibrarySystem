@@ -19,8 +19,11 @@
 
                 <div class="col-md-12">
                     избрана потребител: <br>
-                    избрана книга: <br>
                     @Model.SelectedUser.FirstName @Model.SelectedUser.LastName @Model.SelectedUser.Email
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Дай книга" asp-action="GiveBookGivingBook" class="btn btn-default" />
+
                 </div>
             </div>
 
@@ -230,7 +233,7 @@
                 {
                     <div class="row">
 
-                         @user.Email @user.FirstName @user.LastName<br />
+                        id=@user.UserId @user.Email @user.FirstName @user.LastName<br />
                         <input type="submit" value="Избери" asp-action="SelectUserGiveBookPage" asp-route-id="@user.UserId" class="btn btn-default" />
                         <br />
 
