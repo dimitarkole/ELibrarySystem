@@ -77,7 +77,7 @@
             model.BookId = bookId;
             var result = new List<object>();
             result.Add(model);
-            string resultTitle = "";
+            string resultTitle;
             if (book != null)
             {
                 var checkDublicateBook = this.context.Books.FirstOrDefault(b =>

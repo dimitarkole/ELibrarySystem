@@ -9,12 +9,19 @@
     {
         GivenBooksViewModel PreparedPage(string userId);
 
-        GivenBooksViewModel GetGevenBooks(GivenBooksViewModel model, string userId);
+        GivenBooksViewModel GetGevenBooks(
+            GivenBooksViewModel model,
+            string userId);
 
-        List<object> ReturnBook(string userId, string givenBookId);
+        List<object> ReturningBook(
+            GivenBooksViewModel model,
+            string userId,
+            string givenBookId);
 
-        GivenBooksViewModel ChangeActivePage(GivenBooksViewModel model, string userId, int newPage);
-
+        GivenBooksViewModel ChangeActivePage(
+            GivenBooksViewModel model,
+            string userId,
+            int newPage);
 
     }
 }

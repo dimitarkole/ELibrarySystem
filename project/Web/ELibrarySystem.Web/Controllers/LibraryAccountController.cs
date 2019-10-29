@@ -285,5 +285,35 @@
 
             return this.View(returnModel);
         }
+
+          // GiveBook Page - GiveBookGivingBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult ChangePageGivenBooks(GivenBooksViewModel model, int id)
+        {
+            this.StarUp();
+            var returnModel = this.givenBooksService.ChangeActivePage(model, this.UserId, id);
+            return this.View("GivenBooks", returnModel);
+        }
+
+        // GiveBook Page - GiveBookGivingBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult GivenBooksSearch(GivenBooksViewModel model)
+        {
+            this.StarUp();
+            var returnModel = this.givenBooksService.GetGevenBooks(model, this.UserId);
+            return this.View("GivenBooks", returnModel);
+        }
+
+        // GiveBook Page - GiveBookGivingBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult ReturnigBook(GivenBooksViewModel model, string id)
+        {
+            this.StarUp();
+            var returnModel = this.givenBooksService.ReturningBook(model, this.UserId, id);
+            return this.View("GivenBooks", returnModel[0]);
+        }
     }
 }

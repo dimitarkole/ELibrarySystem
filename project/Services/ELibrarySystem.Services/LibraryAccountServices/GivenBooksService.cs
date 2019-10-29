@@ -14,14 +14,18 @@
 
         public IGenreService genreService;
 
-        public GivenBooksService(ApplicationDbContext context,
+        public GivenBooksService(
+            ApplicationDbContext context,
             IGenreService genreService)
         {
             this.context = context;
             this.genreService = genreService;
         }
 
-        public GivenBooksViewModel ChangeActivePage(GivenBooksViewModel model, string userId, int newPage)
+        public GivenBooksViewModel ChangeActivePage(
+            GivenBooksViewModel model,
+            string userId,
+            int newPage)
         {
             model.CurrentPage = newPage;
             return this.GetGevenBooks(model, userId);
@@ -29,7 +33,6 @@
 
         public GivenBooksViewModel GetGevenBooks(GivenBooksViewModel model, string userId)
         {
-            var userName = model.UserName;
             var firstName = model.FirstName;
             var lastName = model.LastName;
             var email = model.Email;
@@ -48,7 +51,7 @@
                   Author = gb.Book.Author,
                   Id = gb.Book.Id,
                   BookName = gb.Book.BookName,
-                  GenreName= gb.Book.Genre.Name,
+                  GenreName = gb.Book.Genre.Name,
                   GenreId = gb.Book.GenreId,
 
                   FirstName = gb.User.FirstName,
@@ -63,7 +66,6 @@
                 bookName,
                 author,
                 genreId,
-                userName,
                 firstName,
                 lastName,
                 email,
@@ -113,12 +115,15 @@
             return returnModel;
         }
 
-        public List<object> ReturnBook(string userId, string givenBookId)
+        public List<object> ReturningBook(
+            GivenBooksViewModel model,
+            string userId,
+            string givenBookId)
         {
             var givenBook = this.context.GetBooks
                 .FirstOrDefault(gb => gb.Id == givenBookId);
             List<object> result = new List<object>();
-            result.Add(this.PreparedPage(userId));
+            result.Add(this.GetGevenBooks(model, userId));
 
             if (givenBook != null)
             {
@@ -138,7 +143,6 @@
           string bookName,
           string author,
           string genreId,
-          string userName,
           string firstName,
           string lastName,
           string email,
@@ -149,7 +153,7 @@
                 givenBooks = givenBooks.Where(b => b.BookName.Contains(bookName));
             }
 
-            if (givenBooks != null)
+            if (author != null)
             {
                 givenBooks = givenBooks.Where(b => b.Author.Contains(author));
             }
@@ -157,12 +161,6 @@
             if (genreId != null)
             {
                 givenBooks = givenBooks.Where(b => b.GenreName == genreId);
-            }
-
-
-            if (userName != null)
-            {
-                givenBooks = givenBooks.Where(b => b.UserName.Contains(userName));
             }
 
             if (firstName != null)

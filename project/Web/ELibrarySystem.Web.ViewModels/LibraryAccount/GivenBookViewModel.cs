@@ -22,7 +22,6 @@
 
         public string Email { get; set; }
 
-
         public virtual DateTime CreatedOn { get; set; }
 
         public virtual DateTime? ReturnedOn { get; set; }

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    using ELibrarySystem.Web.ViewModels.LibraryAccount;   
+    using ELibrarySystem.Web.ViewModels.LibraryAccount;
 
     public interface IIndexService
     {
