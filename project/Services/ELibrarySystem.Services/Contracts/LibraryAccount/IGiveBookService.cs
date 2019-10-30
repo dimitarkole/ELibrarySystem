@@ -53,5 +53,12 @@
           string userId,
           string selectedBookId,
           string selectedUserId);
+
+        GiveBookViewModel EditintGivinBook(
+          GiveBookViewModel model,
+          string userId,
+          string givenBookId,
+          string selectedBookId,
+          string selectedUserId);
     }
 }

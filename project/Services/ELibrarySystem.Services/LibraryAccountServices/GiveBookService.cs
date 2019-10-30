@@ -205,6 +205,42 @@
             return returnModel;
         }
 
+        public GiveBookViewModel EditintGivinBook(
+        GiveBookViewModel model,
+        string userId,
+        string givenBookId,
+        string selectedBookId,
+        string selectedUserId)
+        {
+            var allUsers = this.userService.GetUsers(model.AllUsers);
+            var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
+            var selectedUser = this.SelectingUser(selectedUserId);
+            var selectedBook = this.SelectingBook(selectedBookId);
+
+            var getBook = this.context.GetBooks
+                .FirstOrDefault(gb => gb.Id == givenBookId);
+            var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
+            var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
+
+            if (getBook != null)
+            {
+                getBook.Book = book;
+                getBook.BookId = selectedUserId;
+                getBook.User = user;
+                getBook.UserId = selectedUserId;
+                this.context.SaveChanges();
+            }
+
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks = allBooks,
+                AllUsers = allUsers,
+                SelectedBook = selectedBook,
+                SelectedUser = selectedUser,
+            };
+            return returnModel;
+        }
+
         private BookViewModel SelectingBook(string bookId)
         {
             var book = this.context.Books.FirstOrDefault(b => b.Id == bookId);
@@ -240,5 +276,7 @@
 
             return selectedUser;
         }
+
+    
     }
 }

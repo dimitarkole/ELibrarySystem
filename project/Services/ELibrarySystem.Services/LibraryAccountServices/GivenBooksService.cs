@@ -31,6 +31,27 @@
             return this.GetGevenBooks(model, userId);
         }
 
+        public List<object> DeletingBook(GivenBooksViewModel model, string userId, string givenBookId)
+        {
+            var givenBook = this.context.GetBooks
+             .FirstOrDefault(gb => gb.Id == givenBookId);
+            List<object> result = new List<object>();
+            result.Add(this.GetGevenBooks(model, userId));
+
+            if (givenBook != null)
+            {
+                givenBook.DeletedOn = DateTime.UtcNow;
+                this.context.SaveChanges();
+                result.Add("Успершно връщане на книгата!");
+            }
+            else
+            {
+                result.Add("Няма дадена книга на този потребител!");
+            }
+
+            return result;
+        }
+
         public GivenBooksViewModel GetGevenBooks(GivenBooksViewModel model, string userId)
         {
             var firstName = model.FirstName;

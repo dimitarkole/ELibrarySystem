@@ -309,11 +309,129 @@
         // GiveBook Page - GiveBookGivingBook
         [Authorize]
         [HttpPost]
-        public IActionResult ReturnigBook(GivenBooksViewModel model, string id)
+        public IActionResult ReturnigGivenBook(GivenBooksViewModel model, string id)
         {
             this.StarUp();
             var returnModel = this.givenBooksService.ReturningBook(model, this.UserId, id);
             return this.View("GivenBooks", returnModel[0]);
+        }
+
+        // GiveBook Page - GiveBookGivingBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult DeleteGivenBook(GivenBooksViewModel model, string id)
+        {
+            this.StarUp();
+            var returnModel = this.givenBooksService.DeletingBook(model, this.UserId, id);
+            return this.View("GivenBooks", returnModel[0]);
+        }
+
+        // Edit Given Book Page
+
+        // GiveBook Page
+        [Authorize]
+        [HttpGet]
+        public IActionResult EditGiveBook()
+        {
+            this.StarUp();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"HttpGet GiveBook");
+            this.ViewData["message"] = sb.ToString().Trim();
+            var model = this.giveBookService.PreparedPage(this.UserId);
+            return this.View(model);
+        }
+
+        // GiveBook Page - GiveBookSearchBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditGiveBookSearchBook(GiveBookViewModel model)
+        {
+            this.StarUp();
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookSearchBook(
+                model, this.UserId, selectedBookId, selectedUserId);
+            return this.View("EditGiveBook", returnModel);
+        }
+
+        // GiveBook Page - GiveBookSearchUser
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditGiveBookSearchUser(GiveBookViewModel model)
+        {
+            this.StarUp();
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookSearchUser(
+                model, this.UserId, selectedBookId, selectedUserId);
+            return this.View("EditGiveBook", returnModel);
+        }
+
+        // GiveBook Page - GiveBookChangePageBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditGiveBookChangePageBook(GiveBookViewModel model, int id)
+        {
+            this.StarUp();
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookChangeBookPage(
+                model, this.UserId, id, selectedBookId, selectedUserId);
+            return this.View("EditGiveBook", returnModel);
+        }
+
+        // GiveBook Page - GiveBookChangePageUser
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditGiveBookChangePageUser(GiveBookViewModel model, int id)
+        {
+            this.StarUp();
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookChangeUserPage(
+                model, this.UserId, id, selectedBookId, selectedUserId);
+            return this.View("EditGiveBook", returnModel);
+        }
+
+        // GiveBook Page - GiveBookChangePageUser
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditSelectBookGiveBookPage(GiveBookViewModel model, string id)
+        {
+            this.StarUp();
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            var returnModel = this.giveBookService.GiveBookSelectedBook(
+                model, this.UserId, id, selectedUserId);
+            this.HttpContext.Session.SetString("SelectedBookId", returnModel.SelectedBook.BookId);
+            return this.View("EditGiveBook", returnModel);
+        }
+
+        // GiveBook Page - SelectUserGiveBookPage
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditSelectUserGiveBookPage(GiveBookViewModel model, string id)
+        {
+            this.StarUp();
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+
+            var returnModel = this.giveBookService.GiveBookSelectedUser(
+                model, this.UserId, id, selectedBookId);
+            this.HttpContext.Session.SetString("SelectedUserId", returnModel.SelectedUser.UserId);
+            return this.View("EditGiveBook", returnModel);
+        }
+
+        // GiveBook Page - GiveBookGivingBook
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditGiveBookEditingBook(GiveBookViewModel model)
+        {
+            this.StarUp();
+            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
+            string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
+            string givenBookId = this.HttpContext.Session.GetString("givenBookId");
+            var returnModel = this.giveBookService.EditintGivinBook(
+                model, this.UserId, givenBookId, selectedBookId, selectedUserId);
+            return this.View("EditGiveBook", returnModel);
         }
     }
 }

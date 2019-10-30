@@ -18,6 +18,11 @@
             string userId,
             string givenBookId);
 
+        List<object> DeletingBook(
+           GivenBooksViewModel model,
+           string userId,
+           string givenBookId);
+
         GivenBooksViewModel ChangeActivePage(
             GivenBooksViewModel model,
             string userId,
