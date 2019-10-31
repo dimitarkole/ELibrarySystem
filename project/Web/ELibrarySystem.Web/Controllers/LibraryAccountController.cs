@@ -24,6 +24,8 @@
         private IAllBooksServices getAllBooks;
         private IGiveBookService giveBookService;
         private IGivenBooksService givenBooksService;
+        private ILibraryProfileService libraryProfileService;
+
 
         private IUserService userService;
         private SignInManager<ApplicationUser> SignInManager;
@@ -42,7 +44,8 @@
             IGiveBookService giveBookService,
             IUserService userService,
             IGivenBooksService givenBooksService,
-            ILogger<LogoutModel> logger)
+            ILogger<LogoutModel> logger,
+            ILibraryProfileService libraryProfileService)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -55,6 +58,7 @@
             this.givenBooksService = givenBooksService;
             this.signInManager = signInManager;
             this.logger = logger;
+            this.libraryProfileService = libraryProfileService;
         }
 
         public void StarUp()
@@ -432,6 +436,28 @@
             var returnModel = this.giveBookService.EditintGivinBook(
                 model, this.UserId, givenBookId, selectedBookId, selectedUserId);
             return this.View("EditGiveBook", returnModel);
+        }
+
+
+        // Profile
+        [Authorize]
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            this.StarUp();
+            var returnModel = this.libraryProfileService.PreparedPage(this.UserId);
+            return this.View(returnModel);
+        }
+
+        // Profile
+        [Authorize]
+        [HttpPost]
+        public IActionResult Profile(ProfilLibraryViewModel model)
+        {
+            this.StarUp();
+            var returnModel = this.libraryProfileService.SaveChanges(model, this.UserId);
+            this.ViewData["message"] = returnModel[0];
+            return this.View(returnModel[0]);
         }
     }
 }

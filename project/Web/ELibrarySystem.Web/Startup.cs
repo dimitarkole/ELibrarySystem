@@ -126,7 +126,7 @@
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IGiveBookService, GiveBookService>();
             services.AddTransient<IGivenBooksService, GivenBooksService>();
-
+            services.AddTransient<ILibraryProfileService, LibraryProfileService>();
             services.AddTransient<IIndexService, IndexService>();
 
             // User Services

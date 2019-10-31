@@ -194,7 +194,10 @@
                 UserId = selectedUserId,
             };
             this.context.GetBooks.Add(getBook);
-            this.context.SaveChanges(); 
+            this.context.SaveChanges();
+            string result = $"Успешно дадена книгана на {user.Email}!";
+            this.messageService.AddMessageAtDB(userId, result);
+
             var returnModel = new GiveBookViewModel()
             {
                 AllBooks = allBooks,
@@ -205,7 +208,7 @@
             return returnModel;
         }
 
-        public GiveBookViewModel EditintGivinBook(
+        public GiveBookViewModel EditingGivinBook(
         GiveBookViewModel model,
         string userId,
         string givenBookId,
@@ -229,6 +232,8 @@
                 getBook.User = user;
                 getBook.UserId = selectedUserId;
                 this.context.SaveChanges();
+                string result = $"Успешно редактирана дадена книгана на {user.Email}!";
+                this.messageService.AddMessageAtDB(userId, result);
             }
 
             var returnModel = new GiveBookViewModel()

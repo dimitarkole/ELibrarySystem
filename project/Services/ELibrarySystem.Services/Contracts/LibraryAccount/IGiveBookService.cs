@@ -54,7 +54,7 @@
           string selectedBookId,
           string selectedUserId);
 
-        GiveBookViewModel EditintGivinBook(
+        GiveBookViewModel EditingGivinBook(
           GiveBookViewModel model,
           string userId,
           string givenBookId,

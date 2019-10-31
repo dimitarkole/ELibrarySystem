@@ -1,5 +1,5 @@
 ﻿namespace ELibrarySystem.Services.Contracts.LibraryAccount
-{ 
+{
     using System;
     using System.Collections.Generic;
     using System.Text;

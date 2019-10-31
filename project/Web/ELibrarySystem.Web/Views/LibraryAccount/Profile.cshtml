@@ -1,0 +1,35 @@
+﻿@model ELibrarySystem.Web.ViewModels.LibraryAccount.ProfilLibraryViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>Profile</h1>
+
+<h4>ProfilLibrary</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Profile">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label"></label>
+                <input asp-for="Avatar" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibararyName" class="control-label"></label>
+                <input asp-for="LibararyName" class="form-control" />
+                <span asp-validation-for="LibararyName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibraryLocation" class="control-label"></label>
+                <input asp-for="LibraryLocation" class="form-control" />
+                <span asp-validation-for="LibraryLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
