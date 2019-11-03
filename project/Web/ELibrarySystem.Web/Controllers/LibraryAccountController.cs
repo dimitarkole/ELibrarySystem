@@ -26,7 +26,6 @@
         private IGivenBooksService givenBooksService;
         private ILibraryProfileService libraryProfileService;
 
-
         private IUserService userService;
         private SignInManager<ApplicationUser> SignInManager;
         private UserManager<ApplicationUser> UserManager;
@@ -66,7 +65,6 @@
             this.UserId = this.UserManager.GetUserId(this.User);
             this.ViewBag.UserType = "libary";
         }
-
 
         [HttpGet]
         [Authorize]
@@ -433,7 +431,7 @@
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
             string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
             string givenBookId = this.HttpContext.Session.GetString("givenBookId");
-            var returnModel = this.giveBookService.EditintGivinBook(
+            var returnModel = this.giveBookService.EditingGivinBook(
                 model, this.UserId, givenBookId, selectedBookId, selectedUserId);
             return this.View("EditGiveBook", returnModel);
         }

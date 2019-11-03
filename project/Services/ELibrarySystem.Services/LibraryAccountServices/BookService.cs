@@ -41,7 +41,7 @@
                 && b.Author == author
                 && b.UserId == userId
                 && b.DeletedOn == null);
-
+            var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
             if (book == null)
             {
                 var newBook = new Book()
@@ -51,6 +51,7 @@
                     GenreId = genreId,
                     Genre = genreObj,
                     UserId = userId,
+                    User = user,
                 };
                 this.context.Books.Add(newBook);
                 genreObj.Books.Add(newBook);

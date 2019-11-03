@@ -8,6 +8,10 @@
     {
         public string Id { get; set; }
 
+        public string LibraryId { get; set; }
+
+        public LibraryViewModel Library { get; set; }
+
         public string BookName { get; set; }
 
         public string Author { get; set; }
@@ -15,7 +19,6 @@
         public string Genre { get; set; }
 
         public string GenreId { get; set; }
-
 
         public virtual DateTime CreatedOn { get; set; }
 
