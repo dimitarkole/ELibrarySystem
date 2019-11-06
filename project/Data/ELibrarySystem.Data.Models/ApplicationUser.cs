@@ -46,8 +46,5 @@ namespace ELibrarySystem.Data.Models
 
         public virtual string LibraryLocation { get; set; }
 
-        public virtual ICollection<Book> AddedBooks { get; set; }
-
-        public virtual ICollection<Book> GettedBooks { get; set; }
     }
 }

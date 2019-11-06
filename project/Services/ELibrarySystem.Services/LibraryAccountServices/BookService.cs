@@ -51,7 +51,7 @@
                     GenreId = genreId,
                     Genre = genreObj,
                     UserId = userId,
-                    User = user,
+                    //User = user,
                 };
                 this.context.Books.Add(newBook);
                 genreObj.Books.Add(newBook);

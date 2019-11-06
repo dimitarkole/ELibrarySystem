@@ -68,9 +68,9 @@
                     CreatedOn = b.CreatedOn,
                     ReturnedOn = b.ReturnedOn,
                     LibraryId = b.Book.UserId,
-                    Library = new LibraryViewModel(
+                   /* Library = new LibraryViewModel(
                         b.Book.User.LibararyName,
-                        b.Book.User.Email),
+                        b.Book.User.Email),*/
                 });
             getbooks = this.SelectBooks(bookName, author, genreId, getbooks);
             getbooks = this.SortBooks(sortMethodId, getbooks);

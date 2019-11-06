@@ -21,10 +21,9 @@
 
         public virtual string UserId { get; set; }
 
+        public virtual ApplicationUser Users { get; set; }
+
         public virtual Genre Genre { get; set; }
-
-        public virtual ApplicationUser User { get; set; }
-
 
         public virtual DateTime CreatedOn { get; set; }
 
