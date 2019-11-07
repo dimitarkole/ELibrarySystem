@@ -16,9 +16,6 @@ namespace ELibrarySystem.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-            this.AddedBooks = new HashSet<Book>();
-            this.GettedBooks = new HashSet<GetBook>();
-
         }
 
         // Audit info
@@ -49,8 +46,5 @@ namespace ELibrarySystem.Data.Models
 
         public virtual string LibraryLocation { get; set; }
 
-        public virtual ICollection<Book> AddedBooks { get; set; }
-
-        public virtual ICollection<GetBook> GettedBooks { get; set; }
     }
 }

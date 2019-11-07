@@ -68,7 +68,8 @@
                     CreatedOn = b.CreatedOn,
                     ReturnedOn = b.ReturnedOn,
                     LibraryId = b.Book.UserId,
-                   /* Library = new LibraryViewModel(
+                    /*Library = new LibraryViewModel(
+                        b.Book.
                         b.Book.User.LibararyName,
                         b.Book.User.Email),*/
                 });

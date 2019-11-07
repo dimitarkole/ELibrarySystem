@@ -23,6 +23,8 @@ namespace ELibrarySystem.Data.Models
 
         public virtual Genre Genre { get; set; }
 
+        public virtual ApplicationUser User { get; set; }
+
         public virtual DateTime CreatedOn { get; set; }
 
         public virtual DateTime? DeletedOn { get; set; }
