@@ -1,9 +1,9 @@
-﻿namespace ELibrarySystem.Data.Models
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
+namespace ELibrarySystem.Data.Models
+{
     public class Book
     {
         public Book()
@@ -20,8 +20,6 @@
         public virtual string GenreId { get; set; }
 
         public virtual string UserId { get; set; }
-
-        public virtual ApplicationUser Users { get; set; }
 
         public virtual Genre Genre { get; set; }
 

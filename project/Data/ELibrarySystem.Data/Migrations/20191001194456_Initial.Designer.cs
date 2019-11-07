@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ELibrarySystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191106191340_Initial")]
+    [Migration("20191001194456_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,8 @@ namespace ELibrarySystem.Data.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<string>("GetBookId");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastName");
@@ -115,6 +117,8 @@ namespace ELibrarySystem.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GetBookId");
+
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("NormalizedEmail")
@@ -133,6 +137,10 @@ namespace ELibrarySystem.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("ApplicationUserId1");
+
                     b.Property<string>("Author");
 
                     b.Property<string>("BookName");
@@ -143,15 +151,19 @@ namespace ELibrarySystem.Data.Migrations
 
                     b.Property<string>("GenreId");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("GetBookId");
 
-                    b.Property<string>("UsersId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId1");
+
                     b.HasIndex("GenreId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("GetBookId");
 
                     b.ToTable("Books");
                 });
@@ -188,10 +200,6 @@ namespace ELibrarySystem.Data.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("GetBooks");
                 });
@@ -329,26 +337,30 @@ namespace ELibrarySystem.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ELibrarySystem.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("ELibrarySystem.Data.Models.GetBook")
+                        .WithMany("Users")
+                        .HasForeignKey("GetBookId");
+                });
+
             modelBuilder.Entity("ELibrarySystem.Data.Models.Book", b =>
                 {
+                    b.HasOne("ELibrarySystem.Data.Models.ApplicationUser")
+                        .WithMany("AddedBooks")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("ELibrarySystem.Data.Models.ApplicationUser")
+                        .WithMany("GettedBooks")
+                        .HasForeignKey("ApplicationUserId1");
+
                     b.HasOne("ELibrarySystem.Data.Models.Genre", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId");
 
-                    b.HasOne("ELibrarySystem.Data.Models.ApplicationUser", "Users")
-                        .WithMany()
-                        .HasForeignKey("UsersId");
-                });
-
-            modelBuilder.Entity("ELibrarySystem.Data.Models.GetBook", b =>
-                {
-                    b.HasOne("ELibrarySystem.Data.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId");
-
-                    b.HasOne("ELibrarySystem.Data.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("ELibrarySystem.Data.Models.GetBook")
+                        .WithMany("Books")
+                        .HasForeignKey("GetBookId");
                 });
 
             modelBuilder.Entity("ELibrarySystem.Data.Models.Message", b =>
