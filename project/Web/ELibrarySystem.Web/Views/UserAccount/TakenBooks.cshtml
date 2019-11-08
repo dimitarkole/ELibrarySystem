@@ -5,3 +5,8 @@
 @model ELibrarySystem.Web.ViewModels.UserAccount.TakenBooksViewModel
 <h1>TakenBooks</h1>
 
+@foreach (var getBook in Model.Books)
+{
+    @getBook.BookName @getBook.Author @getBook.Library.LibraryName
+
+}

@@ -68,12 +68,13 @@
                     CreatedOn = b.CreatedOn,
                     ReturnedOn = b.ReturnedOn,
                     LibraryId = b.Book.UserId,
-                    /*Library = new LibraryViewModel(
-                        b.Book.
+                    Library = new LibraryViewModel(
                         b.Book.User.LibararyName,
-                        b.Book.User.Email),*/
+                        b.Book.User.Email),
                 });
+
             getbooks = this.SelectBooks(bookName, author, genreId, getbooks);
+
             getbooks = this.SortBooks(sortMethodId, getbooks);
 
             var genres = this.genreService.GetAllGenres()
@@ -121,7 +122,7 @@
                 getbooks = getbooks.Where(b => b.BookName.Contains(bookName));
             }
 
-            if (getbooks != null)
+            if (author != null)
             {
                 getbooks = getbooks.Where(b => b.Author.Contains(author));
             }

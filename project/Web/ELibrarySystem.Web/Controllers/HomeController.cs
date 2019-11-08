@@ -146,7 +146,7 @@
                         UserName = registerModel.Email,
                         Email = registerModel.Email,
                         Type = type,
-                        Avatar= " ",
+                        Avatar = " ",
                     };
                     this.ViewBag.RegisterErr = $"user.Id={user.Id} ";
                     var result = await this.userManager.CreateAsync(user, registerModel.Password);

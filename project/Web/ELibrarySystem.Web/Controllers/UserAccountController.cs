@@ -68,6 +68,7 @@
         public IActionResult TakenBooks()
         {
             this.StarUp();
+            this.ViewData["message"] = this.UserId;
             var returModel = this.takenBooksService.PreparedPage(this.UserId);
             return this.View(returModel);
         }
