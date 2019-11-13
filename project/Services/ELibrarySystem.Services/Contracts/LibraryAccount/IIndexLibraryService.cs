@@ -6,8 +6,8 @@
 
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
 
-    public interface IIndexService
+    public interface IIndexLibraryService
     {
-        IndexViewModel PreparedPage(string userId);
+        IndexLibraryViewModel PreparedPage(string userId);
     }
 }

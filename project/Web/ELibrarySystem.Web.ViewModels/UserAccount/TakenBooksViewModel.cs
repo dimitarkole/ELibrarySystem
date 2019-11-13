@@ -35,6 +35,9 @@
 
         public string BookName { get; set; }
 
+        public string Email { get; set; }
+
+
         public string Author { get; set; }
 
         public string GenreId { get; set; }

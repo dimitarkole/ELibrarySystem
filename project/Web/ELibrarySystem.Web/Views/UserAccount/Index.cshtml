@@ -2,6 +2,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@model ELibrarySystem.Web.ViewModels.UserAccount.IndexUserViewModel
 <h1>Index</h1>
+
+@Model.CountReadedBooks
+<br />
+@Model.CountTakenBooks
+<br />
+@Model.CountReadingBooks
+<br />
 

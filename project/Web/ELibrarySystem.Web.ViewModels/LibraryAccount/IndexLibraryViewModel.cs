@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class IndexViewModel
+    public class IndexLibraryViewModel
     {
         public int CountAddedBooks { get; set; }
 

@@ -8,6 +8,7 @@
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
+    using ELibrarySystem.Web.ViewModels.UserAccount;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -68,8 +69,25 @@
         public IActionResult TakenBooks()
         {
             this.StarUp();
-            this.ViewData["message"] = this.UserId;
             var returModel = this.takenBooksService.PreparedPage(this.UserId);
+            return this.View(returModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult TakenBooksSearch(TakenBooksViewModel model)
+        {
+            this.StarUp();
+            var returModel = this.takenBooksService.TakenBooks(model, this.UserId);
+            return this.View(returModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ChangePageTakenBooks(TakenBooksViewModel model, int id)
+        {
+            this.StarUp();
+            var returModel = this.takenBooksService.ChangeActivePage(model, this.UserId, id);
             return this.View(returModel);
         }
     }

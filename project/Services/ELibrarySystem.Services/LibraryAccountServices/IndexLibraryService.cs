@@ -8,19 +8,19 @@
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
 
-    public class IndexService : IIndexService
+    public class IndexLibraryService : IIndexLibraryService
     {
         public ApplicationDbContext context;
 
 
-        public IndexService(ApplicationDbContext context)
+        public IndexLibraryService(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public IndexViewModel PreparedPage(string userId)
+        public IndexLibraryViewModel PreparedPage(string userId)
         {
-            var model = new IndexViewModel()
+            var model = new IndexLibraryViewModel()
             {
                 CountAddedBooks = this.CountAddedBooks(userId),
                 CountGettedBooks = this.CountAddedBooks(userId),
@@ -33,7 +33,9 @@
         {
             int count = this.context
                 .Books
-                .Where(b => b.UserId == userId)
+                .Where(b =>
+                    b.UserId == userId
+                    && b.DeletedOn == null)
                 .Count();
             return count;
         }
@@ -42,7 +44,9 @@
         {
             int count = this.context
                 .GetBooks
-                .Where(b => b.Book.UserId == userId)
+                .Where(b =>
+                    b.Book.UserId == userId
+                    && b.DeletedOn == null)
                 .Count();
             return count;
         }
@@ -51,7 +55,10 @@
         {
             int count = this.context
                 .GetBooks
-                .Where(b => b.Book.UserId == userId && b.ReturnedOn == null)
+                .Where(b =>
+                    b.Book.UserId == userId
+                    && b.ReturnedOn == null
+                    && b.DeletedOn == null)
                 .Count();
             return count;
         }
