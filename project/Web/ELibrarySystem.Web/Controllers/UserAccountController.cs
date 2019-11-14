@@ -18,6 +18,10 @@
     {
         private IUserService userService;
         private ITakenBooksService takenBooksService;
+        private IIndexUserService indexUserService;
+        private IUserProfileService userProfileService;
+
+
         private SignInManager<ApplicationUser> SignInManager;
         private UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
@@ -28,15 +32,19 @@
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IUserService userService,
+            IIndexUserService indexUserService,
             ILogger<LogoutModel> logger,
-            ITakenBooksService takenBooksService)
+            ITakenBooksService takenBooksService,
+            IUserProfileService userProfileService)
         {
             this.SignInManager = signInManager;
             this.UserManager = userManager;
             this.userService = userService;
             this.signInManager = signInManager;
+            this.indexUserService = indexUserService;
             this.logger = logger;
             this.takenBooksService = takenBooksService;
+            this.userProfileService = userProfileService;
         }
 
         public void StarUp()
@@ -50,7 +58,8 @@
         public IActionResult Index(string returnUrl = null)
         {
             this.StarUp();
-            return this.View();
+            var model = this.indexUserService.PreparedPage(this.UserId);
+            return this.View(model);
         }
 
         [HttpGet]
@@ -88,6 +97,24 @@
         {
             this.StarUp();
             var returModel = this.takenBooksService.ChangeActivePage(model, this.UserId, id);
+            return this.View(returModel);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Profile()
+        {
+            this.StarUp();
+            var returModel = this.userProfileService.PreparedPage(this.UserId);
+            return this.View(returModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult Profile(ProfilUserViewModel model)
+        {
+            this.StarUp();
+            var returModel = this.userProfileService.SaveChanges(model, this.UserId);
             return this.View(returModel);
         }
     }

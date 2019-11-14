@@ -12,7 +12,6 @@
     {
         public ApplicationDbContext context;
 
-
         public IndexUserService(ApplicationDbContext context)
         {
             this.context = context;
@@ -26,8 +25,7 @@
                 CountTakenBooks = this.CountTakenBooks(userId),
                 CountReadingBooks = this.CountReadingBooks(userId),
             };
-
-            throw new NotImplementedException();
+            return indexUserViewModel;
         }
 
         private int CountReadedBooks(string userId)
