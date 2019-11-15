@@ -9,6 +9,8 @@
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Data.Repositories;
     using ELibrarySystem.Data.Seeding;
+    using ELibrarySystem.Services.AdminAccount;
+    using ELibrarySystem.Services.Contracts.AdminAccount;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Services.Data;
@@ -133,6 +135,9 @@
             services.AddTransient<ITakenBooksService, TakenBooksService>();
             services.AddTransient<IIndexUserService, IndexUserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();
+
+            // Admin Services
+            services.AddTransient<IUsersService, UsersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

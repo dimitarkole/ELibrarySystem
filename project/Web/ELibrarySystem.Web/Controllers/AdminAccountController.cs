@@ -12,7 +12,7 @@
     {
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index(string returnUrl=null)
+        public IActionResult Index(string returnUrl = null)
         {
             return this.View();
         }
