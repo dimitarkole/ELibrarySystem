@@ -7,16 +7,6 @@
 
     public class AddBookViewModel
     {
-        public AddBookViewModel()
-            : this(null)
-        {
-        }
-
-        public AddBookViewModel(string bookId)
-        {
-            this.BookId = bookId;
-        }
-
         public string BookId { get; set; }
 
         [Required]

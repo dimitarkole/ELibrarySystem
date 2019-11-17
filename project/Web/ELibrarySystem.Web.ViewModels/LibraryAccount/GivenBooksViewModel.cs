@@ -26,23 +26,10 @@
             this.SortMethodId = this.SortMethods[0];
             this.CurrentPage = 1;
 
-            this.BookName = null;
-            this.Author = null;
-            this.GenreId = null;
+            this.SearchGivenBook = new GivenBookViewModel();
         }
 
-        public string BookName { get; set; }
-
-        public string Author { get; set; }
-
-        public string GenreId { get; set; }
-
-
-        public string Email { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public GivenBookViewModel SearchGivenBook { get; set; }
 
         public string SortMethodId { get; set; }
 

@@ -13,7 +13,5 @@
         public AllBooksViewModel AllBooks { get; set; }
 
         public AllUsersViewModel AllUsers { get; set; }
-
-      
     }
 }

@@ -4,6 +4,20 @@
 
     public class GivenBookViewModel
     {
+        public GivenBookViewModel()
+        {
+            this.Id = null;
+            this.BookName = null;
+            this.Author = null;
+            this.GenreName = null;
+            this.GenreId = null;
+            this.UserName = null;
+            this.FirstName = null;
+            this.LastName = null;
+            this.Email = null;
+            this.ReturnedOn = null;
+        }
+
         public string Id { get; set; }
 
         public string BookName { get; set; }

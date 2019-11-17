@@ -116,8 +116,9 @@
         {
             var book = this.context.Books.FirstOrDefault(b => b.Id == bookId);
             var genres = this.genreService.GetAllGenres();
-            var model = new AddBookViewModel(bookId)
+            var model = new AddBookViewModel()
             {
+                BookId = bookId,
                 Author = book.Author,
                 BookName = book.BookName,
                 GenreId = book.GenreId,

@@ -48,9 +48,9 @@
 
         private TakenBooksViewModel GetBooks(TakenBooksViewModel model, string userId)
         {
-            var bookName = model.BookName;
-            var author = model.Author;
-            var genreId = model.GenreId;
+            var bookName = model.SearchTakenBook.BookName;
+            var author = model.SearchTakenBook.Author;
+            var genreId = model.SearchTakenBook.GenreId;
             var sortMethodId = model.SortMethodId;
             var countBooksOfPage = model.CountBooksOfPage;
             var currentPage = model.CurrentPage;
@@ -96,12 +96,17 @@
 
             var viewBook = getbooks.Skip((currentPage - 1) * countBooksOfPage)
                                 .Take(countBooksOfPage);
-            var returnModel = new TakenBooksViewModel()
+            var searchTakenBook = new TakenBookViewModel()
             {
-                Books = getbooks,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,
+            };
+
+            var returnModel = new TakenBooksViewModel()
+            {
+                Books = getbooks,
+                SearchTakenBook = searchTakenBook,
                 SortMethodId = sortMethodId,
                 Genres = genres,
                 MaxCountPage = maxCountPage,

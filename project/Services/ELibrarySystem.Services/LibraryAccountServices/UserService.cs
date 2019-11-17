@@ -26,12 +26,12 @@
 
         public AllUsersViewModel GetUsers(AllUsersViewModel model)
         {
-            var firstName = model.FirstName;
-            var lastName = model.LastName;
+            var firstName = model.SearchUser.FirstName;
+            var lastName = model.SearchUser.LastName;
             var sortMethodId = model.SortMethodId;
             var currentPage = model.CurrentPage;
             var countUsersOfPage = model.CountUsersOfPage;
-            var email = model.Email;
+            var email = model.SearchUser.Email;
 
             var users = this.context.Users
                 .Where(u => u.Type == "user")
@@ -55,12 +55,17 @@
             var viewUsers = users.Skip((currentPage - 1) * countUsersOfPage)
                                 .Take(countUsersOfPage);
 
+            var searchUser = new UserViewModel()
+            { 
+                Email= email,
+                LastName= lastName,
+                FirstName= firstName,
+            };
+
             var returnModel = new AllUsersViewModel()
             {
                 Users = viewUsers,
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
+                SearchUser= searchUser,
                 SortMethodId = sortMethodId,
                 MaxCountPage = maxCountPage,
                 CurrentPage = currentPage,

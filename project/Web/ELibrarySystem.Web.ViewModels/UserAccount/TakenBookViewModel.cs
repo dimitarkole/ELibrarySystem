@@ -6,6 +6,18 @@
 
     public class TakenBookViewModel
     {
+        public TakenBookViewModel()
+        {
+            this.Id = null;
+            this.LibraryId = null;
+            this.Library = null;
+            this.BookName = null;
+            this.Author = null;
+            this.Genre = null;
+            this.GenreId = null;
+            this.ReturnedOn = null;
+        }
+
         public string Id { get; set; }
 
         public string LibraryId { get; set; }
@@ -13,6 +25,7 @@
         public LibraryViewModel Library { get; set; }
 
         public string BookName { get; set; }
+
 
         public string Author { get; set; }
 

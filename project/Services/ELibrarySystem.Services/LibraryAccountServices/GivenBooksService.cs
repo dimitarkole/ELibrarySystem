@@ -54,12 +54,12 @@
 
         public GivenBooksViewModel GetGevenBooks(GivenBooksViewModel model, string userId)
         {
-            var firstName = model.FirstName;
-            var lastName = model.LastName;
-            var email = model.Email;
-            var bookName = model.BookName;
-            var author = model.Author;
-            var genreId = model.GenreId;
+            var firstName = model.SearchGivenBook.FirstName;
+            var lastName = model.SearchGivenBook.LastName;
+            var email = model.SearchGivenBook.Email;
+            var bookName = model.SearchGivenBook.BookName;
+            var author = model.SearchGivenBook.Author;
+            var genreId = model.SearchGivenBook.GenreId;
             var sortMethodId = model.SortMethodId;
             var countBooksOfPage = model.CountBooksOfPage;
             var currentPage = model.CurrentPage;
@@ -114,12 +114,17 @@
             var viewBook = givenBooks.Skip((currentPage - 1) * countBooksOfPage)
                                 .Take(countBooksOfPage);
 
-            var returnModel = new GivenBooksViewModel()
+            var searchGivenBook = new GivenBookViewModel()
             {
-                Books = viewBook,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,
+            };
+
+            var returnModel = new GivenBooksViewModel()
+            {
+                Books = viewBook,
+                SearchGivenBook = searchGivenBook,
                 SortMethodId = sortMethodId,
                 Genres = genres,
                 MaxCountPage = maxCountPage,

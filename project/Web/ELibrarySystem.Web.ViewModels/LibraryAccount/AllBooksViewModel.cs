@@ -25,17 +25,10 @@
             this.CountBooksOfPage = this.CountBooksOfPageList[0];
             this.SortMethodId = this.SortMethods[0];
             this.CurrentPage = 1;
-
-            this.BookName = null;
-            this.Author = null;
-            this.GenreId = null;
+            this.SearchBook = new BookViewModel();
         }
 
-        public string BookName { get; set; }
-
-        public string Author { get; set; }
-
-        public string GenreId { get; set; }
+        public BookViewModel SearchBook { get; set; }
 
         public string SortMethodId { get; set; }
 

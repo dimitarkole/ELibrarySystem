@@ -35,9 +35,9 @@
 
         public AllBooksViewModel GetBooks(AllBooksViewModel model, string userId)
         {
-            var bookName = model.BookName;
-            var author = model.Author;
-            var genreId = model.GenreId;
+            var bookName = model.SearchBook.BookName;
+            var author = model.SearchBook.Author;
+            var genreId = model.SearchBook.GenreId;
             var sortMethodId = model.SortMethodId;
             var countBooksOfPage = model.CountBooksOfPage;
             var currentPage = model.CurrentPage;
@@ -77,13 +77,17 @@
 
             var viewBook = books.Skip((currentPage - 1) * countBooksOfPage)
                                 .Take(countBooksOfPage);
+            var searchBook = new BookViewModel()
+            {
+                Author = author,
+                BookName = bookName,
+                GenreId = genreId,
+            };
 
             var returnModel = new AllBooksViewModel()
             {
                 Books = viewBook,
-                Author = author,
-                BookName = bookName,
-                GenreId = genreId,
+                SearchBook = searchBook,
                 SortMethodId = sortMethodId,
                 Genres = genres,
                 MaxCountPage = maxCountPage,

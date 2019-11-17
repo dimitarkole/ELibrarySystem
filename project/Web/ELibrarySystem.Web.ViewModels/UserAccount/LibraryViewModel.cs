@@ -16,6 +16,5 @@
         public string LibraryName { get; set; }
 
         public string LibraryEmail { get; set; }
-
     }
 }

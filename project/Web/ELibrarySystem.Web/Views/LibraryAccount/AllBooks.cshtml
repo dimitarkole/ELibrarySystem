@@ -12,20 +12,20 @@
             <div class="col-md-12">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group row">
-                    <label asp-for="BookName" class="control-label col-md-2">Заглавие на книгата</label>
-                    <input asp-for="BookName" class="form-control col-md-6" />
-                    <span asp-validation-for="BookName" class="text-danger col-md-4"></span>
+                    <label asp-for="SearchBook.BookName" class="control-label col-md-2">Заглавие на книгата</label>
+                    <input asp-for="SearchBook.BookName" class="form-control col-md-6" />
+                    <span asp-validation-for="SearchBook.BookName" class="text-danger col-md-4"></span>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Author" class="control-label col-md-2">Автор</label>
-                    <input asp-for="Author" class="form-control col-md-6" />
-                    <span asp-validation-for="Author" class="text-danger col-md-4"></span>
+                    <label asp-for="SearchBook.Author" class="control-label col-md-2">Автор</label>
+                    <input asp-for="SearchBook.Author" class="form-control col-md-6" />
+                    <span asp-validation-for="SearchBook.Author" class="text-danger col-md-4"></span>
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="GenreId" class="control-label  col-md-2">Жанр</label>
+                    <label asp-for="SearchBook.GenreId" class="control-label  col-md-2">Жанр</label>
 
-                    <select asp-for="GenreId" class="col-md-6">
+                    <select asp-for="SearchBook.GenreId" class="col-md-6">
                         @if (Model.Genres != null)
                         {
                             @foreach (var genre in Model.Genres)
@@ -36,7 +36,7 @@
                         }
 
                     </select>
-                    <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
+                    <span asp-validation-for="SearchBook.GenreId" class="text-danger col-md-4"></span>
                 </div>
 
 
