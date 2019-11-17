@@ -31,7 +31,7 @@
         private UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
-        public string UserId;
+        private string UserId;
 
         public LibraryAccountController(
             IBookService bookService,
@@ -58,12 +58,6 @@
             this.signInManager = signInManager;
             this.logger = logger;
             this.libraryProfileService = libraryProfileService;
-        }
-
-        public void StarUp()
-        {
-            this.UserId = this.UserManager.GetUserId(this.User);
-            this.ViewBag.UserType = "libary";
         }
 
         [HttpGet]
@@ -436,7 +430,6 @@
             return this.View("EditGiveBook", returnModel);
         }
 
-
         // Profile
         [Authorize]
         [HttpGet]
@@ -456,6 +449,12 @@
             var returnModel = this.libraryProfileService.SaveChanges(model, this.UserId);
             this.ViewData["message"] = returnModel[0];
             return this.View(returnModel[0]);
+        }
+
+        private void StarUp()
+        {
+            this.UserId = this.UserManager.GetUserId(this.User);
+            this.ViewBag.UserType = "libary";
         }
     }
 }

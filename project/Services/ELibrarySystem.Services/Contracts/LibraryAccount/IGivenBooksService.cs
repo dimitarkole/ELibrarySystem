@@ -27,6 +27,5 @@
             GivenBooksViewModel model,
             string userId,
             int newPage);
-
     }
 }

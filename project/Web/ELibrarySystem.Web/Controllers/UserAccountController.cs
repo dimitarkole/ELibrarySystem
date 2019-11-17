@@ -26,7 +26,7 @@
         private UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
-        public string UserId;
+        private string UserId;
 
         public UserAccountController(
             SignInManager<ApplicationUser> signInManager,

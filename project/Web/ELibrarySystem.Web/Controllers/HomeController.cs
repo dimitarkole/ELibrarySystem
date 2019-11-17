@@ -28,7 +28,6 @@
 
         private readonly ApplicationDbContext context;
 
-
         public HomeController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -121,7 +120,6 @@
             this.ViewBag.LoginErr = "Невалиден Email или парола!";
 
             return this.View(indexModel);
-
         }
 
         public async Task<IActionResult> Register(IndexViewModel indexModel, string returnUrl = null)
@@ -135,13 +133,6 @@
                 if (userChack == null)
                 {
                     var type = "user";
-                  /*  var user = new ApplicationUser
-                    {
-                        Email = registerModel.Email,
-                        UserName = registerModel.UserName,
-                        Type = type,
-                        Avatar = " ",
-                    };*/
                     var user = new ApplicationUser {
                         UserName = registerModel.Email,
                         Email = registerModel.Email,

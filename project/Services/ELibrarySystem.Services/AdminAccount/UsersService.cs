@@ -18,14 +18,72 @@
             this.context = context;
         }
 
-        public UsersViewModel PreparedPage(string userId)
+        public UsersViewModel PreparedPage()
         {
             var model = new UsersViewModel();
-            var returnModel = this.GetUsers(model, userId);
+            var returnModel = this.GetUsers(model);
             return returnModel;
         }
 
-        public UsersViewModel GetUsers(UsersViewModel model, string userId)
+        public List<object> MakeUserLibrary(UsersViewModel model, string userId)
+        {
+            var user = this.context.Users
+                .FirstOrDefault(u => u.Id == userId && u.DeletedOn == null);
+            user.Type = "library";
+            this.context.SaveChanges();
+            var returnMoodel = this.GetUsers(model);
+            List<object> result = new List<object>();
+            result.Add(result);
+            result.Add("Успешно променени права на потребител!");
+            return result;
+        }
+
+        public List<object> MakeLibraryUser(UsersViewModel model, string userId)
+        {
+            var user = this.context.Users
+                .FirstOrDefault(u => u.Id == userId && u.DeletedOn == null);
+            user.Type = "user";
+            this.context.SaveChanges();
+            var returnMoodel = this.GetUsers(model);
+            List<object> result = new List<object>();
+            result.Add(result);
+            result.Add("Успешно променени права на потребител!");
+            return result;
+        }
+
+        public List<object> MakeUserAdmin(UsersViewModel model, string userId)
+        {
+            var user = this.context.Users
+                .FirstOrDefault(u => u.Id == userId && u.DeletedOn == null);
+            user.Type = "admin";
+            this.context.SaveChanges();
+            var returnMoodel = this.GetUsers(model);
+            List<object> result = new List<object>();
+            result.Add(result);
+            result.Add("Успешно променени права на потребител!");
+            return result;
+        }
+
+        public List<object> DeleteUser(UsersViewModel model, string userId)
+        {
+            var user = this.context.Users
+                .FirstOrDefault(u => u.Id == userId && u.DeletedOn == null);
+            user.DeletedOn = DateTime.UtcNow;
+            this.context.SaveChanges();
+            var returnMoodel = this.GetUsers(model);
+            List<object> result = new List<object>();
+            result.Add(result);
+            result.Add("Успешно изтрит потребител!");
+            return result;
+        }
+
+        public UsersViewModel ChangeActivePage(UsersViewModel model, int newPage)
+        {
+            model.CurrentPage = newPage;
+            return this.GetUsers(model);
+        }
+
+        private UsersViewModel GetUsers(UsersViewModel model)
         {
             var email = model.Email;
             var firstName = model.FirstName;
@@ -45,6 +103,7 @@
                   LastName = u.LastName,
                   UserId = u.Id,
                   LibraryName = u.LibararyName,
+                  Type = u.Type,
               });
 
             users = this.SelectUsers(

@@ -16,6 +16,7 @@ namespace ELibrarySystem.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.CreatedOn = DateTime.UtcNow;
         }
 
         // Audit info
