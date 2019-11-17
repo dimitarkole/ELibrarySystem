@@ -7,15 +7,21 @@
 
     using ELibrarySystem.Data;
     using ELibrarySystem.Services.Contracts.AdminAccount;
+    using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.AdminAccount;
 
     public class UsersService : IUsersService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
-        public UsersService(ApplicationDbContext context)
+        private IMessageService messageService;
+
+        public UsersService(
+            ApplicationDbContext context,
+            IMessageService messageService)
         {
             this.context = context;
+            this.messageService = messageService;
         }
 
         public UsersViewModel PreparedPage()
@@ -35,6 +41,10 @@
             List<object> result = new List<object>();
             result.Add(result);
             result.Add("Успешно променени права на потребител!");
+
+            var message = $"Вашите права бяха променени на библиотека";
+            this.messageService.AddMessageAtDB(userId, message);
+
             return result;
         }
 
@@ -47,6 +57,10 @@
             var returnMoodel = this.GetUsers(model);
             List<object> result = new List<object>();
             result.Add(result);
+
+            var message = $"Вашите права бяха променени на потребител";
+            this.messageService.AddMessageAtDB(userId, message);
+
             result.Add("Успешно променени права на потребител!");
             return result;
         }
@@ -61,6 +75,9 @@
             List<object> result = new List<object>();
             result.Add(result);
             result.Add("Успешно променени права на потребител!");
+
+            var message = $"Вашите права бяха променени на администратор";
+            this.messageService.AddMessageAtDB(userId, message);
             return result;
         }
 
@@ -74,6 +91,8 @@
             List<object> result = new List<object>();
             result.Add(result);
             result.Add("Успешно изтрит потребител!");
+            var message = $"Вашият профил беше изтрит";
+            this.messageService.AddMessageAtDB(userId, message);
             return result;
         }
 
@@ -85,10 +104,10 @@
 
         private UsersViewModel GetUsers(UsersViewModel model)
         {
-            var email = model.Email;
-            var firstName = model.FirstName;
-            var lastName = model.LastName;
-            var libraryName = model.LibraryName;
+            var email = model.SearchUser.Email;
+            var firstName = model.SearchUser.FirstName;
+            var lastName = model.SearchUser.LastName;
+            var libraryName = model.SearchUser.LibraryName;
 
             var sortMethodId = model.SortMethodId;
             var countUsersOfPage = model.CountUsersOfPage;
@@ -123,13 +142,18 @@
             var viewUsers = users.Skip((currentPage - 1) * countUsersOfPage)
                                 .Take(countUsersOfPage);
 
-            var returnModel = new UsersViewModel()
+            var searchUser = new UserViewModel()
             {
                 Email = email,
                 FirstName = firstName,
-                CountUsersOfPage = countUsersOfPage,
                 LastName = lastName,
                 LibraryName = libraryName,
+            };
+
+            var returnModel = new UsersViewModel()
+            {
+                SearchUser = searchUser,
+                CountUsersOfPage = countUsersOfPage,
                 SortMethodId = sortMethodId,
                 MaxCountPage = maxCountPage,
                 Users = viewUsers,

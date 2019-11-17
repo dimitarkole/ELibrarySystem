@@ -10,7 +10,7 @@
 
     public class IndexUserService : IIndexUserService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
         public IndexUserService(ApplicationDbContext context)
         {

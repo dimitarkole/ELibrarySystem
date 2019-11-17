@@ -11,9 +11,11 @@
     using ELibrarySystem.Data.Seeding;
     using ELibrarySystem.Services.AdminAccount;
     using ELibrarySystem.Services.Contracts.AdminAccount;
+    using ELibrarySystem.Services.Contracts.Home;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Services.Data;
+    using ELibrarySystem.Services.Home;
     using ELibrarySystem.Services.LibraryAccountServices;
     using ELibrarySystem.Services.Mapping;
     using ELibrarySystem.Services.Messaging;
@@ -118,6 +120,9 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISmsSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+
+            // Home Services
+            services.AddTransient<IHome, Home>();
 
             // Library Services
             services.AddTransient<IBookService, BookService>();

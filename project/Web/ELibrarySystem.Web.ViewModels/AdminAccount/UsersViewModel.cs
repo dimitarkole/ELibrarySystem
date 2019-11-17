@@ -21,15 +21,10 @@
             this.CountUsersOfPage = this.CountUsersOfPageList[0];
             this.SortMethodId = this.SortMethods[0];
             this.CurrentPage = 1;
+            this.SearchUser = new UserViewModel();
         }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Email { get; set; }
-
-        public string LibraryName { get; set; }
+        public UserViewModel SearchUser { get; set; }
 
         public string SortMethodId { get; set; }
 

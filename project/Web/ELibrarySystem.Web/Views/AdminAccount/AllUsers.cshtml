@@ -17,25 +17,25 @@
             <form asp-action="AllUsers" asp-route-returnUrl="@ViewData["AllUsers"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group row">
-                    <label asp-for="Email" class="control-label col-md-2">Email на потребителя</label>
-                    <input asp-for="Email" class="form-control col-md-6" />
-                    <span asp-validation-for="Email" class="text-danger col-md-4"></span>
+                    <label asp-for="SearchUser.Email" class="control-label col-md-2">Email на потребителя</label>
+                    <input asp-for="SearchUser.Email" class="form-control col-md-6" />
+                    <span asp-validation-for="SearchUser.Email" class="text-danger col-md-4"></span>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="FirstName" class="control-label col-md-2">Име на потребител</label>
-                    <input asp-for="FirstName" class="form-control col-md-6" />
-                    <span asp-validation-for="FirstName" class="text-danger col-md-4"></span>
+                    <label asp-for="SearchUser.FirstName" class="control-label col-md-2">Име на потребител</label>
+                    <input asp-for="SearchUser.FirstName" class="form-control col-md-6" />
+                    <span asp-validation-for="SearchUser.FirstName" class="text-danger col-md-4"></span>
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="LastName" class="control-label col-md-2">Фамилия на потребител</label>
-                    <input asp-for="LastName" class="form-control col-md-6" />
-                    <span asp-validation-for="LastName" class="text-danger col-md-4"></span>
+                    <label asp-for="SearchUser.LastName" class="control-label col-md-2">Фамилия на потребител</label>
+                    <input asp-for="SearchUser.LastName" class="form-control col-md-6" />
+                    <span asp-validation-for="SearchUser.LastName" class="text-danger col-md-4"></span>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="LibraryName" class="control-label col-md-2">Име на библиотеката</label>
-                    <input asp-for="LibraryName" class="form-control col-md-6" />
-                    <span asp-validation-for="LibraryName" class="text-danger col-md-4"></span>
+                    <label asp-for="SearchUser.LibraryName" class="control-label col-md-2">Име на библиотеката</label>
+                    <input asp-for="SearchUser.LibraryName" class="form-control col-md-6" />
+                    <span asp-validation-for="SearchUser.LibraryName" class="text-danger col-md-4"></span>
                 </div>
 
                 @if (Model.Users != null)

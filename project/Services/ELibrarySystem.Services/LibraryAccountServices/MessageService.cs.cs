@@ -10,7 +10,7 @@
 
     public class MessageService : IMessageService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
         public MessageService(ApplicationDbContext context)
         {

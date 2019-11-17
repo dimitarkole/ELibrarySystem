@@ -8,7 +8,7 @@
 
     public class GenreService : IGenreService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
         public GenreService(ApplicationDbContext context)
         {

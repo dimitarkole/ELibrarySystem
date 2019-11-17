@@ -10,11 +10,11 @@
 
     public class AllBooksServices : IAllBooksServices
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
-        public IGenreService genreService;
+        private IGenreService genreService;
 
-        public IMessageService messageService;
+        private IMessageService messageService;
 
         public AllBooksServices(
             ApplicationDbContext context,

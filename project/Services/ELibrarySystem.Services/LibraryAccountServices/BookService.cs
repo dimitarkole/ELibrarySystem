@@ -1,21 +1,23 @@
 ﻿namespace ELibrarySystem.Services.LibraryAccountServices
 {
-    using ELibrarySystem.Data;
-    using ELibrarySystem.Services.Contracts.LibraryAccount;
-    using ELibrarySystem.Web.ViewModels.LibraryAccount;
     using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Linq;
+
+    using ELibrarySystem.Data;
+    using ELibrarySystem.Services.Contracts.LibraryAccount;
+
+    using ELibrarySystem.Web.ViewModels.LibraryAccount;
     using ELibrarySystem.Data.Models;
 
     public class BookService : IBookService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
-        public IGenreService genreService;
+        private IGenreService genreService;
 
-        public IMessageService messageService;
+        private IMessageService messageService;
 
         public BookService(ApplicationDbContext context,
             IGenreService genreService,
@@ -44,20 +46,24 @@
             var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
             if (book == null)
             {
-                var newBook = new Book()
+                string result = this.ChackeInputData(bookName, author);
+                if (result == string.Empty)
                 {
-                    BookName = bookName,
-                    Author = author,
-                    GenreId = genreId,
-                    Genre = genreObj,
-                    UserId = userId,
-                    //User = user,
-                };
-                this.context.Books.Add(newBook);
-                genreObj.Books.Add(newBook);
-                this.context.SaveChanges();
-                string result = "Успешно добавена книганата!";
-                this.messageService.AddMessageAtDB(userId, result);
+                    var newBook = new Book()
+                    {
+                        BookName = bookName,
+                        Author = author,
+                        GenreId = genreId,
+                        Genre = genreObj,
+                        UserId = userId,
+                    };
+                    this.context.Books.Add(newBook);
+                    genreObj.Books.Add(newBook);
+                    this.context.SaveChanges();
+                    result = "Успешно добавена книганата!";
+                    this.messageService.AddMessageAtDB(userId, result);
+                }
+
                 return result;
             }
 
@@ -88,15 +94,19 @@
                      && b.GenreId == genreId);
                 if (checkDublicateBook == null)
                 {
-                    book.BookName = bookName;
-                    book.Author = author;
-                    book.GenreId = genreId;
-                    book.Genre = genreObj;
-                    book.UserId = userId;
-                    genreObj.Books.Add(book);
-                    this.context.SaveChanges();
-                    resultTitle = "Успешно редактирана книгана!";
-                    this.messageService.AddMessageAtDB(userId, resultTitle);
+                    resultTitle = this.ChackeInputData(bookName, author);
+                    if (resultTitle == string.Empty)
+                    {
+                        book.BookName = bookName;
+                        book.Author = author;
+                        book.GenreId = genreId;
+                        book.Genre = genreObj;
+                        book.UserId = userId;
+                        genreObj.Books.Add(book);
+                        this.context.SaveChanges();
+                        resultTitle = "Успешно редактирана книгана!";
+                        this.messageService.AddMessageAtDB(userId, resultTitle);
+                    }
                 }
                 else
                 {
@@ -136,6 +146,26 @@
                 Genres = genres,
             };
             return model;
+        }
+
+        private string ChackeInputData(string bookName, string author)
+        {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrEmpty(bookName)
+                || string.IsNullOrWhiteSpace(bookName)
+                || bookName.Length < 5)
+            {
+                errors.AppendLine("Името на книгата трябва да има поне 5 символа!");
+            }
+
+            if (string.IsNullOrEmpty(author)
+                || string.IsNullOrWhiteSpace(author)
+                || author.Length < 5)
+            {
+                errors.AppendLine("Името на автора трябва да има поне 5 символа!");
+            }
+
+            return errors.ToString().Trim();
         }
     }
 }

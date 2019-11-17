@@ -10,7 +10,7 @@
 
     public class UserService : IUserService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
         public UserService(ApplicationDbContext context)
         {

@@ -10,8 +10,7 @@
 
     public class IndexLibraryService : IIndexLibraryService
     {
-        public ApplicationDbContext context;
-
+        private ApplicationDbContext context;
 
         public IndexLibraryService(ApplicationDbContext context)
         {

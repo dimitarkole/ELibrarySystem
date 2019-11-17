@@ -13,10 +13,11 @@
 
     public class TakenBooksService : ITakenBooksService
     {
-        public ApplicationDbContext context;
-        public IGenreService genreService;
+        private ApplicationDbContext context;
 
-        public IMessageService messageService;
+        private IGenreService genreService;
+
+        private IMessageService messageService;
 
         public TakenBooksService(ApplicationDbContext context,
             IGenreService genreService,

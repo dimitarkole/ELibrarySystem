@@ -12,13 +12,13 @@
 
     public class GiveBookService : IGiveBookService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
-        public IAllBooksServices allBooksServices;
+        private IAllBooksServices allBooksServices;
 
-        public IUserService userService;
+        private IUserService userService;
 
-        public IMessageService messageService;
+        private IMessageService messageService;
 
         public GiveBookService(ApplicationDbContext context,
             IUserService userService,
@@ -195,7 +195,12 @@
             };
             this.context.GetBooks.Add(getBook);
             this.context.SaveChanges();
-            string result = $"Успешно дадена книгана на {user.Email}!";
+
+            var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
+            var message = $"Успешно дадена книга от {library.LibararyName} - {library.Email}!";
+            this.messageService.AddMessageAtDB(selectedUserId, message);
+
+            string result = $"Успешно дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
             this.messageService.AddMessageAtDB(userId, result);
 
             var returnModel = new GiveBookViewModel()
@@ -232,7 +237,12 @@
                 getBook.User = user;
                 getBook.UserId = selectedUserId;
                 this.context.SaveChanges();
-                string result = $"Успешно редактирана дадена книгана на {user.Email}!";
+                var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
+                var message = $"Успешно редактирана взета книга от {library.LibararyName} - {library.Email}!";
+                this.messageService.AddMessageAtDB(selectedUserId, message);
+
+
+                string result = $"Успешно редактирана дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
                 this.messageService.AddMessageAtDB(userId, result);
             }
 
@@ -281,7 +291,5 @@
 
             return selectedUser;
         }
-
-    
     }
 }

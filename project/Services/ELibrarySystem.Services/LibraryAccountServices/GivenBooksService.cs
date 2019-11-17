@@ -10,9 +10,9 @@
 
     public class GivenBooksService : IGivenBooksService
     {
-        public ApplicationDbContext context;
+        private ApplicationDbContext context;
 
-        public IGenreService genreService;
+        private IGenreService genreService;
 
         public GivenBooksService(
             ApplicationDbContext context,
@@ -42,7 +42,8 @@
             {
                 givenBook.DeletedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
-                result.Add("Успершно връщане на книгата!");
+
+                result.Add("Успершно изтриване на взета книгата!");
             }
             else
             {

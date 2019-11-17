@@ -10,8 +10,8 @@
 
     public class LibraryProfileService : ILibraryProfileService
     {
-        public ApplicationDbContext context;
-        public IMessageService messageService;
+        private ApplicationDbContext context;
+        private IMessageService messageService;
 
         public LibraryProfileService(
             ApplicationDbContext context,

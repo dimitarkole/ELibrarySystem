@@ -12,10 +12,12 @@
 
     public class UserProfileService : IUserProfileService
     {
-        public ApplicationDbContext context;
-        public IMessageService messageService;
+        private ApplicationDbContext context;
 
-        public UserProfileService(ApplicationDbContext context,
+        private IMessageService messageService;
+
+        public UserProfileService(
+            ApplicationDbContext context,
             IMessageService messageService)
         {
             this.context = context;
@@ -38,13 +40,15 @@
 
         public ProfilUserViewModel SaveChanges(ProfilUserViewModel model, string userId)
         {
-            var user = this.context
-           .Users
-           .FirstOrDefault(u => u.Id == userId);
+            var user = this.context.Users
+                .FirstOrDefault(u => u.Id == userId);
             user.Avatar = model.Avatar;
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             this.context.SaveChanges();
+
+            var message = $"Успешно променен профил";
+            this.messageService.AddMessageAtDB(userId, message);
 
             var returnModel = this.PreparedPage(userId);
             return returnModel;

@@ -6,6 +6,16 @@
 
     public class UserViewModel
     {
+        public UserViewModel()
+        {
+            this.UserId = null;
+            this.FirstName = null;
+            this.LastName = null;
+            this.Email = null;
+            this.LibraryName = null;
+            this.Type = null;
+        }
+
         public string UserId { get; set; }
 
         public string FirstName { get; set; }
