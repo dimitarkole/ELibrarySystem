@@ -22,18 +22,22 @@
         private string UserId;
 
         private IUsersService usersService;
+        private IAdminProfileService adminProfileService;
+
 
         public AdminAccountController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<LogoutModel> logger,
-            IUsersService usersService)
+            IUsersService usersService,
+            IAdminProfileService adminProfileService)
         {
             this.SignInManager = signInManager;
             this.UserManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
-            this.usersService= usersService;
+            this.usersService = usersService;
+            this.adminProfileService = adminProfileService;
         }
 
 
@@ -101,6 +105,24 @@
             this.StarUp();
             var returnModel = this.usersService.ChangeActivePage(model, id);
             return this.View("AllUsers", returnModel);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Profile()
+        {
+            this.StarUp();
+            var returModel = this.adminProfileService.PreparedPage(this.UserId);
+            return this.View(returModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult Profile(ProfilAdminViewModel model)
+        {
+            this.StarUp();
+            var returModel = this.adminProfileService.SaveChanges(model, this.UserId);
+            return this.View(returModel);
         }
 
         private void StarUp()

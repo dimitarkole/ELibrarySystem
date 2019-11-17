@@ -122,7 +122,7 @@
             services.AddTransient<ISettingsService, SettingsService>();
 
             // Home Services
-            services.AddTransient<IHome, Home>();
+            services.AddTransient<IHomeService, HomeService>();
 
             // Library Services
             services.AddTransient<IBookService, BookService>();
@@ -143,6 +143,7 @@
 
             // Admin Services
             services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IAdminProfileService, AdminProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

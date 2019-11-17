@@ -32,7 +32,8 @@
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger, ApplicationDbContext context)
+            ILogger<AccountController> logger,
+            ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -64,9 +65,7 @@
             this.ViewBag.UserType = "guest";
             if (this.ModelState.IsValid)
             {
-                var registerModel = indexModel.RegisterViewModel;
-                var loginModel = indexModel.LoginViewModel;
-                if (loginModel != null)
+                if (indexModel.LoginViewModel != null)
                 {
                     // This doesn't count login failures towards account lockout
                     // To enable password failures to trigger account lockout, set lockoutOnFailure: true
@@ -133,7 +132,7 @@
                 if (userChack == null)
                 {
                     var type = "user";
-                    var user = new ApplicationUser {
+                    var user = new ApplicationUser{
                         UserName = registerModel.Email,
                         Email = registerModel.Email,
                         Type = type,
@@ -141,7 +140,6 @@
                     };
                     this.ViewBag.RegisterErr = $"user.Id={user.Id} ";
                     var result = await this.userManager.CreateAsync(user, registerModel.Password);
-                    //var result = await this.userManager.CreateAsync(user, registerModel.Password);
                     this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
 
                     if (result.Succeeded)
@@ -151,7 +149,6 @@
 
                         // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                         // await _emailSender.SendEmailConfirmationAsync(registerModel.Email, callbackUrl);
-
                         await this.signInManager.SignInAsync(user, isPersistent: false);
                         this.logger.LogInformation("Успешно регистриран потребител!");
 
@@ -196,7 +193,7 @@
 
         public IActionResult Error()
         {
-            return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
 
         private void AddErrors(IdentityResult result)
@@ -220,7 +217,6 @@
             }
 
             return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
-
         }
     }
 }
