@@ -51,19 +51,17 @@
                                 <input type="submit" value="Направи го потребител" asp-action="MakeLibraryUser" asp-route-id="@user.UserId" class="btn btn-default" />
 
                             }
-                            @if (user.Type == "library")
+                            else
                             {
                                 @if (user.Type == "user")
                                 {
                                     <input type="submit" value="Направи го библиотека" asp-action="MakeUserLibrary" asp-route-id="@user.UserId" class="btn btn-default" />
-
                                 }
                                 @if (user.Type == "library")
                                 {
                                     <input type="submit" value="Направи го потребител" asp-action="MakeLibraryUser" asp-route-id="@user.UserId" class="btn btn-default" />
                                 }
                                 <input type="submit" value="Направи го администратор" asp-action="MakeUserAdmin" asp-route-id="@user.UserId" class="btn btn-default" />
-
                             }
 
                             <input type="submit" value="Изтрий" asp-action="DeleteUser" asp-route-id="@user.UserId" class="btn btn-default" />
