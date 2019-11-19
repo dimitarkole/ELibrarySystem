@@ -14,12 +14,17 @@
 
         private IGenreService genreService;
 
+        private IMessageService messageService;
+
+
         public GivenBooksService(
             ApplicationDbContext context,
-            IGenreService genreService)
+            IGenreService genreService,
+            IMessageService messageService)
         {
             this.context = context;
             this.genreService = genreService;
+            this.messageService = messageService;
         }
 
         public GivenBooksViewModel ChangeActivePage(
@@ -156,11 +161,41 @@
             {
                 givenBook.ReturnedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
-                result.Add("Успершно връщане на книгата!");
+                var message = $"Успершно връщане на книгата - {givenBook.Book.BookName} {givenBook.Book.Author}!";
+
+                result.Add(message);
+                this.messageService.AddMessageAtDB(userId, message);
+                this.messageService.AddMessageAtDB(givenBook.User.Id, message);
+
             }
             else
             {
                 result.Add("Няма дадена книга на този потребител!");
+            }
+
+            return result;
+        }
+
+        public List<object> SendMessageForReturningBook(
+           GivenBooksViewModel model,
+           string userId,
+           string givenBookId)
+        {
+            var givenBook = this.context.GetBooks
+                .FirstOrDefault(gb => gb.Id == givenBookId);
+            List<object> result = new List<object>();
+            result.Add(this.GetGevenBooks(model, userId));
+
+            if (givenBook != null)
+            {
+                var message = $"Напомняне за връщане на книгата - {givenBook.Book.BookName} {givenBook.Book.Author}!";
+                this.messageService.AddMessageAtDB(givenBook.User.Id, message);
+
+                result.Add("Успершно изпратено напомняне за връщане на книга!");
+            }
+            else
+            {
+                result.Add("Не успершно изпратено напомняне за връщане на книга!");
             }
 
             return result;

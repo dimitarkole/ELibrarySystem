@@ -9,13 +9,13 @@
     {
         public string BookId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Моля въведете име на книга!")]
         public string BookName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Моля въведете име на автора!")]
         public string Author { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Моля изберете жанр!")]
         public string GenreId { get; set; }
 
         public List<GenreListViewModel> Genres { get; set; }

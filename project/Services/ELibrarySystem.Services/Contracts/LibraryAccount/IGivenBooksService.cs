@@ -27,5 +27,10 @@
             GivenBooksViewModel model,
             string userId,
             int newPage);
+
+        List<object> SendMessageForReturningBook(
+            GivenBooksViewModel model,
+            string userId,
+            string givenBookId);
     }
 }
