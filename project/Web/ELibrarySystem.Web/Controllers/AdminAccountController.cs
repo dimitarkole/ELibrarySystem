@@ -8,6 +8,7 @@
     using ELibrarySystem.Services.Contracts.AdminAccount;
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
     using ELibrarySystem.Web.ViewModels.AdminAccount;
+    using ELibrarySystem.Web.ViewModels.SharedResources;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,16 @@
         {
             this.StarUp();
             return this.View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> LogOut()
+        {
+            await this.signInManager.SignOutAsync();
+            this.logger.LogInformation("User logged out.");
+
+            return this.RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [HttpGet]
@@ -112,8 +123,8 @@
         public IActionResult Profile()
         {
             this.StarUp();
-            var returModel = this.adminProfileService.PreparedPage(this.UserId);
-            return this.View(returModel);
+            var returnModel = this.adminProfileService.PreparedPage(this.UserId);
+            return this.View(returnModel);
         }
 
         [HttpPost]
@@ -121,8 +132,67 @@
         public IActionResult Profile(ProfilAdminViewModel model)
         {
             this.StarUp();
-            var returModel = this.adminProfileService.SaveChanges(model, this.UserId);
-            return this.View(returModel);
+            var returnModel = this.adminProfileService.SaveChanges(model, this.UserId);
+            return this.View(returnModel);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Bar()
+        {
+            Random rnd = new Random();
+            var chartData = new List<ChartDataViewModel>();
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Technology",
+                Quantity = 4,
+            });
+
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Sales",
+                Quantity = 5,
+            });
+
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Marketing",
+                Quantity = 6,
+            });
+
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Human Resource",
+                Quantity = 7,
+            });
+
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Research and Development",
+                Quantity = 8,
+            });
+
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Acconting",
+                Quantity = 9,
+            });
+
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Support",
+                Quantity = 10,
+            });
+
+            chartData.Add(new ChartDataViewModel
+            {
+                DimensionOne = "Logistics",
+                Quantity = 12,
+            });
+
+            ChartViewModel model = new ChartViewModel(chartData);
+
+            return this.View(model);
         }
 
         private void StarUp()

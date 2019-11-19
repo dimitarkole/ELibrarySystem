@@ -144,6 +144,7 @@
             // Admin Services
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IAdminProfileService, AdminProfileService>();
+            services.AddTransient<IIndexAdminService, IndexAdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
