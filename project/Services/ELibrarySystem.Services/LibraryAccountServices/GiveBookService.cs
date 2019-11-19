@@ -173,87 +173,113 @@
             return returnModel;
         }
 
-        public GiveBookViewModel GivingBook(
+        public List<object> GivingBook(
             GiveBookViewModel model,
             string userId,
             string selectedBookId,
             string selectedUserId)
         {
+            var chackInputData = this.ChackInputData(selectedUserId, selectedBookId);
+            List<object> result = new List<object>();
             var allUsers = this.userService.GetUsers(model.AllUsers);
             var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
-            var selectedUser = this.SelectingUser(selectedUserId);
-            var selectedBook = this.SelectingBook(selectedBookId);
-
-            var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
-            var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
-            GetBook getBook = new GetBook()
-            {
-                Book = book,
-                BookId = selectedUserId,
-                User = user,
-                UserId = selectedUserId,
-            };
-            this.context.GetBooks.Add(getBook);
-            this.context.SaveChanges();
-
-            var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
-            var message = $"Успешно дадена книга от {library.LibararyName} - {library.Email}!";
-            this.messageService.AddMessageAtDB(selectedUserId, message);
-
-            string result = $"Успешно дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
-            this.messageService.AddMessageAtDB(userId, result);
-
             var returnModel = new GiveBookViewModel()
             {
                 AllBooks = allBooks,
                 AllUsers = allUsers,
-                SelectedBook = selectedBook,
-                SelectedUser = selectedUser,
             };
-            return returnModel;
+            if (string.IsNullOrEmpty(chackInputData))
+            {
+                var selectedUser = this.SelectingUser(selectedUserId);
+                var selectedBook = this.SelectingBook(selectedBookId);
+
+                var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
+                var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
+                GetBook getBook = new GetBook()
+                {
+                    Book = book,
+                    BookId = selectedUserId,
+                    User = user,
+                    UserId = selectedUserId,
+                };
+                this.context.GetBooks.Add(getBook);
+                this.context.SaveChanges();
+
+                var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
+                var message = $"Успешно дадена книга от {library.LibararyName} - {library.Email}!";
+                this.messageService.AddMessageAtDB(selectedUserId, message);
+
+                message = $"Успешно дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
+                this.messageService.AddMessageAtDB(userId, message);
+                result.Add(message);
+                returnModel.SelectedBook = selectedBook;
+                returnModel.SelectedUser = selectedUser;
+            }
+            else
+            {
+                result.Add(chackInputData);
+            }
+
+            result.Add(returnModel);
+            return result;
         }
 
-        public GiveBookViewModel EditingGivinBook(
+        public List<object> EditingGivinBook(
         GiveBookViewModel model,
         string userId,
         string givenBookId,
         string selectedBookId,
         string selectedUserId)
         {
+            var chackInputData = this.ChackInputData(selectedUserId, selectedBookId);
+            List<object> result = new List<object>();
             var allUsers = this.userService.GetUsers(model.AllUsers);
             var allBooks = this.allBooksServices.GetBooks(model.AllBooks, userId);
-            var selectedUser = this.SelectingUser(selectedUserId);
-            var selectedBook = this.SelectingBook(selectedBookId);
-
-            var getBook = this.context.GetBooks
-                .FirstOrDefault(gb => gb.Id == givenBookId);
-            var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
-            var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
-
-            if (getBook != null)
-            {
-                getBook.Book = book;
-                getBook.BookId = selectedUserId;
-                getBook.User = user;
-                getBook.UserId = selectedUserId;
-                this.context.SaveChanges();
-                var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
-                var message = $"Успешно редактирана взета книга от {library.LibararyName} - {library.Email}!";
-                this.messageService.AddMessageAtDB(selectedUserId, message);
-
-
-                string result = $"Успешно редактирана дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
-                this.messageService.AddMessageAtDB(userId, result);
-            }
-
             var returnModel = new GiveBookViewModel()
             {
                 AllBooks = allBooks,
                 AllUsers = allUsers,
-                SelectedBook = selectedBook,
-                SelectedUser = selectedUser,
             };
-            return returnModel;
+            if (string.IsNullOrEmpty(chackInputData))
+            {
+                var selectedUser = this.SelectingUser(selectedUserId);
+                var selectedBook = this.SelectingBook(selectedBookId);
+
+                var getBook = this.context.GetBooks
+                    .FirstOrDefault(gb => gb.Id == givenBookId);
+                var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
+                var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
+                string message;
+                if (getBook != null)
+                {
+                    getBook.Book = book;
+                    getBook.BookId = selectedUserId;
+                    getBook.User = user;
+                    getBook.UserId = selectedUserId;
+                    this.context.SaveChanges();
+                    var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
+                    message = $"Успешно редактирана взета книга от {library.LibararyName} - {library.Email}!";
+                    this.messageService.AddMessageAtDB(selectedUserId, message);
+
+                    message = $"Успешно редактирана дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
+                    this.messageService.AddMessageAtDB(userId, message);
+                }
+                else
+                {
+                    message = "Изберете книга";
+                }
+
+                result.Add(message);
+                returnModel.SelectedBook = selectedBook;
+                returnModel.SelectedUser = selectedUser;
+            }
+            else
+            {
+                result.Add(chackInputData);
+            }
+
+            result.Add(returnModel);
+            return result;
         }
 
         private BookViewModel SelectingBook(string bookId)
@@ -290,6 +316,22 @@
             }
 
             return selectedUser;
+        }
+
+        private string ChackInputData(string selectedUserId, string selectedBookId)
+        {
+            StringBuilder result = new StringBuilder();
+            if (string.IsNullOrEmpty(selectedUserId))
+            {
+                result.AppendLine("Моля изберете потребител");
+            }
+
+            if (string.IsNullOrEmpty(selectedBookId))
+            {
+                result.AppendLine("Моля изберете книга");
+            }
+
+            return result.ToString().Trim();
         }
     }
 }

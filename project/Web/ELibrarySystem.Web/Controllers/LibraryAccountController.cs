@@ -268,7 +268,8 @@
 
             var returnModel = this.giveBookService.GivingBook(
                 model, this.UserId, selectedBookId, selectedUserId);
-            return this.View("GiveBook", returnModel);
+            this.ViewData["message"] = returnModel[0];
+            return this.View("GiveBook", returnModel[1]);
         }
 
         // GivenBooks Page - GiveBookSearchBook
@@ -427,7 +428,8 @@
             string givenBookId = this.HttpContext.Session.GetString("givenBookId");
             var returnModel = this.giveBookService.EditingGivinBook(
                 model, this.UserId, givenBookId, selectedBookId, selectedUserId);
-            return this.View("EditGiveBook", returnModel);
+            this.ViewData["message"] = returnModel[0];
+            return this.View("EditGiveBook", returnModel[1]);
         }
 
         // Profile

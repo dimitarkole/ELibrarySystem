@@ -11,6 +11,5 @@
         ProfilAdminViewModel PreparedPage(string userId);
 
         ProfilAdminViewModel SaveChanges(ProfilAdminViewModel model, string userId);
-
     }
 }

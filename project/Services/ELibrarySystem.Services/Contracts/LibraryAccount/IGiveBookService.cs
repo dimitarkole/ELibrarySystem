@@ -48,13 +48,13 @@
             string selectUserId,
             string selectedBookId);
 
-        GiveBookViewModel GivingBook(
+        List<object> GivingBook(
           GiveBookViewModel model,
           string userId,
           string selectedBookId,
           string selectedUserId);
 
-        GiveBookViewModel EditingGivinBook(
+        List<object> EditingGivinBook(
           GiveBookViewModel model,
           string userId,
           string givenBookId,
