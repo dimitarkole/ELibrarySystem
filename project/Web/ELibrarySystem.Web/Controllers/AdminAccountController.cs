@@ -142,55 +142,12 @@
         {
             Random rnd = new Random();
             var chartData = new List<ChartDataViewModel>();
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Technology",
-                Quantity = 4,
-            });
 
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Sales",
-                Quantity = 5,
-            });
+            chartData.Add(new ChartDataViewModel("Technology", 5));
+            chartData.Add(new ChartDataViewModel("Sales", 5));
+            chartData.Add(new ChartDataViewModel("Logistics", 12));
 
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Marketing",
-                Quantity = 6,
-            });
-
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Human Resource",
-                Quantity = 7,
-            });
-
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Research and Development",
-                Quantity = 8,
-            });
-
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Acconting",
-                Quantity = 9,
-            });
-
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Support",
-                Quantity = 10,
-            });
-
-            chartData.Add(new ChartDataViewModel
-            {
-                DimensionOne = "Logistics",
-                Quantity = 12,
-            });
-
-            ChartViewModel model = new ChartViewModel("Title" ,chartData);
+            ChartViewModel model = new ChartViewModel("Title", chartData);
 
             return this.View(model);
         }

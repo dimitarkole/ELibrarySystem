@@ -25,6 +25,8 @@
         private IGiveBookService giveBookService;
         private IGivenBooksService givenBooksService;
         private ILibraryProfileService libraryProfileService;
+        private IStatsLibraryService statsLibraryService;
+
 
         private IUserService userService;
         private SignInManager<ApplicationUser> SignInManager;
@@ -44,7 +46,8 @@
             IUserService userService,
             IGivenBooksService givenBooksService,
             ILogger<LogoutModel> logger,
-            ILibraryProfileService libraryProfileService)
+            ILibraryProfileService libraryProfileService,
+            IStatsLibraryService statsLibraryService)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -58,6 +61,7 @@
             this.signInManager = signInManager;
             this.logger = logger;
             this.libraryProfileService = libraryProfileService;
+            this.statsLibraryService = statsLibraryService;
         }
 
         [HttpGet]
@@ -451,6 +455,16 @@
             var returnModel = this.libraryProfileService.SaveChanges(model, this.UserId);
             this.ViewData["message"] = returnModel[0];
             return this.View(returnModel[0]);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Stats()
+        {
+            this.StarUp();
+            var returnModel = this.statsLibraryService.PreparedPage(this.UserId);
+            this.ViewData["message"] = this.UserId;
+            return this.View(returnModel);
         }
 
         private void StarUp()

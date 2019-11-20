@@ -9,5 +9,7 @@
     public class StatsViewModel
     {
         public ChartViewModel ChartGettenBookSinceSixМonth { get; set; }
+
+        public ChartViewModel ChartAddedBookSinceSixМonth { get; set; }
     }
 }

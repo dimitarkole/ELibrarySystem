@@ -33,64 +33,58 @@
         {
             var model = new StatsViewModel()
             {
-                ChartGettenBookSinceSixМonth = this.ChartGettenBookSinceSixМonth(),
+                ChartGettenBookSinceSixМonth = this.ChartGettenBookSinceSixМonth(userId),
+                ChartAddedBookSinceSixМonth = this.ChartAddedBookSinceSixМonth(userId),
             };
             return model;
         }
 
-        private ChartViewModel ChartGettenBookSinceSixМonth()
+        private ChartViewModel ChartGettenBookSinceSixМonth(string userId)
         {
             var chartData = new List<ChartDataViewModel>();
             DateTime dataType = DateTime.UtcNow;
-            for (int i = 0; i < 6; i++)
-            {
-                var month = dataType.Month;
-                var countGetBookOfMonth = this.context.GetBooks
-                    .Where(gb =>
-                        gb.DeletedOn == null
-                        && gb.CreatedOn.Year == dataType.Year
-                        && gb.CreatedOn.Month == dataType.Month)
-                    .Count();
+            IEnumerable<IGrouping<string, GettenBookOfMonthViewModel>> groups = this.context.GetBooks
+                .Where(gb =>
+                    gb.DeletedOn == null
+                    && gb.Book.UserId == userId)
+                .Select(gb => new GettenBookOfMonthViewModel(gb))
+                .GroupBy(gb => gb.CreatedOnYearAndMonth)
+                .Take(6);
 
-                chartData.Add(new ChartDataViewModel
-                {
-                    DimensionOne = this.MonthToSring(month),
-                    Quantity = countGetBookOfMonth,
-                });
-                month--;
+            foreach (var group in groups)
+            {
+                List<GettenBookOfMonthViewModel> getBookOfMonth = group.Select(group => group).ToList();
+                chartData.Add(new ChartDataViewModel(
+                    getBookOfMonth[0].CreatedOnMonth,
+                    getBookOfMonth.Count));
             }
 
-            var chartGettenBookSinceSixМonth = new ChartViewModel()
-            {
-                ChartData = chartData,
-            };
-
+            var chartGettenBookSinceSixМonth = new ChartViewModel("Взети книги за последните 6 месеца", chartData);
             return chartGettenBookSinceSixМonth;
         }
 
-        private string MonthToSring(int month)
+        private ChartViewModel ChartAddedBookSinceSixМonth(string userId)
         {
-            string result;
-            switch (month)
+            var chartData = new List<ChartDataViewModel>();
+            DateTime dataType = DateTime.UtcNow;
+            IEnumerable<IGrouping<string, AddedBookOfMonthViewModel>> groups = this.context.Books
+                .Where(b =>
+                    b.DeletedOn == null
+                    && b.UserId == userId)
+                .Select(b => new AddedBookOfMonthViewModel(b))
+                .GroupBy(b => b.CreatedOnYearAndMonth)
+                .Take(6);
+
+            foreach (var group in groups)
             {
-                case 1: result = "Януари"; break;
-                case 2: result = "Февруари"; break;
-                case 3: result = "Март"; break;
-                case 4: result = "Април"; break;
-                case 5: result = "Май"; break;
-                case 6: result = "Юни"; break;
-                case 7: result = "Юли"; break;
-                case 8: result = "Август"; break;
-                case 9: result = "Септември"; break;
-                case 10: result = "Октомври"; break;
-                case 11: result = "Ноември"; break;
-                case 12: result = "Декември"; break;
-                default:
-                    result = "null";
-                    break;
+                List<AddedBookOfMonthViewModel> getBookOfMonth = group.Select(group => group).ToList();
+                chartData.Add(new ChartDataViewModel(
+                    getBookOfMonth[0].CreatedOnMonth,
+                    getBookOfMonth.Count));
             }
 
-            return result;
+            var chartGettenBookSinceSixМonth = new ChartViewModel("Взети книги за последните 6 месеца", chartData);
+            return chartGettenBookSinceSixМonth;
         }
     }
 }
