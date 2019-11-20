@@ -135,6 +135,7 @@
             services.AddTransient<IGivenBooksService, GivenBooksService>();
             services.AddTransient<ILibraryProfileService, LibraryProfileService>();
             services.AddTransient<IIndexLibraryService, IndexLibraryService>();
+            services.AddTransient<IStatsLibraryService, StatsLibraryService>();
 
             // User Services
             services.AddTransient<ITakenBooksService, TakenBooksService>();

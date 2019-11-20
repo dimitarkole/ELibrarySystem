@@ -190,7 +190,7 @@
                 Quantity = 12,
             });
 
-            ChartViewModel model = new ChartViewModel(chartData);
+            ChartViewModel model = new ChartViewModel("Title" ,chartData);
 
             return this.View(model);
         }

@@ -6,10 +6,24 @@
 
     public class ChartViewModel
     {
-        public ChartViewModel(List<ChartDataViewModel> chartData)
+        public ChartViewModel()
         {
+            this.ChartData = new List<ChartDataViewModel>();
+        }
+
+        public ChartViewModel(string titlle, List<ChartDataViewModel> chartData)
+        {
+            this.Titlle = titlle;
             this.ChartData = chartData;
         }
+
+        public ChartViewModel(string titlle)
+        {
+            this.Titlle = titlle;
+            this.ChartData = new List<ChartDataViewModel>();
+        }
+
+        public string Titlle { get; set; }
 
         public string StackedDimensionOne { get; set; }
 
