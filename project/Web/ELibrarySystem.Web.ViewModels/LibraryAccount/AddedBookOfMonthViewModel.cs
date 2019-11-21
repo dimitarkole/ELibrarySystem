@@ -10,13 +10,11 @@
     {
         public AddedBookOfMonthViewModel(Book book)
         {
-            this.Id = book.Id;
             this.BookName = book.BookName;
             this.Author = book.Author;
             this.GenreId = book.GenreId;
             this.UserId = book.UserId;
             this.Genre = book.Genre;
-            this.User = book.User;
             this.CreatedOn = book.CreatedOn;
             this.DeletedOn = book.DeletedOn;
 
@@ -25,8 +23,6 @@
             this.CreatedOnYearAndMonth = year + " " + month;
             this.CreatedOnMonth = this.MonthToSring(month);
         }
-
-        public string Id { get; set; }
 
         public string BookName { get; set; }
 
@@ -37,8 +33,6 @@
         public string UserId { get; set; }
 
         public Genre Genre { get; set; }
-
-        public ApplicationUser User { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

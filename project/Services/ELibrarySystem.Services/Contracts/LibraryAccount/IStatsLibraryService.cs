@@ -9,5 +9,7 @@
     {
         StatsViewModel PreparedPage(string userId);
 
+        StatsViewModel SearchStats(StatsViewModel model, string userId);
+
     }
 }

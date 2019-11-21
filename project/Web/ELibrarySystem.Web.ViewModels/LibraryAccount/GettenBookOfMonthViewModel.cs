@@ -9,12 +9,9 @@
     {
         public GettenBookOfMonthViewModel(GetBook getBook)
         {
-            this.Id = getBook.Id;
             this.UserId = getBook.UserId;
-            this.User = getBook.User;
             this.BookId = getBook.BookId;
             this.Book = getBook.Book;
-            this.Books = getBook.Books;
             this.CreatedOn = getBook.CreatedOn;
             this.ReturnedOn = getBook.ReturnedOn;
             this.DeletedOn = getBook.DeletedOn;
@@ -25,19 +22,13 @@
             this.CreatedOnMonth = this.MonthToSring(month);
         }
 
-        public string Id { get; set; }
-
         public string UserId { get; set; }
-
-        public ApplicationUser User { get; set; }
 
         public string BookId { get; set; }
 
         public Book Book { get; set; }
 
-        public ICollection<Book> Books { get; set; }
-
-        public DateTime CreatedOn { get; set; }        
+        public DateTime CreatedOn { get; set; }
 
         public DateTime? ReturnedOn { get; set; }
 

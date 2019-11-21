@@ -7,6 +7,7 @@
     using System.Text;
 
     using ELibrarySystem.Data;
+    using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.SharedResources;
@@ -31,15 +32,25 @@
 
         public StatsViewModel PreparedPage(string userId)
         {
-            var model = new StatsViewModel()
-            {
-                ChartGettenBookSinceSixМonth = this.ChartGettenBookSinceSixМonth(userId),
-                ChartAddedBookSinceSixМonth = this.ChartAddedBookSinceSixМonth(userId),
-            };
-            return model;
+            var model = new StatsViewModel();
+            var returnModel = this.SearchStats(model, userId);
+            return returnModel;
         }
 
-        private ChartViewModel ChartGettenBookSinceSixМonth(string userId)
+        public StatsViewModel SearchStats(StatsViewModel model, string userId)
+        {
+
+            var searchBook = model.SearchBook;
+            var returnModel = new StatsViewModel()
+            {
+                SearchBook = searchBook,
+                ChartGettenBookSinceSixМonth = this.ChartGettenBookSinceSixМonth(searchBook, userId),
+                ChartAddedBookSinceSixМonth = this.ChartAddedBookSinceSixМonth(searchBook, userId),
+            };
+            return returnModel;
+        }
+
+        private ChartViewModel ChartGettenBookSinceSixМonth(Book searchBook, string userId)
         {
             var chartData = new List<ChartDataViewModel>();
             DateTime dataType = DateTime.UtcNow;
@@ -54,6 +65,7 @@
             foreach (var group in groups)
             {
                 List<GettenBookOfMonthViewModel> getBookOfMonth = group.Select(group => group).ToList();
+
                 chartData.Add(new ChartDataViewModel(
                     getBookOfMonth[0].CreatedOnMonth,
                     getBookOfMonth.Count));
@@ -63,7 +75,7 @@
             return chartGettenBookSinceSixМonth;
         }
 
-        private ChartViewModel ChartAddedBookSinceSixМonth(string userId)
+        private ChartViewModel ChartAddedBookSinceSixМonth(Book searchBook, string userId)
         {
             var chartData = new List<ChartDataViewModel>();
             DateTime dataType = DateTime.UtcNow;
@@ -83,7 +95,7 @@
                     getBookOfMonth.Count));
             }
 
-            var chartGettenBookSinceSixМonth = new ChartViewModel("Взети книги за последните 6 месеца", chartData);
+            var chartGettenBookSinceSixМonth = new ChartViewModel("Добавени книги за последните 6 месеца", chartData);
             return chartGettenBookSinceSixМonth;
         }
     }
