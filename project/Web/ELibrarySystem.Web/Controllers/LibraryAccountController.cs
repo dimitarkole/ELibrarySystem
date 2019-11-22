@@ -467,6 +467,16 @@
             return this.View(returnModel);
         }
 
+        [Authorize]
+        [HttpPost]
+        public IActionResult StatsSearch(StatsViewModel model)
+        {
+            this.StarUp();
+            var returnModel = this.statsLibraryService.SearchStats(model, this.UserId);
+            this.ViewData["message"] = this.UserId;
+            return this.View("Stats", returnModel);
+        }
+        
         private void StarUp()
         {
             this.UserId = this.UserManager.GetUserId(this.User);

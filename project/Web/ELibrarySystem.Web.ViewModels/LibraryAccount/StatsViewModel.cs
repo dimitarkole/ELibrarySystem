@@ -8,7 +8,14 @@
 
     public class StatsViewModel
     {
+        public StatsViewModel()
+        {
+            this.SearchBook = new Book();
+        }
+
         public Book SearchBook { get; set; }
+
+        public List<GenreListViewModel> Genres { get; set; }
 
         public ChartViewModel ChartGettenBookSinceSixМonth { get; set; }
 

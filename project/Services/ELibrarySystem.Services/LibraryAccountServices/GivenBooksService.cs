@@ -70,24 +70,25 @@
             var countBooksOfPage = model.CountBooksOfPage;
             var currentPage = model.CurrentPage;
 
-            var givenBooks = this.context.GetBooks.Where(gb =>
-              gb.DeletedOn == null
-              && gb.Book.UserId == userId)
-              .Select(gb => new GivenBookViewModel()
-              {
-                  Author = gb.Book.Author,
-                  Id = gb.Book.Id,
-                  BookName = gb.Book.BookName,
-                  GenreName = gb.Book.Genre.Name,
-                  GenreId = gb.Book.GenreId,
+            var givenBooks = this.context.GetBooks
+                .Where(gb =>
+                    gb.DeletedOn == null
+                    && gb.Book.UserId == userId)
+                .Select(gb => new GivenBookViewModel()
+                {
+                    Author = gb.Book.Author,
+                    Id = gb.Id,
+                    BookName = gb.Book.BookName,
+                    GenreName = gb.Book.Genre.Name,
+                    GenreId = gb.Book.GenreId,
 
-                  FirstName = gb.User.FirstName,
-                  LastName = gb.User.LastName,
-                  UserName = gb.User.UserName,
+                    FirstName = gb.User.FirstName,
+                    LastName = gb.User.LastName,
+                    UserName = gb.User.UserName,
 
-                  ReturnedOn = gb.ReturnedOn,
-                  CreatedOn = gb.CreatedOn,
-              });
+                    ReturnedOn = gb.ReturnedOn,
+                    CreatedOn = gb.CreatedOn,
+                });
 
             givenBooks = this.SelectBooks(
                 bookName,
@@ -222,7 +223,7 @@
 
             if (genreId != null)
             {
-                givenBooks = givenBooks.Where(b => b.GenreName == genreId);
+                givenBooks = givenBooks.Where(b => b.GenreId == genreId);
             }
 
             if (firstName != null)

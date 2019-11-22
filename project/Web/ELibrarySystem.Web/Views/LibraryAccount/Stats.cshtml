@@ -4,49 +4,108 @@
 }
 
 <h1>Stats</h1>
+<form asp-action="Stats" asp-route-returnUrl="@ViewData["URL"]">
 
-@model ELibrarySystem.Web.ViewModels.LibraryAccount.StatsViewModel
-@{
-    var XLabelsGettenBookSinceSixМonth = Newtonsoft.Json.JsonConvert
-        .SerializeObject(Model.ChartGettenBookSinceSixМonth
-            .ChartData
-                .Select(x => x.DimensionOne)
-                .ToList());
-    var YValuesGettenBookSinceSixМonth = Newtonsoft.Json.JsonConvert
-        .SerializeObject(Model.ChartGettenBookSinceSixМonth
-            .ChartData
-                .Select(x => x.Quantity)
-                .ToList());
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row">
+                <label asp-for="SearchBook.BookName" class="control-label col-md-2">Заглавие на книгата</label>
+                <input asp-for="SearchBook.BookName" class="form-control col-md-6" />
+                <span asp-validation-for="SearchBook.BookName" class="text-danger col-md-4"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="SearchBook.Author" class="control-label col-md-2">Автор</label>
+                <input asp-for="SearchBook.Author" class="form-control col-md-6" />
+                <span asp-validation-for="SearchBook.Author" class="text-danger col-md-4"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="SearchBook.GenreId" class="control-label  col-md-2">Жанр</label>
 
-    var XLabelsAddedBookSinceSixМonth = Newtonsoft.Json.JsonConvert
-        .SerializeObject(Model.ChartAddedBookSinceSixМonth
-            .ChartData
-                .Select(x => x.DimensionOne)
-                .ToList());
-    var YValuesAddedBookSinceSixМonth = Newtonsoft.Json.JsonConvert
-        .SerializeObject(Model.ChartAddedBookSinceSixМonth
-            .ChartData
-                .Select(x => x.Quantity)
-                .ToList());
-}
+                <select asp-for="SearchBook.GenreId" class="col-md-6">
+                    @if (Model.Genres != null)
+                    {
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
 
+                        }
+                    }
 
-
-@ViewData["message"]
-<div class="chart-container">
-    <canvas id="chartGettenBookSinceSixМonth" style="width:100%; height:500px"></canvas>
-</div>
-
-@ViewData["message"]
-<div class="chart-container">
-    <canvas id="chartAddedBookSinceSixМonth" style="width:100%; height:500px"></canvas>
-</div>
+                </select>
+                <span asp-validation-for="SearchBook.GenreId" class="text-danger col-md-4"></span>
+            </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-<script type="text/javascript">
+            <div class="form-group">
+                <input type="submit" value="Търси" asp-action="StatsSearch" class="btn btn-default" />
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <canvas id="chartGettenBookSinceSixМonth" style="width:100%; height:250px"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <div class="chart-container">
+                <canvas id="chartAddedBookSinceSixМonth" style="width:100%; height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+
+</form>
+    @model ELibrarySystem.Web.ViewModels.LibraryAccount.StatsViewModel
+    @{
+
+        var labelGettenBookSinceSixМonth = Newtonsoft.Json.JsonConvert
+            .SerializeObject(Model.ChartGettenBookSinceSixМonth
+                .Titlle);
+
+        var XLabelsGettenBookSinceSixМonth = Newtonsoft.Json.JsonConvert
+            .SerializeObject(Model.ChartGettenBookSinceSixМonth
+                .ChartData
+                    .Select(x => x.DimensionOne)
+                    .ToList());
+        var YValuesGettenBookSinceSixМonth = Newtonsoft.Json.JsonConvert
+            .SerializeObject(Model.ChartGettenBookSinceSixМonth
+                .ChartData
+                    .Select(x => x.Quantity)
+                    .ToList());
+        
+        var labelAddedBookSinceSixМonth = Newtonsoft.Json.JsonConvert
+            .SerializeObject(Model.ChartAddedBookSinceSixМonth
+                .Titlle);
+
+        var XLabelsAddedBookSinceSixМonth = Newtonsoft.Json.JsonConvert
+            .SerializeObject(Model.ChartAddedBookSinceSixМonth
+                .ChartData
+                    .Select(x => x.DimensionOne)
+                    .ToList());
+        var YValuesAddedBookSinceSixМonth = Newtonsoft.Json.JsonConvert
+            .SerializeObject(Model.ChartAddedBookSinceSixМonth
+                .ChartData
+                    .Select(x => x.Quantity)
+                    .ToList());
+    }
+
+
+
+    
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script type="text/javascript">
 
     $(function () {
         var chartName = "chartGettenBookSinceSixМonth";
@@ -54,7 +113,7 @@
         var data = {
                 labels: @Html.Raw(XLabelsGettenBookSinceSixМonth),
                 datasets: [{
-                    label: "Departments Chart",
+                    label: @Html.Raw(labelGettenBookSinceSixМonth),
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                     ],
@@ -106,7 +165,7 @@
         var data = {
                 labels: @Html.Raw(XLabelsAddedBookSinceSixМonth),
                 datasets: [{
-                    label: "Departments Chart",
+                    label: @Html.Raw(labelAddedBookSinceSixМonth),
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                     ],
@@ -151,4 +210,4 @@
 
 
      });
-</script>  
+    </script>
