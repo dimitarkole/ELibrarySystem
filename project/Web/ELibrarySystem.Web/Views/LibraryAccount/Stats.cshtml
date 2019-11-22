@@ -73,14 +73,17 @@
         var XLabelsGettenBookSinceSixМonth = Newtonsoft.Json.JsonConvert
             .SerializeObject(Model.ChartGettenBookSinceSixМonth
                 .ChartData
-                    .Select(x => x.DimensionOne)
+                    .Select(x => x.Mounth)
                     .ToList());
         var YValuesGettenBookSinceSixМonth = Newtonsoft.Json.JsonConvert
             .SerializeObject(Model.ChartGettenBookSinceSixМonth
-                .ChartData
-                    .Select(x => x.Quantity)
-                    .ToList());
-        
+                .ChartData.Select(x => x.GettenBookCount)
+                .ToList());
+        var YValuesReturnedBookSinceSixМonth = Newtonsoft.Json.JsonConvert
+        .SerializeObject(Model.ChartGettenBookSinceSixМonth
+            .ChartData.Select(x => x.ReturnedBookCount)
+            .ToList());
+
         var labelAddedBookSinceSixМonth = Newtonsoft.Json.JsonConvert
             .SerializeObject(Model.ChartAddedBookSinceSixМonth
                 .Titlle);
@@ -114,14 +117,20 @@
                 labels: @Html.Raw(XLabelsGettenBookSinceSixМonth),
                 datasets: [{
                     label: @Html.Raw(labelGettenBookSinceSixМonth),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                    ],
+                   
                     borderColor: [
                         'rgba(255,99,132,1)',
                     ],
                     borderWidth: 1,
                     data: @Html.Raw(YValuesGettenBookSinceSixМonth)
+                },
+                {
+                    label: "проба",
+                    borderColor: [
+                        'rgba(100,99,132,1)',
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValuesReturnedBookSinceSixМonth)
                 }]
             };
 

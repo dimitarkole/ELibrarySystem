@@ -198,7 +198,7 @@
                 GetBook getBook = new GetBook()
                 {
                     Book = book,
-                    BookId = selectedUserId,
+                    BookId = selectedBookId,
                     User = user,
                     UserId = selectedUserId,
                 };

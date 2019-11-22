@@ -51,9 +51,9 @@
             return returnModel;
         }
 
-        private ChartViewModel ChartGettenBookSinceSixМonth(Book searchBook, string userId)
+        private ChartGettenBookSinceSixМonth ChartGettenBookSinceSixМonth(Book searchBook, string userId)
         {
-            var chartData = new List<ChartDataViewModel>();
+            var chartData = new List<ChartGettenBookSinceSixМonthData>();
             var groups = this.context.GetBooks
               .Where(gb =>
                   gb.DeletedOn == null
@@ -89,13 +89,19 @@
                 {
                     var gb = getBookOfMonth[0];
                     string createdOnMonth = this.MonthToSring(gb.CreatedOn.Month);
-                    chartData.Add(new ChartDataViewModel(
+                    int getBookCount = getBookOfMonth.Count;
+                    int returnedBookCount = getBookOfMonth
+                        .Where(gb => gb.ReturnedOn != null)
+                        .Count();
+
+                    chartData.Add(new ChartGettenBookSinceSixМonthData(
                        createdOnMonth,
-                       getBookOfMonth.Count));
+                       getBookCount,
+                       returnedBookCount));
                 }
             }
 
-            var chartGettenBookSinceSixМonth = new ChartViewModel("Взети книги за последните 6 месеца", chartData);
+            var chartGettenBookSinceSixМonth = new ChartGettenBookSinceSixМonth("Взети книги за последните 6 месеца", chartData);
             return chartGettenBookSinceSixМonth;
         }
 

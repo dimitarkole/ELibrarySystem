@@ -17,7 +17,7 @@
 
         public List<GenreListViewModel> Genres { get; set; }
 
-        public ChartViewModel ChartGettenBookSinceSixМonth { get; set; }
+        public ChartGettenBookSinceSixМonth ChartGettenBookSinceSixМonth { get; set; }
 
         public ChartViewModel ChartAddedBookSinceSixМonth { get; set; }
     }

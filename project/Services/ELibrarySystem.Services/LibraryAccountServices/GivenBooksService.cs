@@ -162,7 +162,7 @@
             {
                 givenBook.ReturnedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
-                var message = $"Успершно връщане на книгата - {givenBook.Book.BookName} {givenBook.Book.Author}!";
+                var message = $"Успершно връщане на книгата!";
 
                 result.Add(message);
                 this.messageService.AddMessageAtDB(userId, message);
