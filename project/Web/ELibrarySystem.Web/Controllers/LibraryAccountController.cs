@@ -469,7 +469,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult StatsSearch(StatsViewModel model)
+        public IActionResult StatsSearch(StatsLibaryViewModel model)
         {
             this.StarUp();
             var returnModel = this.statsLibraryService.SearchStats(model, this.UserId);

@@ -7,9 +7,9 @@
 
     public interface IStatsLibraryService
     {
-        StatsViewModel PreparedPage(string userId);
+        StatsLibaryViewModel PreparedPage(string userId);
 
-        StatsViewModel SearchStats(StatsViewModel model, string userId);
+        StatsLibaryViewModel SearchStats(StatsLibaryViewModel model, string userId);
 
     }
 }

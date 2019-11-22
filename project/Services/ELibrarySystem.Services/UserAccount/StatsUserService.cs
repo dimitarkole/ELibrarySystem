@@ -1,24 +1,23 @@
-﻿namespace ELibrarySystem.Services.LibraryAccountServices
+﻿namespace ELibrarySystem.Services.UserAccount
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
 
     using ELibrarySystem.Data;
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
+    using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
-    using ELibrarySystem.Web.ViewModels.SharedResources;
+    using ELibrarySystem.Web.ViewModels.UserAccount;
 
-    public class StatsLibraryService : IStatsLibraryService
+    public class StatsUserService : IStatsUserService
     {
         private ApplicationDbContext context;
-
         private IGenreService genreService;
 
-        public StatsLibraryService(
+        public StatsUserService(
             ApplicationDbContext context,
             IGenreService genreService)
         {
@@ -26,23 +25,22 @@
             this.genreService = genreService;
         }
 
-        public StatsLibaryViewModel PreparedPage(string userId)
+        StatsUserViewModel IStatsUserService.PreparedPage(string userId)
         {
-            var model = new StatsLibaryViewModel();
+            var model = new StatsUserViewModel();
             var returnModel = this.SearchStats(model, userId);
             return returnModel;
         }
 
-        public StatsLibaryViewModel SearchStats(StatsLibaryViewModel model, string userId)
+        public StatsUserViewModel SearchStats(StatsUserViewModel model, string userId)
         {
             model.Genres = this.GetGenre();
             var searchBook = model.SearchBook;
-            var returnModel = new StatsLibaryViewModel()
+            var returnModel = new StatsUserViewModel()
             {
                 SearchBook = searchBook,
                 Genres = model.Genres,
                 ChartGettenBookSinceSixМonth = this.ChartGettenBookSinceSixМonth(searchBook, userId),
-                ChartAddedBookSinceSixМonth = this.ChartAddedBookSinceSixМonth(searchBook, userId),
             };
             return returnModel;
         }
@@ -53,7 +51,7 @@
             var groups = this.context.GetBooks
               .Where(gb =>
                   gb.DeletedOn == null
-                  && gb.Book.UserId == userId)
+                  && gb.UserId == userId)
               .Select(gb => new GivenBookViewModel()
               {
                   Author = gb.Book.Author,
@@ -101,42 +99,6 @@
             return chartGettenBookSinceSixМonth;
         }
 
-
-        private ChartViewModel ChartAddedBookSinceSixМonth(Book searchBook, string userId)
-        {
-            var chartData = new List<ChartDataViewModel>();
-
-            var groups = this.context.Books
-                .Where(gb =>
-                   gb.DeletedOn == null
-                   && gb.UserId == userId)
-               .GroupBy(b => b.CreatedOn.Year + " " + b.CreatedOn.Month)
-               .Take(6)
-               .ToList();
-
-            string bookName = searchBook.BookName;
-            string author = searchBook.Author;
-            string genreId = searchBook.GenreId;
-
-            foreach (var group in groups)
-            {
-                List<Book> bookOfMonth = group.Select(group => group).ToList();
-                bookOfMonth = this.SelectBooksAddedBookOfMonthViewModel(bookName, author, genreId, bookOfMonth);
-                if (bookOfMonth.Count > 0)
-                {
-                    var gb = bookOfMonth[0];
-                    string createdOnMonth = this.MonthToSring(gb.CreatedOn.Month);
-
-                    chartData.Add(new ChartDataViewModel(
-                        createdOnMonth,
-                        bookOfMonth.Count));
-                }
-            }
-
-            var chartGettenBookSinceSixМonth = new ChartViewModel("Добавени книги за последните 6 месеца", chartData);
-            return chartGettenBookSinceSixМonth;
-        }
-
         private List<GenreListViewModel> GetGenre()
         {
             var genres = this.genreService.GetAllGenres()
@@ -153,35 +115,11 @@
             return genres;
         }
 
-        private List<Book> SelectBooksAddedBookOfMonthViewModel(
+        private List<GivenBookViewModel> SelectGettenBookOfMonthViewModel(
           string bookName,
           string author,
           string genreId,
-          List<Book> books)
-        {
-            if (bookName != null)
-            {
-                books = books.Where(b => b.BookName.Contains(bookName)).ToList();
-            }
-
-            if (author != null)
-            {
-                books = books.Where(b => b.Author.Contains(author)).ToList();
-            }
-
-            if (genreId != null)
-            {
-                books = books.Where(b => b.GenreId == genreId).ToList();
-            }
-
-            return books;
-        }
-
-        private List<GivenBookViewModel> SelectGettenBookOfMonthViewModel(
-            string bookName,
-            string author,
-            string genreId,
-            List<GivenBookViewModel> books)
+          List<GivenBookViewModel> books)
         {
             if (bookName != null)
             {

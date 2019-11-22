@@ -141,6 +141,7 @@
             services.AddTransient<ITakenBooksService, TakenBooksService>();
             services.AddTransient<IIndexUserService, IndexUserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();
+            services.AddTransient<IStatsUserService, StatsUserService>();
 
             // Admin Services
             services.AddTransient<IUsersService, UsersService>();
