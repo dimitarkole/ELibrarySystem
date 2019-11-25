@@ -6,8 +6,15 @@
 @{
     ViewData["Title"] = "Index";
 }
+@model ELibrarySystem.Web.ViewModels.LibraryAccount.IndexLibraryViewModel
+
 
 <h1>Index</h1>
+
+@Model.CountAddedBooks
+@Model.CountGettedBooks
+@Model.CountTakenBooks
+
 <a asp-area="" asp-controller="LibraryAccount" asp-action="Stats">
     Статистика
 </a>

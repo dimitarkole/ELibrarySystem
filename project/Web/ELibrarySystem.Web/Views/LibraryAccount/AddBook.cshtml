@@ -1,19 +1,23 @@
 ﻿@model ELibrarySystem.Web.ViewModels.LibraryAccount.AddBookViewModel
 
 @{
-    ViewData["Title"] = "AllBooks";
+    ViewData["Title"] = "Добавяне на книга";
 }
 
 <div class=" container">
     <div class="row">
         <div class="col-md-12">
-            <h2>Добави книга</h2>
+            <h2>Добавяне на книга</h2>
 
         </div>
         <div class="col-md-12">
             <h3>@ViewData["message"]</h3>
         </div>
-        <hr />
+    </div>
+
+    <hr />
+    <div class="row">
+
         <div class="col-md-12">
             <form asp-action="AddBook" asp-route-returnUrl="@ViewData["AddBook"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -39,8 +43,10 @@
                     </select>
                     <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Добави" class="btn btn-default" />
+                <div class="form-group row">
+                    <span class="text-danger col-md-7"></span>
+
+                    <input type="submit" value="Добави" class="btn btn-primary col-md-1" />
                 </div>
             </form>
         </div>

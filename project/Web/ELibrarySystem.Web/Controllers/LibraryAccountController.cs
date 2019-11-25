@@ -18,6 +18,7 @@
 
     public class LibraryAccountController : Controller
     {
+        private IIndexLibraryService indexLibraryService;
         private IBookService bookService;
         private IMessageService messageService;
         private IGenreService genreService;
@@ -47,7 +48,8 @@
             IGivenBooksService givenBooksService,
             ILogger<LogoutModel> logger,
             ILibraryProfileService libraryProfileService,
-            IStatsLibraryService statsLibraryService)
+            IStatsLibraryService statsLibraryService,
+            IIndexLibraryService indexLibraryService)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -62,7 +64,8 @@
             this.logger = logger;
             this.libraryProfileService = libraryProfileService;
             this.statsLibraryService = statsLibraryService;
-        }
+            this.indexLibraryService= indexLibraryService;
+    }
 
         [HttpGet]
         [Authorize]
@@ -80,7 +83,8 @@
         public IActionResult Index()
         {
             this.StarUp();
-            return this.View();
+            var model = this.indexLibraryService.PreparedPage(this.UserId);
+            return this.View(model);
         }
 
         // AddBook Page - HttpGet
@@ -175,9 +179,6 @@
         public IActionResult GiveBook()
         {
             this.StarUp();
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"HttpGet GiveBook");
-            this.ViewData["message"] = sb.ToString().Trim();
             var model = this.giveBookService.PreparedPage(this.UserId);
             return this.View(model);
         }
@@ -211,7 +212,7 @@
         // GiveBook Page - GiveBookChangePageBook
         [Authorize]
         [HttpPost]
-        public IActionResult GiveBookChangePageBook(GiveBookViewModel model, int id)
+        public IActionResult GiveBookChangePageBooks(GiveBookViewModel model, int id)
         {
             this.StarUp();
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
@@ -224,7 +225,7 @@
         // GiveBook Page - GiveBookChangePageUser
         [Authorize]
         [HttpPost]
-        public IActionResult GiveBookChangePageUser(GiveBookViewModel model, int id)
+        public IActionResult GiveBookChangePageUsers(GiveBookViewModel model, int id)
         {
             this.StarUp();
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
@@ -335,9 +336,6 @@
         public IActionResult EditGiveBook()
         {
             this.StarUp();
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"HttpGet GiveBook");
-            this.ViewData["message"] = sb.ToString().Trim();
             var model = this.giveBookService.PreparedPage(this.UserId);
             return this.View(model);
         }
@@ -352,6 +350,7 @@
             string selectedUserId = this.HttpContext.Session.GetString("SelectedUserId");
             var returnModel = this.giveBookService.GiveBookSearchBook(
                 model, this.UserId, selectedBookId, selectedUserId);
+            //this.ViewData["message"] = sb.ToString().Trim();
             return this.View("EditGiveBook", returnModel);
         }
 
