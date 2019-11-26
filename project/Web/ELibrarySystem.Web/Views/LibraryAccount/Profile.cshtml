@@ -1,35 +1,48 @@
 ﻿@model ELibrarySystem.Web.ViewModels.LibraryAccount.ProfilLibraryViewModel
 
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Профил";
 }
+<div class=" container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Профил на книга</h2>
 
-<h1>Profile</h1>
+        </div>
+        <div class="col-md-12">
+            <h3>@ViewData["message"]</h3>
+        </div>
+    </div>
 
-<h4>ProfilLibrary</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Profile">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Avatar" class="control-label"></label>
-                <input asp-for="Avatar" class="form-control" />
-                <span asp-validation-for="Avatar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LibararyName" class="control-label"></label>
-                <input asp-for="LibararyName" class="form-control" />
-                <span asp-validation-for="LibararyName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LibraryLocation" class="control-label"></label>
-                <input asp-for="LibraryLocation" class="form-control" />
-                <span asp-validation-for="LibraryLocation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <hr />
+    <div class="row">
+
+        <div class="col-md-12">
+            <form asp-action="Profile" asp-route-returnUrl="@ViewData["AddBook"]">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <label asp-for="Avatar" class="control-label col-md-2">Заглавие на книгата</label>
+                    <input asp-for="Avatar" class="form-control col-md-6" />
+                    <span asp-validation-for="Avatar" class="text-danger col-md-4"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="LibararyName" class="control-label col-md-2">Автор</label>
+                    <input asp-for="LibararyName" class="form-control col-md-6" />
+                    <span asp-validation-for="LibararyName" class="text-danger col-md-4"></span>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="LibraryLocation" class="control-label col-md-2">Автор</label>
+                    <input asp-for="LibraryLocation" class="form-control col-md-6" />
+                    <span asp-validation-for="LibraryLocation" class="text-danger col-md-4"></span>
+                </div>
+                <div class="form-group row">
+                    <span class="text-danger col-md-7"></span>
+
+                    <input type="submit" value="Запази промените" class="btn btn-primary col-md-1" />
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>
