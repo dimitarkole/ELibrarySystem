@@ -5,6 +5,7 @@
     using System.Text;
     using System.ComponentModel;
     using System.Web;
+    using Microsoft.AspNetCore.Http;
 
     public class ProfilLibraryViewModel
     {
@@ -14,5 +15,6 @@
 
         public string LibraryLocation { get; set; }
 
+        public IFormFile Photos { get; set; }
     }
 }

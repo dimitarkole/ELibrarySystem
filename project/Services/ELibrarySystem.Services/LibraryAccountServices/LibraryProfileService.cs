@@ -2,11 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using ELibrarySystem.Data;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
+    using Microsoft.AspNetCore.Hosting.Internal;
 
     public class LibraryProfileService : ILibraryProfileService
     {
@@ -49,6 +51,9 @@
             string resultTitle = "Неуспешно редактиран профил";
             if (user != null)
             {
+                string uploadFile = Path.Combine()
+
+
                 user.Avatar = model.Avatar;
                 user.LibararyName = model.LibararyName;
                 user.LibraryLocation = model.LibraryLocation;

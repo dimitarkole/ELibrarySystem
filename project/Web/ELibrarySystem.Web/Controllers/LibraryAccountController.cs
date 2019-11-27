@@ -15,6 +15,7 @@
     using System.Text;
     using Microsoft.Extensions.Logging;
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
+    using System.IO;
 
     public class LibraryAccountController : Controller
     {
@@ -441,6 +442,7 @@
         public IActionResult Profile()
         {
             this.StarUp();
+            //Path.Combine(hostingEnviroment)
             var returnModel = this.libraryProfileService.PreparedPage(this.UserId);
             return this.View(returnModel);
         }

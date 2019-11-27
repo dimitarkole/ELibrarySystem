@@ -21,6 +21,18 @@
             <form asp-action="Profile" asp-route-returnUrl="@ViewData["AddBook"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group row">
+                    <label asp-for="Photos" class="control-label col-md-2"></label>
+                    <input asp-for="Photos" class="form-control col-md-5"/>
+                    <label class="form-control col-md-5"></label>
+
+
+                    <label asp-for="Photos" class="control-label col-md-2">Аватар</label>
+                    <input asp-for="Photos" class="form-control col-md-6" />
+                    <span asp-validation-for="Photos" class="text-danger col-md-4"></span>
+                </div>
+
+
+                <div class="form-group row">
                     <label asp-for="Avatar" class="control-label col-md-2">Аватар</label>
                     <input asp-for="Avatar" class="form-control col-md-6" />
                     <span asp-validation-for="Avatar" class="text-danger col-md-4"></span>
