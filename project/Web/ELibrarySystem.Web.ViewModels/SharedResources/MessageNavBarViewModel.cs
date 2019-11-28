@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class MessageViewModel
+    public class MessageNavBarViewModel
     {
         public string Id { get; set; }
 

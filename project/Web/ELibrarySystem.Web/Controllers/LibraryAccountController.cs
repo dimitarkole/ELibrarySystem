@@ -16,6 +16,7 @@
     using Microsoft.Extensions.Logging;
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
     using System.IO;
+    using Microsoft.AspNetCore.Hosting;
 
     public class LibraryAccountController : Controller
     {
@@ -36,6 +37,7 @@
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
         private string UserId;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public LibraryAccountController(
             IBookService bookService,
@@ -50,7 +52,8 @@
             ILogger<LogoutModel> logger,
             ILibraryProfileService libraryProfileService,
             IStatsLibraryService statsLibraryService,
-            IIndexLibraryService indexLibraryService)
+            IIndexLibraryService indexLibraryService,
+            IHostingEnvironment hostingEnvironment)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -65,8 +68,9 @@
             this.logger = logger;
             this.libraryProfileService = libraryProfileService;
             this.statsLibraryService = statsLibraryService;
-            this.indexLibraryService= indexLibraryService;
-    }
+            this.indexLibraryService = indexLibraryService;
+            this.hostingEnvironment = hostingEnvironment;
+        }
 
         [HttpGet]
         [Authorize]
@@ -442,7 +446,6 @@
         public IActionResult Profile()
         {
             this.StarUp();
-            //Path.Combine(hostingEnviroment)
             var returnModel = this.libraryProfileService.PreparedPage(this.UserId);
             return this.View(returnModel);
         }
@@ -454,6 +457,7 @@
         {
             this.StarUp();
             var returnModel = this.libraryProfileService.SaveChanges(model, this.UserId);
+            string uploadFile = Path.Combine(this.hostingEnvironment.WebRootPath, "/image");
             this.ViewData["message"] = returnModel[0];
             return this.View(returnModel[0]);
         }
@@ -477,11 +481,12 @@
             this.ViewData["message"] = this.UserId;
             return this.View("Stats", returnModel);
         }
-        
+
         private void StarUp()
         {
             this.UserId = this.UserManager.GetUserId(this.User);
             this.ViewBag.UserType = "libary";
+            
         }
     }
 }

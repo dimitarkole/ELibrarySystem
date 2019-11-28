@@ -3,6 +3,7 @@
     using ELibrarySystem.Data;
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
+    using ELibrarySystem.Web.ViewModels.SharedResources;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -26,11 +27,33 @@
                 UserId = userId,
                 User = user,
                 TextOfMessage = textOfMessage,
+                SeenOn = null,
             };
 
             this.context.Messages.Add(message);
             this.context.SaveChanges();
             return message.Id;
+        }
+
+        public MessagesNavBarViewModel GetMessagesNavBar(string userId)
+        {
+            var messages = this.context.Messages
+                .Where(m =>
+                    m.DeletedOn == null
+                    && m.UserId == userId
+                    && m.SeenOn == null)
+                .Select(m => new MessageNavBarViewModel()
+                    {
+                         CreatedOn = m.CreatedOn,
+                         Id = m.Id,
+                         TextOfMessage = m.TextOfMessage,
+                         SeenOn = m.SeenOn,
+                    })
+                .ToList();
+
+            var result = new MessagesNavBarViewModel(messages);
+
+            return result;
         }
     }
 }

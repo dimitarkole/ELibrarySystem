@@ -51,7 +51,7 @@
             string resultTitle = "Неуспешно редактиран профил";
             if (user != null)
             {
-                string uploadFile = Path.Combine()
+                //string uploadFile = Path.Combine(HostingEnvironment.WebRootPath);
 
 
                 user.Avatar = model.Avatar;
