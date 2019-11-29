@@ -61,7 +61,7 @@
                                     </li>
                                     <li>
                                         <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
-                                            Hello @UserManager.GetUserName(User)!
+                                            Здравей @UserManager.GetUserName(User)!
                                         </a>
                                         <ul class="dropdown">
                                             <li>
@@ -91,7 +91,24 @@
                                             +Добавяна на книга
                                         </a>
                                     </li>
+
                                     <li>                                        
+                                        <ul class="dropdown">
+                                            <li>
+                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="Profile">
+                                                    Съобщения {@ViewData["MessagesCount"]}
+                                                </a>
+                                            </li>
+                                           
+                                            <li>
+                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="">
+                                                    Съобщение
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
                                         <a asp-area="" asp-controller="LibraryAccount" asp-action="LogOut">
                                             Изход
                                         </a>
