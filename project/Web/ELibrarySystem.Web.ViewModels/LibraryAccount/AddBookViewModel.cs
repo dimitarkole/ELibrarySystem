@@ -15,8 +15,13 @@
         [Required(ErrorMessage = "Моля въведете име на автора!")]
         public string Author { get; set; }
 
+        [Required(ErrorMessage = "Моля въведете име на автора!")]
+        public string CatalogNumber { get; set; }
+
         [Required(ErrorMessage = "Моля изберете жанр!")]
         public string GenreId { get; set; }
+
+        public string Commentar { get; set; }
 
         public List<GenreListViewModel> Genres { get; set; }
     }

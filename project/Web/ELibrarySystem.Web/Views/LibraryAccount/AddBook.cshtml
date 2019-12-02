@@ -22,6 +22,11 @@
             <form asp-action="AddBook" asp-route-returnUrl="@ViewData["AddBook"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group row">
+                    <label asp-for="CatalogNumber" class="control-label col-md-2">Караложен номер</label>
+                    <input asp-for="CatalogNumber" class="form-control col-md-6" />
+                    <span asp-validation-for="CatalogNumber" class="text-danger col-md-4"></span>
+                </div>
+                <div class="form-group row">
                     <label asp-for="BookName" class="control-label col-md-2">Заглавие на книгата</label>
                     <input asp-for="BookName" class="form-control col-md-6" />
                     <span asp-validation-for="BookName" class="text-danger col-md-4"></span>
@@ -43,6 +48,13 @@
                     </select>
                     <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
                 </div>
+
+                <div class="form-group row">
+                    <label asp-for="Commentar" class="control-label col-md-2">Къде е книгата?</label>
+                    <input asp-for="Commentar" class="form-control col-md-6" />
+                    <span asp-validation-for="Commentar" class="text-danger col-md-4"></span>
+                </div>
+
                 <div class="form-group row">
                     <span class="text-danger col-md-7"></span>
 

@@ -33,37 +33,47 @@
             var genreId = model.GenreId;
             var bookName = model.BookName;
             var author = model.Author;
-
+            var catalogNumber = model.CatalogNumber;
+            var commentar = model.Commentar;
             var genreObj = this.context.Genres.FirstOrDefault(g =>
                 g.Id == genreId
                 && g.DeletedOn == null);
 
-            var book = this.context.Books.FirstOrDefault(b =>
+            var bookCheker1 = this.context.Books.FirstOrDefault(b =>
                 b.BookName == bookName
                 && b.Author == author
                 && b.UserId == userId
                 && b.DeletedOn == null);
             var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
-            if (book == null)
+            if (bookCheker1 == null)
             {
-                string result = this.ChackeInputData(bookName, author);
-                if (result == string.Empty)
+                var bookCheker2 = this.context.Books.FirstOrDefault(b =>
+                    b.CatalogNumber == catalogNumber
+                    && b.DeletedOn == null);
+                string result = "Каталожният номер съвпада с каталожния номер на друга книга!";
+                if (bookCheker2 == null)
                 {
-                    var newBook = new Book()
+                    result = this.ChackeInputData(bookName, author, catalogNumber);
+                    if (result == string.Empty)
                     {
-                        BookName = bookName,
-                        Author = author,
-                        GenreId = genreId,
-                        Genre = genreObj,
-                        UserId = userId,
-                    };
-                    this.context.Books.Add(newBook);
-                    genreObj.Books.Add(newBook);
-                    this.context.SaveChanges();
-                    result = "Успешно добавена книганата!";
-                    this.messageService.AddMessageAtDB(userId, result);
+                        var newBook = new Book()
+                        {
+                            BookName = bookName,
+                            Author = author,
+                            GenreId = genreId,
+                            Genre = genreObj,
+                            UserId = userId,
+                            CatalogNumber = catalogNumber,
+                            Commentar = commentar,
+                            User = user,
+                        };
+                        this.context.Books.Add(newBook);
+                        genreObj.Books.Add(newBook);
+                        this.context.SaveChanges();
+                        result = "Успешно добавена книганата!";
+                        this.messageService.AddMessageAtDB(userId, result);
+                    }
                 }
-
                 return result;
             }
 
@@ -76,6 +86,8 @@
             var bookId = model.BookId;
             var bookName = model.BookName;
             var author = model.Author;
+            var catalogNumber = model.CatalogNumber;
+            var commentar = model.Commentar;
             var genreObj = this.context.Genres.FirstOrDefault(g =>
                g.Id == genreId
                && g.DeletedOn == null);
@@ -87,25 +99,39 @@
             string resultTitle;
             if (book != null)
             {
-                var checkDublicateBook = this.context.Books.FirstOrDefault(b =>
+                var checkDublicateBook1 = this.context.Books.FirstOrDefault(b =>
                      b.Id != bookId
                      && b.BookName == bookName
                      && b.Author == author
-                     && b.GenreId == genreId);
-                if (checkDublicateBook == null)
+                     && b.GenreId == genreId
+                     && b.DeletedOn == null);
+                if (checkDublicateBook1 == null)
                 {
-                    resultTitle = this.ChackeInputData(bookName, author);
-                    if (resultTitle == string.Empty)
+                    var checkDublicateBook = this.context.Books.FirstOrDefault(b =>
+                       b.Id != bookId
+                       && b.CatalogNumber == catalogNumber
+                       && b.DeletedOn == null);
+                    if (checkDublicateBook == null)
                     {
-                        book.BookName = bookName;
-                        book.Author = author;
-                        book.GenreId = genreId;
-                        book.Genre = genreObj;
-                        book.UserId = userId;
-                        genreObj.Books.Add(book);
-                        this.context.SaveChanges();
-                        resultTitle = "Успешно редактирана книгана!";
-                        this.messageService.AddMessageAtDB(userId, resultTitle);
+                        resultTitle = this.ChackeInputData(bookName, author, catalogNumber);
+                        if (resultTitle == string.Empty)
+                        {
+                            book.BookName = bookName;
+                            book.Author = author;
+                            book.GenreId = genreId;
+                            book.Genre = genreObj;
+                            book.UserId = userId;
+                            book.CatalogNumber = catalogNumber;
+                            book.Commentar = commentar;
+
+                            genreObj.Books.Add(book);
+                            this.context.SaveChanges();
+                            resultTitle = "Успешно редактирана книгана!";
+                            this.messageService.AddMessageAtDB(userId, resultTitle);
+                        }
+                    }
+                    else {
+                        resultTitle = "Каталожният номер съвпада с каталожния номер на друга книга!";
                     }
                 }
                 else
@@ -148,7 +174,7 @@
             return model;
         }
 
-        private string ChackeInputData(string bookName, string author)
+        private string ChackeInputData(string bookName, string author, string catalogNumber)
         {
             StringBuilder errors = new StringBuilder();
             if (string.IsNullOrEmpty(bookName)
@@ -163,6 +189,13 @@
                 || author.Length < 5)
             {
                 errors.AppendLine("Името на автора трябва да има поне 5 символа!");
+            }
+
+            if (string.IsNullOrEmpty(catalogNumber)
+              || string.IsNullOrWhiteSpace(catalogNumber)
+              || author.Length < 3)
+            {
+                errors.AppendLine("Каталожният номер трябва да има поне 3 символа!");
             }
 
             return errors.ToString().Trim();
