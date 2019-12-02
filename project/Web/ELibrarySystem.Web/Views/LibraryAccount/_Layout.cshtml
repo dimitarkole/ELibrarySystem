@@ -91,20 +91,34 @@
                                             +Добавяна на книга
                                         </a>
                                     </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="Messages">
+                                            Съобщения
+                                        </a>
+                                    </li>
+                                    @{
+                                        var messages = ViewData["MessageNavBar"] as ELibrarySystem.Web.ViewModels.SharedResources.MessagesNavBarViewModel;
 
-                                    <li>                                        
+                                    }
+
+
+                                    <li>
+
+
+                                        <a asp-area="" asp-controller="Manage" asp-action="Messages" title="Manage">
+                                            Съобщения {@messages.CountMessages}
+                                        </a>
+
                                         <ul class="dropdown">
-                                            <li>
-                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="Profile">
-                                                    Съобщения {@ViewData["MessagesCount"]}
-                                                </a>
-                                            </li>
-                                           
-                                            <li>
-                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="">
-                                                    Съобщение
-                                                </a>
-                                            </li>
+                                            @foreach (var message in messages.Messages)
+                                            {
+                                                <li>
+                                                    <a asp-area="" asp-controller="LibraryAccount" asp-action="">
+                                                        @message.TextOfMessage.Substring(0, 19) ...
+                                                    </a>
+                                                </li>
+                                            }
+
                                         </ul>
                                     </li>
 

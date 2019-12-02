@@ -52,8 +52,6 @@
             if (user != null)
             {
                 //string uploadFile = Path.Combine(HostingEnvironment.WebRootPath);
-
-
                 user.Avatar = model.Avatar;
                 user.LibararyName = model.LibararyName;
                 user.LibraryLocation = model.LibraryLocation;

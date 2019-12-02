@@ -480,14 +480,23 @@
             return this.View("Stats", returnModel);
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult Messages()
+        {
+            this.StarUp();
+           // var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
+            //return this.View("Messages",  returnModel);
+            return this.View();
+        }
+
         private void StarUp()
         {
             this.userId = this.userManager.GetUserId(this.User);
             this.ViewBag.UserType = "libary";
 
-            var message = this.messageService.GetMessagesNavBar(this.userId);
-            this.ViewData["MessagesCount"] = message.CountMessages;
-            this.ViewData["MessagesNavBar"] = message.Messages;
+            var messages = this.messageService.GetMessagesNavBar(this.userId);
+            this.ViewData["MessageNavBar"] = messages;
         }
     }
 }
