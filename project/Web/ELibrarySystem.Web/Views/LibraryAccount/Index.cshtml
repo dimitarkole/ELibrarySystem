@@ -11,9 +11,30 @@
 
 <h1>Index</h1>
 
-@Model.CountAddedBooks
-@Model.CountGettedBooks
-@Model.CountTakenBooks
+<div class="container" style="background:#f7f7f7">
+    <div class="row">
+        <div class="col-md-4">
+
+            <h3>Всички добавени книги @Model.CountAddedBooks</h3>
+
+            <hr />
+        </div>
+        <div class="col-md-4">
+            <h3>Брой дадени книги @Model.CountGettedBooks</h3>
+
+            <hr />
+        </div>
+        <div class="col-md-4">
+            <h3>Брой върнати книги @Model.CountTakenBooks</h3>
+
+            <hr />
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <a asp-area="" asp-controller="LibraryAccount" asp-action="Stats">
     Статистика

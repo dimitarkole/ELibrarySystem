@@ -54,16 +54,28 @@
 
                             <div class="classynav">
                                 <ul id="nav">
+                                    @{
+                                        var messages = ViewData["MessageNavBar"] as ELibrarySystem.Web.ViewModels.SharedResources.MessagesNavBarViewModel;
+
+                                    }
+
                                     <li>
-                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="Index" title="Manage">
-                                            Начало
+                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook" class="btn btn-primary">
+                                            +Добави книга
                                         </a>
                                     </li>
+
                                     <li>
                                         <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
                                             Здравей @UserManager.GetUserName(User)!
                                         </a>
                                         <ul class="dropdown">
+
+                                            <li>
+                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="Index" title="Manage">
+                                                    Начало
+                                                </a>
+                                            </li>
                                             <li>
                                                 <a asp-area="" asp-controller="LibraryAccount" asp-action="Profile">
                                                     Профил
@@ -74,59 +86,39 @@
                                                     Добавени книги
                                                 </a>
                                             </li>
+
                                             <li>
                                                 <a asp-area="" asp-controller="LibraryAccount" asp-action="GiveBook">
                                                     Дай книга
                                                 </a>
                                             </li>
+
                                             <li>
                                                 <a asp-area="" asp-controller="LibraryAccount" asp-action="GivenBooks">
                                                     Дадени книги
                                                 </a>
                                             </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook">
-                                            +Добавяна на книга
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="Messages">
-                                            Съобщения
-                                        </a>
-                                    </li>
-                                    @{
-                                        var messages = ViewData["MessageNavBar"] as ELibrarySystem.Web.ViewModels.SharedResources.MessagesNavBarViewModel;
 
-                                    }
+                                            <li>
+                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="Messages">
+                                                    Съобщения
+                                                    <span style="background:red; padding:2px 10px 2px 10px; border-radius: 12px">
+                                                        @messages.CountMessages
+                                                    </span>
+                                                </a>
+                                            </li>
 
-
-                                    <li>
-
-
-                                        <a asp-area="" asp-controller="Manage" asp-action="Messages" title="Manage">
-                                            Съобщения {@messages.CountMessages}
-                                        </a>
-
-                                        <ul class="dropdown">
-                                            @foreach (var message in messages.Messages)
-                                            {
-                                                <li>
-                                                    <a asp-area="" asp-controller="LibraryAccount" asp-action="">
-                                                        @message.TextOfMessage.Substring(0, 19) ...
-                                                    </a>
-                                                </li>
-                                            }
-
+                                            <li>
+                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="LogOut">
+                                                    Изход
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
 
-                                    <li>
-                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="LogOut">
-                                            Изход
-                                        </a>
-                                    </li>
+
+
+
                                 </ul>
                             </div>
                             <!-- Nav End -->
@@ -142,8 +134,43 @@
         @RenderBody()
         <hr />
     </div>
-    <!-- ***** Footer Area Start ***** -->
-    <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url('~/images/core-img/logo.png');">
+
+
+
+    <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url(img/bg-img/3.jpg);">
+        <div class="container">
+            <div class="row">
+                <!-- Single Footer Widget -->
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-footer-widget">
+                        <a href="./index.html" class="d-block mb-4">
+                            <img src="./img/core-img/logo.png" alt="" width="180px" height="180px">
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- Single Footer Widget -->
+                <div class="col-12 col-sm-6 col-lg-8">
+                    <div class="single-footer-widget">
+                        <!-- Widget Title -->
+                        
+                        <p>
+                            Elibrary2.somee.com e сайт за сърхраняване на информация на дадена библиотека,
+                            която е: Какви книги има в библиотеката; Кой читател коя книга чете или е прочел.
+                            Тук може да намериш интересни книги и лесно да се свържеш с билиотеката в която се намират.<br>
+
+                            Ако искаш да запазиш информацията от библиотеката си, може да го направиш безплатно тук.<br>
+                            Ако искаш да прочетеш някоя вълнуваща или интересна книга - може да намериш атрактивни предложения тук,
+                            където може да потърсиш информация за най-близката библиотека, в която има търсената книга.<br>
+                            Чети книги чрез Elibrary2.somee.com!
+
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Copywrite Area -->
         <div class="container">
@@ -153,7 +180,7 @@
                         <p>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             Copyright &copy;
-                            <script>document.write(new Date().getFullYear());</script> Всички права запазени | Сайтът е разработен от Димитър - Смолян <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            <script>2019 - document.write(new Date().getFullYear());</script> Всички права запазени | Сайтът е разработен от Димитър - Смолян <i class="fa fa-heart-o" aria-hidden="true"></i>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </p>
                     </div>
@@ -162,6 +189,9 @@
         </div>
     </footer>
     <!-- ***** Footer Area End ***** -->
+
+
+
 
 
 
