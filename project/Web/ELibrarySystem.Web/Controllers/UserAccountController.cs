@@ -88,7 +88,7 @@
         {
             this.StarUp();
             var returModel = this.takenBooksService.TakenBooks(model, this.UserId);
-            return this.View(returModel);
+            return this.View("TakenBooks", returModel);
         }
 
         [HttpPost]
@@ -97,7 +97,7 @@
         {
             this.StarUp();
             var returModel = this.takenBooksService.ChangeActivePage(model, this.UserId, id);
-            return this.View(returModel);
+            return this.View("TakenBooks",returModel);
         }
 
         [HttpGet]

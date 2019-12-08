@@ -6,6 +6,12 @@
 
     public class LibraryViewModel
     {
+
+        public LibraryViewModel()
+        {
+
+        }
+
         public LibraryViewModel(string libraryName, string libraryMail)
         {
             this.LibraryName = libraryName;
