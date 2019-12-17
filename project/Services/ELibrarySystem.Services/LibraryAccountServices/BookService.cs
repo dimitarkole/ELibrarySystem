@@ -39,13 +39,14 @@
                 g.Id == genreId
                 && g.DeletedOn == null);
 
-            var bookCheker1 = this.context.Books.FirstOrDefault(b =>
-                b.BookName == bookName
-                && b.Author == author
-                && b.UserId == userId
-                && b.DeletedOn == null);
-            var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
-            if (bookCheker1 == null)
+            var bookCheker1 = this.context.Books.Where(b =>
+                    b.BookName == bookName
+                    && b.Author == author
+                    && b.UserId == userId
+                    && b.DeletedOn == null
+                    && b.CatalogNumber.Equals(catalogNumber) == true)
+                .ToList();
+            if (bookCheker1.Count == 0)
             {
                 var bookCheker2 = this.context.Books.FirstOrDefault(b =>
                     b.CatalogNumber == catalogNumber
@@ -56,6 +57,8 @@
                     result = this.ChackeInputData(bookName, author, catalogNumber);
                     if (result == string.Empty)
                     {
+                        var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
+
                         var newBook = new Book()
                         {
                             BookName = bookName,
@@ -74,6 +77,7 @@
                         this.messageService.AddMessageAtDB(userId, result);
                     }
                 }
+
                 return result;
             }
 
@@ -99,18 +103,22 @@
             string resultTitle;
             if (book != null)
             {
-                var checkDublicateBook1 = this.context.Books.FirstOrDefault(b =>
-                     b.Id != bookId
-                     && b.BookName == bookName
-                     && b.Author == author
-                     && b.GenreId == genreId
-                     && b.DeletedOn == null);
-                if (checkDublicateBook1 == null)
+
+                var bookCheker1 = this.context.Books.Where(b =>
+                       b.Id != bookId
+                       && b.BookName == bookName
+                       && b.Author == author
+                       && b.UserId == userId
+                       && b.CatalogNumber.Equals(catalogNumber) == true
+                       && b.DeletedOn == null)
+                   .ToList();
+                if (bookCheker1.Count == 0)
                 {
                     var checkDublicateBook = this.context.Books.FirstOrDefault(b =>
                        b.Id != bookId
                        && b.CatalogNumber == catalogNumber
                        && b.DeletedOn == null);
+
                     if (checkDublicateBook == null)
                     {
                         resultTitle = this.ChackeInputData(bookName, author, catalogNumber);
@@ -130,7 +138,8 @@
                             this.messageService.AddMessageAtDB(userId, resultTitle);
                         }
                     }
-                    else {
+                    else
+                    {
                         resultTitle = "Каталожният номер съвпада с каталожния номер на друга книга!";
                     }
                 }
@@ -159,6 +168,8 @@
                 BookName = book.BookName,
                 GenreId = book.GenreId,
                 Genres = genres,
+                CatalogNumber = book.CatalogNumber,
+                Commentar = book.Commentar,
             };
             return model;
         }

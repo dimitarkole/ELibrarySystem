@@ -21,6 +21,10 @@
 
         public string GenreName { get; set; }
 
+        public string CatalogNumber { get; set; }
+
+        public string Commentar { get; set; }
+
         public string GenreId { get; set; }
 
         public string BookId { get; set; }

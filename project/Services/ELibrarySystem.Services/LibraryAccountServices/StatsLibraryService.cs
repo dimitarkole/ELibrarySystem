@@ -61,7 +61,7 @@
                   BookName = gb.Book.BookName,
                   GenreName = gb.Book.Genre.Name,
                   GenreId = gb.Book.GenreId,
-
+                  CatalogNumber = gb.Book.CatalogNumber,
                   FirstName = gb.User.FirstName,
                   LastName = gb.User.LastName,
                   UserName = gb.User.UserName,

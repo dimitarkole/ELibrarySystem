@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "GivenBooks";
+    ViewData["Title"] = "Всички дадени книги";
 }
 @model ELibrarySystem.Web.ViewModels.LibraryAccount.GivenBooksViewModel
 
@@ -17,9 +17,17 @@
                 Търсене:
             </h4>
         </div>
+
+
         <div class="row">
             <div class="col-md-12">
                 <h3>@ViewData["message"]</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label asp-for="SearchGivenBook.CatalogNumber" class="control-label col-md-3">Каталожен номер</label>
+                    <input asp-for="SearchGivenBook.CatalogNumber" class="form-control col-md-9" />
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group row">
@@ -33,9 +41,7 @@
                     <input asp-for="SearchGivenBook.Author" class="form-control col-md-9" />
                 </div>
             </div>
-        </div>
 
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group row">
                     <label asp-for="SearchGivenBook.GenreId" class="control-label  col-md-3">Жанр</label>
@@ -52,9 +58,6 @@
 
                     </select>
                 </div>
-
-
-
             </div>
             <div class="col-md-6">
                 <div class="form-group row">

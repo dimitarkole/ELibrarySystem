@@ -69,6 +69,7 @@
             var sortMethodId = model.SortMethodId;
             var countBooksOfPage = model.CountBooksOfPage;
             var currentPage = model.CurrentPage;
+            var catalogNumber = model.SearchGivenBook.CatalogNumber;
 
             var givenBooks = this.context.GetBooks
                 .Where(gb =>
@@ -81,7 +82,7 @@
                     BookName = gb.Book.BookName,
                     GenreName = gb.Book.Genre.Name,
                     GenreId = gb.Book.GenreId,
-
+                    CatalogNumber = gb.Book.CatalogNumber,
                     FirstName = gb.User.FirstName,
                     LastName = gb.User.LastName,
                     UserName = gb.User.UserName,
@@ -97,6 +98,7 @@
                 firstName,
                 lastName,
                 email,
+                catalogNumber,
                 givenBooks);
 
             givenBooks = this.SortBooks(sortMethodId, givenBooks);
@@ -123,6 +125,7 @@
 
             var searchGivenBook = new GivenBookViewModel()
             {
+                CatalogNumber = catalogNumber,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,
@@ -209,8 +212,14 @@
           string firstName,
           string lastName,
           string email,
+          string catalogNumber,
           IQueryable<GivenBookViewModel> givenBooks)
         {
+            if (catalogNumber != null)
+            {
+                givenBooks = givenBooks.Where(b => b.CatalogNumber.Contains(catalogNumber));
+            }
+
             if (bookName != null)
             {
                 givenBooks = givenBooks.Where(b => b.BookName.Contains(bookName));
