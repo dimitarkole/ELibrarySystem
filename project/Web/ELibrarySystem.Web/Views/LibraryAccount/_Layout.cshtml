@@ -9,14 +9,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ELibrary</title>
-    <link rel="stylesheet" href="~/AllStyle.css" />
+    <link rel="stylesheet" href="~/style.css" />
     <link rel="icon" href="~/img/core-img/favicon.ico">
     <environment include="Development">
         <link rel="stylesheet" href="~/style.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https ://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
@@ -154,7 +154,7 @@
                 <div class="col-12 col-sm-6 col-lg-8">
                     <div class="single-footer-widget">
                         <!-- Widget Title -->
-                        
+
                         <p>
                             Elibrary2.somee.com e сайт за сърхраняване на информация на дадена библиотека,
                             която е: Какви книги има в библиотеката; Кой читател коя книга чете или е прочел.
@@ -198,7 +198,7 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/css/js/site.js" asp-append-version="true"></script>
+        <!-- <script src="~/css/js/site.js" asp-append-version="true"></script>-->
 
     </environment>
     <environment exclude="Development">
@@ -214,7 +214,7 @@
                 crossorigin="anonymous"
                 integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
         </script>
-        <script src="~/css/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <!-- ******* All JS ******* -->
     <!-- jQuery js -->
@@ -229,5 +229,7 @@
     <script src="~/js/default-assets/active.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    @this.RenderSection("Scripts", required: false)
 </body>
 </html>
