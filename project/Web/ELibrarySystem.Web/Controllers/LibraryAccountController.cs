@@ -77,7 +77,6 @@
         [Authorize]
         public IActionResult LogOut()
         {
-
             return this.RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -86,7 +85,12 @@
         [HttpGet]
         public IActionResult Index()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var model = this.indexLibraryService.PreparedPage(this.userId);
             return this.View(model);
         }
@@ -96,7 +100,12 @@
         [HttpGet]
         public IActionResult AddBook()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.bookService.PreparedAddBookPage();
             return this.View(returnModel);
         }
@@ -106,7 +115,12 @@
         [HttpPost]
         public IActionResult AddBook(AddBookViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             this.ViewData["message"] = this.bookService.AddBook(model, this.userId);
             var returnModel = this.bookService.PreparedAddBookPage();
             return this.View(returnModel);
@@ -117,7 +131,12 @@
         [HttpGet]
         public IActionResult AllBooks()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.getAllBooks.PreparedPage(this.userId);
             return this.View(returnModel);
         }
@@ -127,7 +146,12 @@
         [HttpPost]
         public IActionResult AllBooksSearch(AllBooksViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.getAllBooks.GetBooks(model, this.userId);
             return this.View("AllBooks", returnModel);
         }
@@ -137,7 +161,12 @@
         [HttpPost]
         public IActionResult DeleteBook(AllBooksViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             this.ViewData["message"] = "Успешно премахната книга";
             var returnModel = this.getAllBooks.DeleteBook(this.userId, model, id);
 
@@ -147,7 +176,12 @@
         [Authorize]
         public IActionResult ChangePageAllBook(AllBooksViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.getAllBooks.ChangeActivePage(model, this.userId, id);
             return this.View("AllBooks", returnModel);
         }
@@ -157,7 +191,12 @@
         [HttpPost]
         public IActionResult EditBookAllBook(string id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var model = this.bookService.GetBookDataById(id);
             this.HttpContext.Session.SetString("editBookId", id);
             return this.View("EditBook", model);
@@ -168,7 +207,12 @@
         [HttpPost]
         public IActionResult EditBook(AddBookViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var bookId = this.HttpContext.Session.GetString("editBookId");
             model.BookId = bookId;
             var result = this.bookService.EditBook(model, this.userId);
@@ -182,7 +226,12 @@
         [HttpGet]
         public IActionResult GiveBook()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var model = this.giveBookService.PreparedPage(this.userId);
             return this.View(model);
         }
@@ -192,7 +241,12 @@
         [HttpPost]
         public IActionResult GiveBookSearchBook(GiveBookViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
             string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
             var returnModel = this.giveBookService.GiveBookSearchBook(
@@ -205,7 +259,12 @@
         [HttpPost]
         public IActionResult GiveBookSearchUser(GiveBookViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
             string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
             var returnModel = this.giveBookService.GiveBookSearchUser(
@@ -218,7 +277,12 @@
         [HttpPost]
         public IActionResult GiveBookChangePageBooks(GiveBookViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
             string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
             var returnModel = this.giveBookService.GiveBookChangeBookPage(
@@ -231,7 +295,12 @@
         [HttpPost]
         public IActionResult GiveBookChangePageUsers(GiveBookViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
             string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
             var returnModel = this.giveBookService.GiveBookChangeUserPage(
@@ -244,7 +313,12 @@
         [HttpPost]
         public IActionResult SelectBookGiveBookPage(GiveBookViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
             var returnModel = this.giveBookService.GiveBookSelectedBook(
                 model, this.userId, id, selecteduserId);
@@ -257,7 +331,12 @@
         [HttpPost]
         public IActionResult SelectUserGiveBookPage(GiveBookViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
 
             var returnModel = this.giveBookService.GiveBookSelectedUser(
@@ -271,7 +350,12 @@
         [HttpPost]
         public IActionResult GiveBookGivingBook(GiveBookViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
             string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
 
@@ -288,7 +372,12 @@
         [HttpGet]
         public IActionResult GivenBooks()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.givenBooksService.PreparedPage(this.userId);
 
             return this.View(returnModel);
@@ -299,7 +388,12 @@
         [HttpPost]
         public IActionResult ChangePageGivenBooks(GivenBooksViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.givenBooksService.ChangeActivePage(model, this.userId, id);
             return this.View("GivenBooks", returnModel);
         }
@@ -309,7 +403,12 @@
         [HttpPost]
         public IActionResult GivenBooksSearch(GivenBooksViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.givenBooksService.GetGevenBooks(model, this.userId);
             return this.View("GivenBooks", returnModel);
         }
@@ -319,7 +418,12 @@
         [HttpPost]
         public IActionResult ReturningGivenBook(GivenBooksViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.givenBooksService.ReturningBook(model, this.userId, id);
             this.ViewData["message"] = returnModel[1];
             return this.View("GivenBooks", returnModel[0]);
@@ -330,7 +434,12 @@
         [HttpPost]
         public IActionResult DeleteGivenBook(GivenBooksViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.givenBooksService.DeletingBook(model, this.userId, id);
             return this.View("GivenBooks", returnModel[0]);
         }
@@ -341,7 +450,12 @@
         [HttpPost]
         public IActionResult SendMessageForReturningBook(GivenBooksViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.givenBooksService.SendMessageForReturningBook(model, this.userId, id);
             this.ViewData["message"] = returnModel[1];
             return this.View("GivenBooks", returnModel[0]);
@@ -352,7 +466,12 @@
         [HttpGet]
         public IActionResult Profile()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.libraryProfileService.PreparedPage(this.userId);
             return this.View(returnModel);
         }
@@ -362,7 +481,12 @@
         [HttpPost]
         public IActionResult Profile(ProfilLibraryViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.libraryProfileService.SaveChanges(model, this.userId);
             string uploadFile = Path.Combine(this.hostingEnvironment.WebRootPath, "/image");
             this.ViewData["message"] = returnModel[0];
@@ -373,7 +497,12 @@
         [HttpGet]
         public IActionResult Stats()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.statsLibraryService.PreparedPage(this.userId);
             this.ViewData["message"] = this.userId;
             return this.View(returnModel);
@@ -383,7 +512,12 @@
         [HttpPost]
         public IActionResult StatsSearch(StatsLibaryViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.statsLibraryService.SearchStats(model, this.userId);
             this.ViewData["message"] = this.userId;
             return this.View("Stats", returnModel);
@@ -393,7 +527,12 @@
         [HttpGet]
         public IActionResult Notification()
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
             return this.View(returnModel);
         }
@@ -402,26 +541,47 @@
         [HttpPost]
         public IActionResult NotificationChangePage(MessagesViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
-            this.StarUp();
+            this.StartUp();
 
             return this.View("Notification", returnModel);
         }
 
-        private void StarUp()
+        private IActionResult StartUp()
         {
             this.userId = this.userManager.GetUserId(this.User);
             this.ViewData["UserType"] = "library";
-            this.ViewData["UserId"] = this.userId;
             var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "library");
-            if (chackProfile == false)
+            if (chackProfile != null)
             {
-                _ = this.LogOut();
+                if (chackProfile == "admin")
+                {
+                    return this.RedirectToAction(nameof(AdminAccountController.Index), "AdminAccount");
+                }
+                else if (chackProfile == "library")
+                {
+                    return this.RedirectToAction(nameof(LibraryAccountController.Index), "LibraryAccount");
+                }
+                else if (chackProfile == "user")
+                {
+                    return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
+
+                }
+                else
+                {
+                    return this.LogOut();
+                }
             }
-            
+
             var messages = this.messageService.GetMessagesNavBar(this.userId);
             this.ViewData["MessageNavBar"] = messages;
+            return null;
         }
     }
 }

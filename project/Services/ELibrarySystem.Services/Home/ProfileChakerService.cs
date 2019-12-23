@@ -16,17 +16,14 @@
             this.context = context;
         }
 
-        public bool CheckCurrectAccount(string userId, string type)
+        public string CheckCurrectAccount(string userId, string type)
         {
             var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
             if (type == user.Type)
             {
-                return true;
+                return null;
             }
-            else
-            {
-                return false;
-            }
+            return user.Type;
         }
     }
 }

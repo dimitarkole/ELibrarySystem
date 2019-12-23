@@ -54,36 +54,53 @@
             this.profilChekerService = profilChekerService;
         }
 
-        private void StarUp()
+        private IActionResult StarUp()
         {
             this.userId = this.UserManager.GetUserId(this.User);
             this.ViewData["UserType"] = "user";
-            this.ViewData["UserId"] = this.userId;
             var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "user");
-            if (chackProfile == false)
+            if (chackProfile != null)
             {
-                this.LogOut();
+                if (chackProfile == "admin")
+                {
+                    return this.RedirectToAction(nameof(AdminAccountController.Index), "AdminAccount");
+                }
+                else if (chackProfile == "library")
+                {
+                    return this.RedirectToAction(nameof(LibraryAccountController.Index), "LibraryAccount");
+                }
+                else if (chackProfile == "user")
+                {
+                    return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
+
+                }
+                else
+                {
+                    return this.LogOut();
+                }
             }
             var messages = this.messageService.GetMessagesNavBar(this.userId);
             this.ViewData["MessageNavBar"] = messages;
+            return null;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index(string returnUrl = null)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
             var model = this.indexUserService.PreparedPage(this.userId);
             return this.View(model);
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
-            this.StarUp();
-            await this.signInManager.SignOutAsync();
-            this.logger.LogInformation("User logged out.");
 
             return this.RedirectToAction(nameof(HomeController.Index), "Home");
         }
@@ -92,7 +109,11 @@
         [AllowAnonymous]
         public IActionResult TakenBooks()
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
             var returModel = this.takenBooksService.PreparedPage(this.userId);
             return this.View(returModel);
         }
@@ -101,7 +122,11 @@
         [AllowAnonymous]
         public IActionResult TakenBooksSearch(TakenBooksViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
             var returModel = this.takenBooksService.TakenBooks(model, this.userId);
             return this.View("TakenBooks", returModel);
         }
@@ -110,7 +135,11 @@
         [AllowAnonymous]
         public IActionResult ChangePageTakenBooks(TakenBooksViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
             var returModel = this.takenBooksService.ChangeActivePage(model, this.userId, id);
             return this.View("TakenBooks",returModel);
         }
@@ -119,7 +148,11 @@
         [AllowAnonymous]
         public IActionResult Profile()
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
             var returModel = this.userProfileService.PreparedPage(this.userId);
             return this.View(returModel);
         }
@@ -128,7 +161,11 @@
         [AllowAnonymous]
         public IActionResult Profile(ProfilUserViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
             var returModel = this.userProfileService.SaveChanges(model, this.userId);
             return this.View(returModel);
         }
@@ -137,7 +174,12 @@
         [HttpGet]
         public IActionResult Notification()
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
             return this.View(returnModel);
         }
@@ -146,10 +188,14 @@
         [HttpPost]
         public IActionResult NotificationChangePage(MessagesViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
             this.StarUp();
-
 
             return this.View("Notification", returnModel);
         }

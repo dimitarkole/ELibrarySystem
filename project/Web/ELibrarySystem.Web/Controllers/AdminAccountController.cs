@@ -7,8 +7,10 @@
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.AdminAccount;
     using ELibrarySystem.Services.Contracts.Home;
+    using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
     using ELibrarySystem.Web.ViewModels.AdminAccount;
+    using ELibrarySystem.Web.ViewModels.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.SharedResources;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -26,6 +28,8 @@
         private IUsersService usersService;
         private IAdminProfileService adminProfileService;
         private IProfileChakerService profilChekerService;
+        private IMessageService messageService;
+
 
         public AdminAccountController(
             SignInManager<ApplicationUser> signInManager,
@@ -33,7 +37,8 @@
             ILogger<LogoutModel> logger,
             IUsersService usersService,
             IAdminProfileService adminProfileService,
-            IProfileChakerService profilChekerService)
+            IProfileChakerService profilChekerService,
+            IMessageService messageService)
         {
             this.SignInManager = signInManager;
             this.UserManager = userManager;
@@ -42,6 +47,7 @@
             this.usersService = usersService;
             this.adminProfileService = adminProfileService;
             this.profilChekerService = profilChekerService;
+            this.messageService = messageService;
         }
 
 
@@ -49,17 +55,19 @@
         [AllowAnonymous]
         public IActionResult Index(string returnUrl = null)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             return this.View();
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
-            await this.signInManager.SignOutAsync();
-            this.logger.LogInformation("User logged out.");
-
             return this.RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -67,7 +75,12 @@
         [AllowAnonymous]
         public IActionResult AllUsers()
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.usersService.PreparedPage();
             return this.View(returnModel);
         }
@@ -76,7 +89,12 @@
         [AllowAnonymous]
         public IActionResult MakeUserLibrary(UsersViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.usersService.MakeUserLibrary(model, id);
             this.ViewData["message"] = returnModel[1].ToString();
             return this.View("AllUsers", returnModel[0]);
@@ -86,7 +104,12 @@
         [AllowAnonymous]
         public IActionResult MakeLibraryUser(UsersViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.usersService.MakeLibraryUser(model, id);
             this.ViewData["message"] = returnModel[1].ToString();
             return this.View("AllUsers", returnModel[0]);
@@ -96,7 +119,12 @@
         [AllowAnonymous]
         public IActionResult MakeUserAdmin(UsersViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.usersService.MakeUserAdmin(model, id);
             this.ViewData["message"] = returnModel[1].ToString();
             return this.View("AllUsers", returnModel[0]);
@@ -106,7 +134,12 @@
         [AllowAnonymous]
         public IActionResult DeleteUser(UsersViewModel model, string id)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.usersService.MakeUserAdmin(model, id);
             this.ViewData["message"] = returnModel[1].ToString();
             return this.View("AllUsers", returnModel[0]);
@@ -116,7 +149,12 @@
         [AllowAnonymous]
         public IActionResult ChangeActivePage(UsersViewModel model, int id)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.usersService.ChangeActivePage(model, id);
             return this.View("AllUsers", returnModel);
         }
@@ -125,7 +163,12 @@
         [AllowAnonymous]
         public IActionResult Profile()
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.adminProfileService.PreparedPage(this.userId);
             return this.View(returnModel);
         }
@@ -134,7 +177,12 @@
         [AllowAnonymous]
         public IActionResult Profile(ProfilAdminViewModel model)
         {
-            this.StarUp();
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
             var returnModel = this.adminProfileService.SaveChanges(model, this.userId);
             return this.View(returnModel);
         }
@@ -155,17 +203,64 @@
             return this.View(model);
         }
 
-        private void StarUp()
+        [Authorize]
+        [HttpGet]
+        public IActionResult Notification()
+        {
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+            var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
+            return this.View(returnModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult NotificationChangePage(MessagesViewModel model, int id)
+        {
+            var startUp = this.StarUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
+            this.StarUp();
+
+            return this.View("Notification", returnModel);
+        }
+
+        private IActionResult StarUp()
         {
             this.userId = this.UserManager.GetUserId(this.User);
 
             var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "admin");
-            if (chackProfile == false)
+            if (chackProfile != null)
             {
-                this.LogOut();
+                if (chackProfile == "admin")
+                {
+                    return this.RedirectToAction(nameof(AdminAccountController.Index), "AdminAccount");
+                }
+                else if (chackProfile == "library")
+                {
+                    return this.RedirectToAction(nameof(LibraryAccountController.Index), "LibraryAccount");
+                }
+                else if (chackProfile == "user")
+                {
+                    return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
+
+                }
+                else
+                {
+                    return this.LogOut();
+                }
             }
+            var messages = this.messageService.GetMessagesNavBar(this.userId);
+            this.ViewData["MessageNavBar"] = messages;
             this.ViewData["UserType"] = "admin";
-            this.ViewData["UserId"] = this.userId;
+            return null;
         }
     }
 }

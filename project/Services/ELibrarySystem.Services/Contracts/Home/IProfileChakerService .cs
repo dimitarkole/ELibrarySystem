@@ -6,6 +6,6 @@
 
     public interface IProfileChakerService
     {
-        public bool CheckCurrectAccount(string userId, string type);
+        public string CheckCurrectAccount(string userId, string type);
     }
 }

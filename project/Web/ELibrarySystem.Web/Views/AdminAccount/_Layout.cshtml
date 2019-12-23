@@ -51,9 +51,37 @@
                             <div class="classycloseIcon">
                                 <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
                             </div>
-                            <li>@ViewData["UserType"] @ViewData["UserId"]</li>
                             <div class="classynav">
                                 <ul id="nav">
+                                    @{
+                                        var messages = ViewData["MessageNavBar"] as ELibrarySystem.Web.ViewModels.SharedResources.MessagesNavBarViewModel;
+
+                                    }
+                                    <li>
+                                        <a asp-area="" asp-controller="Admin    Account" asp-action="Notification">
+                                            <div class="row align-items-center">
+                                                <div class="col-4">
+                                                    <input type="image" src="~/img/bg-img/Notification.png" name="name" style="width:35px; height:35px;" value="" />
+
+                                                </div>
+
+                                                @if (messages.CountMessages < 99)
+                                                {
+                                                    <div class="col-4">
+                                                        @messages.CountMessages
+
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-4">
+                                                        +99
+
+                                                    </div>
+                                                }
+                                            </div>
+                                        </a>
+                                    </li>
                                     <li>
                                         <a asp-area="" asp-controller="AdminAccount" asp-action="Index" title="Manage">
                                             Начало
