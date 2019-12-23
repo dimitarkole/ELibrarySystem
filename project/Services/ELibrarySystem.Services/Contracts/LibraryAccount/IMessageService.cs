@@ -15,7 +15,7 @@
         MessagesViewModel GetMessagesPreparedPage(string userId);
 
 
-        MessagesViewModel GetMessagesChangePage(MessagesViewModel model, string userId);
+        MessagesViewModel GetMessagesChangePage(MessagesViewModel model, string userId, int pageIndex);
 
     }
 }

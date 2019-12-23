@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Всички добавени книги</h2>
-                
+
                 <hr />
             </div>
         </div>
@@ -22,21 +22,28 @@
             <div class="col-md-12">
                 <h3>@ViewData["message"]</h3>
             </div>
+
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label asp-for="SearchBook.CatalogNumber" class="control-label col-md-3">Кат. номер</label>
+                    <input asp-for="SearchBook.CatalogNumber" class="form-control col-md-9" />
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="form-group row">
                     <label asp-for="SearchBook.BookName" class="control-label col-md-3">Заглавие</label>
                     <input asp-for="SearchBook.BookName" class="form-control col-md-9" />
                 </div>
             </div>
+        </div>
+
+        <div class="row" style="background:#f7f7f7">
             <div class="col-md-6">
                 <div class="form-group row">
                     <label asp-for="SearchBook.Author" class="control-label col-md-3">Автор</label>
                     <input asp-for="SearchBook.Author" class="form-control col-md-9" />
                 </div>
             </div>
-        </div>
-
-        <div class="row" style="background:#f7f7f7">
             <div class="col-md-6">
                 <div class="form-group row">
                     <label asp-for="SearchBook.GenreId" class="control-label  col-md-3">Жанр</label>
@@ -50,6 +57,23 @@
                             }
                         }
 
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label asp-for="CountBooksOfPage" class="control-label  col-md-3">Покажи</label>
+
+                    <select asp-for="CountBooksOfPage" class="col-md-9">
+                        @foreach (var count in Model.CountBooksOfPageList)
+                        {
+                            <option value="@count">@count</option>
+
+                        }
                     </select>
                 </div>
             </div>
@@ -68,19 +92,9 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="background:#f7f7f7">
             <div class="col-md-6">
-                <div class="form-group row">
-                    <label asp-for="CountBooksOfPage" class="control-label  col-md-3">Покажи</label>
-
-                    <select asp-for="CountBooksOfPage" class="col-md-9">
-                        @foreach (var count in Model.CountBooksOfPageList)
-                        {
-                            <option value="@count">@count</option>
-
-                        }
-                    </select>
-                </div>
+                
             </div>
             <div class="col-md-6">
                 <div class="form-group row">

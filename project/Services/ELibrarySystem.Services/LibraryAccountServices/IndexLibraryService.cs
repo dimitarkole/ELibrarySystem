@@ -22,8 +22,9 @@
             var model = new IndexLibraryViewModel()
             {
                 CountAddedBooks = this.CountAddedBooks(userId),
-                CountGettedBooks = this.CountAddedBooks(userId),
+                CountGettedBooks = this.CountGettedBooks(userId),
                 CountTakenBooks = this.CountTakenBooks(userId),
+                CountReaders = this.CountReaders(userId),
             };
             return model;
         }
@@ -58,6 +59,18 @@
                     b.Book.UserId == userId
                     && b.ReturnedOn == null
                     && b.DeletedOn == null)
+                .Count();
+            return count;
+        }
+
+        private int CountReaders(string userId)
+        {
+            int count = this.context
+                .GetBooks
+                .Where(b =>
+                    b.Book.UserId == userId
+                    && b.DeletedOn == null)
+                .GroupBy(b => b.UserId)
                 .Count();
             return count;
         }

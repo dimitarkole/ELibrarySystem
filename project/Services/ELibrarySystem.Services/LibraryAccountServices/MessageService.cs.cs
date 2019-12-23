@@ -57,22 +57,25 @@
             return result;
         }
 
-        public MessagesViewModel GetMessagesChangePage(MessagesViewModel model, string userId)
+        public MessagesViewModel GetMessagesChangePage(MessagesViewModel model, string userId, int pageIndex)
         {
             var messages = this.context.Messages
                .Where(m =>
                    m.DeletedOn == null
                    && m.UserId == userId)
-               .OrderByDescending(m => m.CreatedOn)
+               .OrderBy(m => m.SeenOn)
+               .ThenByDescending(m => m.CreatedOn)
                .Select(m => new MessageViewModel()
                {
+                   Id = m.Id,
                    CreatedOn = m.CreatedOn,
                    TextOfMessage = m.TextOfMessage,
                    SeenOn = m.SeenOn,
                })
                .ToList();
+
             int countBooksOfPage = model.CountMessagesOfPage;
-            int currentPage = model.CurrentPage;
+            int currentPage = pageIndex;
 
             int maxCountPage = messages.Count() / countBooksOfPage;
             if (messages.Count() % countBooksOfPage != 0)
@@ -80,12 +83,19 @@
                 maxCountPage++;
             }
 
-            var viewBook = messages.Skip((currentPage - 1) * countBooksOfPage)
-                                .Take(countBooksOfPage);
+            var viewMessages = messages.Skip((currentPage - 1) * countBooksOfPage)
+                                .Take(countBooksOfPage).ToList();
+
+            foreach (var message in viewMessages)
+            {
+                var messageContext = this.context.Messages.FirstOrDefault(m => m.Id == message.Id);
+                messageContext.SeenOn = DateTime.UtcNow;
+                this.context.SaveChanges();
+            }
 
             var result = new MessagesViewModel()
             {
-                Messages = messages,
+                Messages = viewMessages,
                 CountMessagesOfPage = countBooksOfPage,
                 MaxCountPage = maxCountPage,
             };
@@ -96,7 +106,7 @@
         public MessagesViewModel GetMessagesPreparedPage(string userId)
         {
             var model = new MessagesViewModel();
-            var returnModel = this.GetMessagesChangePage(model, userId);
+            var returnModel = this.GetMessagesChangePage(model, userId, 1);
             return returnModel;
         }
     }

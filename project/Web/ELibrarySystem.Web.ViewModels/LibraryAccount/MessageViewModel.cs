@@ -6,6 +6,8 @@
 
     public class MessageViewModel
     {
+        public string Id { get; set; }
+
         public string TextOfMessage { get; set; }
 
         public virtual DateTime CreatedOn { get; set; }

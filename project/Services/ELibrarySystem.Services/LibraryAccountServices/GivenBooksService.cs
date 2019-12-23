@@ -46,6 +46,8 @@
             if (givenBook != null)
             {
                 givenBook.DeletedOn = DateTime.UtcNow;
+                givenBook.ReturnedOn = DateTime.UtcNow;
+
                 this.context.SaveChanges();
 
                 result.Add("Успершно изтриване на взета книгата!");
@@ -169,8 +171,7 @@
 
                 result.Add(message);
                 this.messageService.AddMessageAtDB(userId, message);
-                this.messageService.AddMessageAtDB(givenBook.User.Id, message);
-
+                this.messageService.AddMessageAtDB(givenBook.UserId, message);
             }
             else
             {
@@ -188,12 +189,14 @@
             var givenBook = this.context.GetBooks
                 .FirstOrDefault(gb => gb.Id == givenBookId);
             List<object> result = new List<object>();
-            result.Add(this.GetGevenBooks(model, userId));
+            result.Add(this.GetGevenBooks(new GivenBooksViewModel(), userId));
 
             if (givenBook != null)
             {
-                var message = $"Напомняне за връщане на книгата - {givenBook.Book.BookName} {givenBook.Book.Author}!";
-                this.messageService.AddMessageAtDB(givenBook.User.Id, message);
+                var book = this.context.Books.FirstOrDefault(b => b.Id == givenBook.BookId);
+
+                var message = $"Напомняне за връщане на книгата - {book.BookName} {book.Author}!";
+                this.messageService.AddMessageAtDB(givenBook.UserId, message);
 
                 result.Add("Успершно изпратено напомняне за връщане на книга!");
             }

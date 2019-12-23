@@ -11,6 +11,9 @@
 
                 <hr />
             </div>
+            <div class="col-md-12">
+                <h4>@ViewData["message"]</h4>
+            </div>
         </div>
         <div class="row">
             <h4 class="col-md-12">
@@ -20,12 +23,10 @@
 
 
         <div class="row">
-            <div class="col-md-12">
-                <h3>@ViewData["message"]</h3>
-            </div>
+           
             <div class="col-md-6">
                 <div class="form-group row">
-                    <label asp-for="SearchGivenBook.CatalogNumber" class="control-label col-md-3">Каталожен номер</label>
+                    <label asp-for="SearchGivenBook.CatalogNumber" class="control-label col-md-3">Кат. номер</label>
                     <input asp-for="SearchGivenBook.CatalogNumber" class="form-control col-md-9" />
                 </div>
             </div>
@@ -144,16 +145,34 @@
         <div class="container">
 
             <div class="row">
-                <div class=" col-md-3">
+                <div class=" col-md-2">
                     <div class="row">
                         <span class=" col-md-2"></span>
 
-                        <label class="control-label  col-md-8">Име на книгата</label>
+                        <label class="control-label  col-md-8">Email</label>
                         <span class=" col-md-2"> </span>
 
                     </div>
                 </div>
-                <div class=" col-md-3">
+                <div class=" col-md-2">
+                    <div class="row">
+                        <span class=" col-md-2"></span>
+
+                        <label class="control-label  col-md-8">Кат. номер</label>
+                        <span class=" col-md-2"> </span>
+
+                    </div>
+                </div>
+                <div class=" col-md-2">
+                    <div class="row">
+                        <span class=" col-md-2"></span>
+
+                        <label class="control-label  col-md-8">Заглавие</label>
+                        <span class=" col-md-2"> </span>
+
+                    </div>
+                </div>
+                <div class=" col-md-2">
                     <div class="row">
                         <span class=" col-md-2">  </span>
                         <label class="control-label  col-md-8">Автор</label>
@@ -161,27 +180,32 @@
 
                     </div>
                 </div>
-                <div class=" col-md-2">
+                <div class=" col-md-1">
                     <div class="row">
-                        <span class=" col-md-2">  </span>
                         <label class="control-label  col-md-8">Жанр</label>
                         <span class=" col-md-2">  </span>
 
                     </div>
                 </div>
-                <div class=" col-md-2">
+                <div class=" col-md-1">
                     <div class="row">
-                        <span class=" col-md-2">  </span>
-                        <label class="control-label  col-md-8">Редактирай</label>
-                        <span class=" col-md-2">  </span>
+                        <label class="control-label">Напомни</label>
+
+
+                    </div>
+                </div>
+                <div class=" col-md-1">
+                    <div class="row">
+                        <label class="control-label  col-md-8">Връни</label>
+
 
                     </div>
                 </div>
 
-                <div class=" col-md-2">
+                <div class="col-md-1">
                     <div class="row">
                         <span class=" col-md-2">  </span>
-                        <label class="control-label  col-md-8">Премахни</label>
+                        <label class="control-label  col-md-8">Изтий</label>
                         <span class=" col-md-2">  </span>
 
                     </div>
@@ -193,25 +217,52 @@
 
             @foreach (var book in @Model.Books)
             {
+        <div class="row">
+            <label class="control-label  col-md-2">@book.UserName</label>
+            <label class="control-label  col-md-2">@book.CatalogNumber</label>
+            <label class="control-label  col-md-2">@book.BookName</label>
+            <label class="control-label  col-md-2">@book.Author</label>
+            <label class="control-label  col-md-1">@book.GenreName</label>
+            <div class=" col-md-1">
                 <div class="row">
-                    <label class="control-label  col-md-3">@book.BookName</label>
-                    <label class="control-label  col-md-3">@book.Author</label>
-                    <label class="control-label  col-md-2">@book.GenreName</label>
-                    <div class=" col-md-2">
-                        <div class="row">
-                            <span class=" col-md-2">  </span>
-                            <input type="submit" value="Връщане на книга" asp-action="ReturnigGivenBook" asp-route-id="@book.Id" class="btn btn-primary col-md-8t" />
-                            <span class=" col-md-2">  </span>
-                        </div>
-                    </div>
-                    <div class=" col-md-2">
-                        <div class="row">
-                            <span class=" col-md-2">  </span>
-                            <input type="submit" value="Премахни" asp-action="DeleteGivenBook" asp-route-id="@book.Id" class="btn btn-primary col-md-8" />
-                            <span class="col-md-2">  </span>
-                        </div>
-                    </div>
+                    @if (book.ReturnedOn == null)
+                    {
+
+                        <input type="image" src="~/img/bg-img/Notification.png" asp-action="SendMessageForReturningBook" asp-route-id="@book.Id" class="btn btn-primary col-md-8" />
+                        <span class=" col-md-2">  </span>
+
+                    }
+
+
+
                 </div>
+            </div>
+            <div class=" col-md-1">
+                <div class="row">
+                    @if (book.ReturnedOn == null)
+                    {
+
+                        <span class=" col-md-2">  </span>
+                        <input type="image" src="~/img/bg-img/return.png" asp-action="ReturningGivenBook" asp-route-id="@book.Id" class="btn btn-primary col-md-8" />
+                        <span class=" col-md-2">  </span>
+
+                    }
+                    else
+                    {
+                        @book.ReturnedOn.GetValueOrDefault().ToShortDateString()
+
+                    }
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="row">
+                    <span class=" col-md-2">  </span>
+                    <input type="image" src="~/img/bg-img/delete.png" asp-action="DeleteGivenBook" asp-route-id="@book.Id" class="btn btn-primary col-md-8" />
+                    <span class="col-md-2">  </span>
+                </div>
+            </div>
+        </div>
                 <br />
             }
         </div>

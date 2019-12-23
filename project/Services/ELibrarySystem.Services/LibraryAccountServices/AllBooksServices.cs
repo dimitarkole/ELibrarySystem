@@ -35,6 +35,7 @@
 
         public AllBooksViewModel GetBooks(AllBooksViewModel model, string userId)
         {
+            var bookCatalogNumber = model.SearchBook.CatalogNumber;
             var bookName = model.SearchBook.BookName;
             var author = model.SearchBook.Author;
             var genreId = model.SearchBook.GenreId;
@@ -53,10 +54,10 @@
                   GenreName = b.Genre.Name,
                   GenreId = b.GenreId,
                   CatalogNumber = b.CatalogNumber,
-                  Commentar = b.Commentar
+                  Commentar = b.Commentar,
               });
 
-            books = this.SelectBooks(bookName, author, genreId, books);
+            books = this.SelectBooks(bookCatalogNumber, bookName, author, genreId, books);
 
             books = this.SortBooks(sortMethodId, books);
 
@@ -156,11 +157,17 @@
         }
 
         private IQueryable<BookViewModel> SelectBooks(
+          string bookCatalogNumber,
           string bookName,
           string author,
           string genreId,
           IQueryable<BookViewModel> books)
         {
+            if (bookCatalogNumber != null)
+            {
+                books = books.Where(b => b.CatalogNumber.Contains(bookCatalogNumber));
+            }
+
             if (bookName != null)
             {
                 books = books.Where(b => b.BookName.Contains(bookName));

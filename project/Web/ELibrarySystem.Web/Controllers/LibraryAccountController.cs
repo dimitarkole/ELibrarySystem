@@ -275,11 +275,13 @@
 
             var returnModel = this.giveBookService.GivingBook(
                 model, this.userId, selectedBookId, selecteduserId);
-            this.ViewData["message"] = returnModel[0];
+            this.ViewData["message"] = returnModel[0] == null ? "Да" : returnModel[0];
+            //return this.View("GiveBook", model);
+
             return this.View("GiveBook", returnModel[1]);
         }
 
-        // GivenBooks Page - GiveBookSearchBook
+        // GivenBooks Page - GivenBooks
         [Authorize]
         [HttpGet]
         public IActionResult GivenBooks()
@@ -290,7 +292,7 @@
             return this.View(returnModel);
         }
 
-          // GiveBook Page - GiveBookGivingBook
+        // GiveBook Page - ChangePageGivenBooks
         [Authorize]
         [HttpPost]
         public IActionResult ChangePageGivenBooks(GivenBooksViewModel model, int id)
@@ -300,7 +302,7 @@
             return this.View("GivenBooks", returnModel);
         }
 
-        // GiveBook Page - GiveBookGivingBook
+        // GiveBook Page - GivenBooksSearch
         [Authorize]
         [HttpPost]
         public IActionResult GivenBooksSearch(GivenBooksViewModel model)
@@ -310,17 +312,18 @@
             return this.View("GivenBooks", returnModel);
         }
 
-        // GiveBook Page - GiveBookGivingBook
+        // GiveBook Page - ReturningGivenBook
         [Authorize]
         [HttpPost]
-        public IActionResult ReturnigGivenBook(GivenBooksViewModel model, string id)
+        public IActionResult ReturningGivenBook(GivenBooksViewModel model, string id)
         {
             this.StarUp();
             var returnModel = this.givenBooksService.ReturningBook(model, this.userId, id);
+            this.ViewData["message"] = returnModel[1];
             return this.View("GivenBooks", returnModel[0]);
         }
 
-        // GiveBook Page - GiveBookGivingBook
+        // GiveBook Page - DeleteGivenBook
         [Authorize]
         [HttpPost]
         public IActionResult DeleteGivenBook(GivenBooksViewModel model, string id)
@@ -330,112 +333,16 @@
             return this.View("GivenBooks", returnModel[0]);
         }
 
-        // Edit Given Book Page
 
-        // GiveBook Page
-        [Authorize]
-        [HttpGet]
-        public IActionResult EditGiveBook()
-        {
-            this.StarUp();
-            var model = this.giveBookService.PreparedPage(this.userId);
-            return this.View(model);
-        }
-
-        // GiveBook Page - GiveBookSearchBook
+        // GiveBook Page - SendMessageForReturningBook
         [Authorize]
         [HttpPost]
-        public IActionResult EditGiveBookSearchBook(GiveBookViewModel model)
+        public IActionResult SendMessageForReturningBook(GivenBooksViewModel model, string id)
         {
             this.StarUp();
-            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
-            string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
-            var returnModel = this.giveBookService.GiveBookSearchBook(
-                model, this.userId, selectedBookId, selecteduserId);
-
-            // this.ViewData["message"] = sb.ToString().Trim();
-            return this.View("EditGiveBook", returnModel);
-        }
-
-        // GiveBook Page - GiveBookSearchUser
-        [Authorize]
-        [HttpPost]
-        public IActionResult EditGiveBookSearchUser(GiveBookViewModel model)
-        {
-            this.StarUp();
-            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
-            string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
-            var returnModel = this.giveBookService.GiveBookSearchUser(
-                model, this.userId, selectedBookId, selecteduserId);
-            return this.View("EditGiveBook", returnModel);
-        }
-
-        // GiveBook Page - GiveBookChangePageBook
-        [Authorize]
-        [HttpPost]
-        public IActionResult EditGiveBookChangePageBook(GiveBookViewModel model, int id)
-        {
-            this.StarUp();
-            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
-            string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
-            var returnModel = this.giveBookService.GiveBookChangeBookPage(
-                model, this.userId, id, selectedBookId, selecteduserId);
-            return this.View("EditGiveBook", returnModel);
-        }
-
-        // GiveBook Page - GiveBookChangePageUser
-        [Authorize]
-        [HttpPost]
-        public IActionResult EditGiveBookChangePageUser(GiveBookViewModel model, int id)
-        {
-            this.StarUp();
-            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
-            string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
-            var returnModel = this.giveBookService.GiveBookChangeUserPage(
-                model, this.userId, id, selectedBookId, selecteduserId);
-            return this.View("EditGiveBook", returnModel);
-        }
-
-        // GiveBook Page - GiveBookChangePageUser
-        [Authorize]
-        [HttpPost]
-        public IActionResult EditSelectBookGiveBookPage(GiveBookViewModel model, string id)
-        {
-            this.StarUp();
-            string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
-            var returnModel = this.giveBookService.GiveBookSelectedBook(
-                model, this.userId, id, selecteduserId);
-            this.HttpContext.Session.SetString("SelectedBookId", returnModel.SelectedBook.BookId);
-            return this.View("EditGiveBook", returnModel);
-        }
-
-        // GiveBook Page - SelectUserGiveBookPage
-        [Authorize]
-        [HttpPost]
-        public IActionResult EditSelectUserGiveBookPage(GiveBookViewModel model, string id)
-        {
-            this.StarUp();
-            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
-
-            var returnModel = this.giveBookService.GiveBookSelectedUser(
-                model, this.userId, id, selectedBookId);
-            this.HttpContext.Session.SetString("SelecteduserId", returnModel.SelectedUser.UserId);
-            return this.View("EditGiveBook", returnModel);
-        }
-
-        // GiveBook Page - GiveBookGivingBook
-        [Authorize]
-        [HttpPost]
-        public IActionResult EditGiveBookEditingBook(GiveBookViewModel model)
-        {
-            this.StarUp();
-            string selectedBookId = this.HttpContext.Session.GetString("SelectedBookId");
-            string selecteduserId = this.HttpContext.Session.GetString("SelecteduserId");
-            string givenBookId = this.HttpContext.Session.GetString("givenBookId");
-            var returnModel = this.giveBookService.EditingGivinBook(
-                model, this.userId, givenBookId, selectedBookId, selecteduserId);
-            this.ViewData["message"] = returnModel[0];
-            return this.View("EditGiveBook", returnModel[1]);
+            var returnModel = this.givenBooksService.SendMessageForReturningBook(model, this.userId, id);
+            this.ViewData["message"] = returnModel[1];
+            return this.View("GivenBooks", returnModel[0]);
         }
 
         // Profile
@@ -485,9 +392,19 @@
         public IActionResult Messages()
         {
             this.StarUp();
-           // var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
-            //return this.View("Messages",  returnModel);
-            return this.View();
+            var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
+            return this.View(returnModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult MessagesChangePage(MessagesViewModel model, int id)
+        {
+            this.StarUp();
+            var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
+            this.StarUp();
+
+            return this.View(returnModel);
         }
 
         private void StarUp()

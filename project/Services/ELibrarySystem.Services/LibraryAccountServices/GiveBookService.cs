@@ -195,25 +195,34 @@
 
                 var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
                 var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
-                GetBook getBook = new GetBook()
+
+                var chackGettetBook = this.ChackGivenBook(book);
+                if (string.IsNullOrEmpty(chackGettetBook))
                 {
-                    Book = book,
-                    BookId = selectedBookId,
-                    User = user,
-                    UserId = selectedUserId,
-                };
-                this.context.GetBooks.Add(getBook);
-                this.context.SaveChanges();
+                    GetBook getBook = new GetBook()
+                    {
+                        Book = book,
+                        BookId = selectedBookId,
+                        User = user,
+                        UserId = selectedUserId,
+                    };
+                    this.context.GetBooks.Add(getBook);
+                    this.context.SaveChanges();
 
-                var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
-                var message = $"Успешно дадена книга от {library.LibararyName} - {library.Email}!";
-                this.messageService.AddMessageAtDB(selectedUserId, message);
+                    var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
+                    var message = $"Успешно взета книга от {library.LibararyName} - {library.Email}!";
+                    this.messageService.AddMessageAtDB(selectedUserId, message);
 
-                message = $"Успешно дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
-                this.messageService.AddMessageAtDB(userId, message);
-                result.Add(message);
-                returnModel.SelectedBook = selectedBook;
-                returnModel.SelectedUser = selectedUser;
+                    message = $"Успешно дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
+                    this.messageService.AddMessageAtDB(userId, message);
+                    result.Add(message);
+                    returnModel.SelectedBook = selectedBook;
+                    returnModel.SelectedUser = selectedUser;
+                }
+                else
+                {
+                    result.Add(chackGettetBook);
+                }
             }
             else
             {
@@ -225,11 +234,11 @@
         }
 
         public List<object> EditingGivinBook(
-        GiveBookViewModel model,
-        string userId,
-        string givenBookId,
-        string selectedBookId,
-        string selectedUserId)
+            GiveBookViewModel model,
+            string userId,
+            string givenBookId,
+            string selectedBookId,
+            string selectedUserId)
         {
             var chackInputData = this.ChackInputData(selectedUserId, selectedBookId);
             List<object> result = new List<object>();
@@ -240,6 +249,7 @@
                 AllBooks = allBooks,
                 AllUsers = allUsers,
             };
+            string message = "";
             if (string.IsNullOrEmpty(chackInputData))
             {
                 var selectedUser = this.SelectingUser(selectedUserId);
@@ -247,22 +257,34 @@
 
                 var getBook = this.context.GetBooks
                     .FirstOrDefault(gb => gb.Id == givenBookId);
+
                 var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
                 var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
-                string message;
                 if (getBook != null)
                 {
-                    getBook.Book = book;
-                    getBook.BookId = selectedUserId;
-                    getBook.User = user;
-                    getBook.UserId = selectedUserId;
-                    this.context.SaveChanges();
-                    var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
-                    message = $"Успешно редактирана взета книга от {library.LibararyName} - {library.Email}!";
-                    this.messageService.AddMessageAtDB(selectedUserId, message);
+                    var gb = this.context.GetBooks
+                        .FirstOrDefault(gb => gb.UserId == selectedUserId 
+                            && gb.BookId == gb.BookId);
 
-                    message = $"Успешно редактирана дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
-                    this.messageService.AddMessageAtDB(userId, message);
+                    var chackGettetBook = this.ChackGivenBook(book);
+                    if (chackGettetBook == null)
+                    {
+                        getBook.Book = book;
+                        getBook.BookId = selectedUserId;
+                        getBook.User = user;
+                        getBook.UserId = selectedUserId;
+                        this.context.SaveChanges();
+                        var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
+                        message = $"Успешно редактирана взета книга от {library.LibararyName} - {library.Email}!";
+                        this.messageService.AddMessageAtDB(selectedUserId, message);
+
+                        message = $"Успешно редактирана дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";
+                        this.messageService.AddMessageAtDB(userId, message);
+                    }
+                    else
+                    {
+                        result.Add(chackGettetBook);
+                    }
                 }
                 else
                 {
@@ -332,6 +354,21 @@
             }
 
             return result.ToString().Trim();
+        }
+
+        private string ChackGivenBook(Book book)
+        {
+            GetBook chackGettetBook = this.context.GetBooks
+                    .FirstOrDefault(gb => gb.DeletedOn == null
+                        && gb.ReturnedOn == null
+                        && gb.BookId == book.Id);
+
+            if (chackGettetBook != null)
+            {
+                return "Книгата е дадена на друг потребител!";
+            }
+
+            return null;
         }
     }
 }
