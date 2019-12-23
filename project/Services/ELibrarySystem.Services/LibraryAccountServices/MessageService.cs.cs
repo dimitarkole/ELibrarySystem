@@ -73,6 +73,16 @@
                    SeenOn = m.SeenOn,
                })
                .ToList();
+            var seenChacker = messages.FirstOrDefault(m => m.SeenOn == null);
+            if (seenChacker != null)
+            {
+                messages = messages.OrderBy(m => m.SeenOn)
+                   .ThenByDescending(m => m.CreatedOn).ToList();
+            }
+            else
+            {
+                messages = messages.OrderByDescending(m => m.CreatedOn).ToList();
+            }
 
             int countBooksOfPage = model.CountMessagesOfPage;
             int currentPage = pageIndex;

@@ -64,6 +64,39 @@
                                             +Добави книга
                                         </a>
                                     </li>
+                                    <li>
+
+                                       
+
+
+
+                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="Messages">
+                                            <div class="row align-items-center">
+                                                <div class="col-4">
+                                                    <input type="image" src="~/img/bg-img/Notification.png" name="name" style="width:35px; height:35px;" value="" />
+
+                                                </div>
+
+                                                @if (messages.CountMessages < 99)
+                                                {
+                                                    <div class="col-4">
+                                                        @messages.CountMessages
+
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                <div class="col-4">
+                                                   +99
+
+                                                </div>
+                                            }
+                                            </div>
+
+
+
+                                        </a>
+                                    </li>
 
                                     <li>
                                         <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
@@ -99,14 +132,7 @@
                                                 </a>
                                             </li>
 
-                                            <li>
-                                                <a asp-area="" asp-controller="LibraryAccount" asp-action="Messages">
-                                                    Съобщения
-                                                    <span style="background:red; padding:2px 10px 2px 10px; border-radius: 12px">
-                                                        @messages.CountMessages
-                                                    </span>
-                                                </a>
-                                            </li>
+
 
                                             <li>
                                                 <a asp-area="" asp-controller="LibraryAccount" asp-action="LogOut">

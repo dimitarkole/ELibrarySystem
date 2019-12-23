@@ -52,8 +52,7 @@
             var chartData = new List<ChartGettenBookSinceSixМonthData>();
             var groups = this.context.GetBooks
               .Where(gb =>
-                  gb.DeletedOn == null 
-                 
+                  gb.DeletedOn == null
                   && gb.Book.UserId == userId)
               .Select(gb => new GivenBookViewModel()
               {
@@ -81,7 +80,7 @@
             foreach (var group in groups)
             {
                 List<GivenBookViewModel> getBookOfMonth = group.Select(group => group).ToList();
-                getBookOfMonth = this.SelectGettenBookOfMonthViewModel(bookName,catalogNumber, author, genreId, getBookOfMonth);
+                getBookOfMonth = this.SelectGettenBookOfMonthViewModel(catalogNumber, bookName, author, genreId, getBookOfMonth);
                 if (getBookOfMonth.Count > 0)
                 {
                     var gb = getBookOfMonth[0];
@@ -162,7 +161,7 @@
         {
             if (catalogNumber != null)
             {
-                books = books.Where(b => b.CatalogNumber.Contains(catalogNumber)).ToList();
+                books = books.Where(b => b.CatalogNumber == null || b.CatalogNumber.Contains(catalogNumber)).ToList();
             }
 
             if (bookName != null)
@@ -184,15 +183,15 @@
         }
 
         private List<GivenBookViewModel> SelectGettenBookOfMonthViewModel(
-            string bookName,
-            string catalogNumber, 
+            string catalogNumber,
+            string bookName,            
             string author,
             string genreId,
             List<GivenBookViewModel> books)
         {
             if (catalogNumber != null)
             {
-                books = books.Where(b => b.CatalogNumber.Contains(catalogNumber)).ToList();
+                books = books.Where(b => b.CatalogNumber == null || b.CatalogNumber.Contains(catalogNumber)).ToList();
             }
 
             if (bookName != null)

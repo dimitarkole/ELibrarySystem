@@ -404,7 +404,7 @@
             var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
             this.StarUp();
 
-            return this.View(returnModel);
+            return this.View("Messages", returnModel);
         }
 
         private void StarUp()
