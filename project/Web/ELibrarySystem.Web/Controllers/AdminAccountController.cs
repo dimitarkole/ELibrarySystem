@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.AdminAccount;
+    using ELibrarySystem.Services.Contracts.Home;
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
     using ELibrarySystem.Web.ViewModels.AdminAccount;
     using ELibrarySystem.Web.ViewModels.SharedResources;
@@ -20,18 +21,19 @@
         private UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
-        private string UserId;
+        private string userId;
 
         private IUsersService usersService;
         private IAdminProfileService adminProfileService;
-
+        private IProfileChakerService profilChekerService;
 
         public AdminAccountController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<LogoutModel> logger,
             IUsersService usersService,
-            IAdminProfileService adminProfileService)
+            IAdminProfileService adminProfileService,
+            IProfileChakerService profilChekerService)
         {
             this.SignInManager = signInManager;
             this.UserManager = userManager;
@@ -39,6 +41,7 @@
             this.logger = logger;
             this.usersService = usersService;
             this.adminProfileService = adminProfileService;
+            this.profilChekerService = profilChekerService;
         }
 
 
@@ -123,7 +126,7 @@
         public IActionResult Profile()
         {
             this.StarUp();
-            var returnModel = this.adminProfileService.PreparedPage(this.UserId);
+            var returnModel = this.adminProfileService.PreparedPage(this.userId);
             return this.View(returnModel);
         }
 
@@ -132,7 +135,7 @@
         public IActionResult Profile(ProfilAdminViewModel model)
         {
             this.StarUp();
-            var returnModel = this.adminProfileService.SaveChanges(model, this.UserId);
+            var returnModel = this.adminProfileService.SaveChanges(model, this.userId);
             return this.View(returnModel);
         }
 
@@ -154,8 +157,15 @@
 
         private void StarUp()
         {
-            this.UserId = this.UserManager.GetUserId(this.User);
-            this.ViewBag.UserType = "admin";
+            this.userId = this.UserManager.GetUserId(this.User);
+
+            var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "admin");
+            if (chackProfile == false)
+            {
+                this.LogOut();
+            }
+            this.ViewData["UserType"] = "admin";
+            this.ViewData["UserId"] = this.userId;
         }
     }
 }

@@ -9,7 +9,6 @@ namespace ELibrarySystem.Data.Models
         public GetBook()
         {
             this.CreatedOn = DateTime.UtcNow;
-            this.Books = new List<Book>();
         }
 
         public virtual string Id { get; set; }
@@ -18,11 +17,11 @@ namespace ELibrarySystem.Data.Models
 
         public virtual ApplicationUser User { get; set; }
 
+
         public virtual string BookId { get; set; }
 
         public virtual Book Book { get; set; }
 
-        public virtual ICollection<Book> Books { get; set; }
 
         public virtual DateTime CreatedOn { get; set; }
 

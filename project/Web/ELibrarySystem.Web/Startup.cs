@@ -123,6 +123,8 @@
 
             // Home Services
             services.AddTransient<IHomeService, HomeService>();
+            services.AddTransient<IProfileChakerService, ProfileChakerService>();
+
 
             // Library Services
             services.AddTransient<IBookService, BookService>();

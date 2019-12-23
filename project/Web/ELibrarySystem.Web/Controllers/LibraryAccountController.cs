@@ -17,6 +17,7 @@
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
     using System.IO;
     using Microsoft.AspNetCore.Hosting;
+    using ELibrarySystem.Services.Contracts.Home;
 
     public class LibraryAccountController : Controller
     {
@@ -29,6 +30,7 @@
         private IGivenBooksService givenBooksService;
         private ILibraryProfileService libraryProfileService;
         private IStatsLibraryService statsLibraryService;
+        private IProfileChakerService profilChekerService;
 
         private IUserService userService;
         private UserManager<ApplicationUser> userManager;
@@ -51,7 +53,8 @@
             ILibraryProfileService libraryProfileService,
             IStatsLibraryService statsLibraryService,
             IIndexLibraryService indexLibraryService,
-            IHostingEnvironment hostingEnvironment)
+            IHostingEnvironment hostingEnvironment,
+            IProfileChakerService profilChekerService)
         {
             this.bookService = bookService;
             this.messageService = messageService;
@@ -67,14 +70,13 @@
             this.statsLibraryService = statsLibraryService;
             this.indexLibraryService = indexLibraryService;
             this.hostingEnvironment = hostingEnvironment;
+            this.profilChekerService = profilChekerService;
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
-            await this.signInManager.SignOutAsync();
-            this.logger.LogInformation("User logged out.");
 
             return this.RedirectToAction(nameof(HomeController.Index), "Home");
         }
@@ -389,7 +391,7 @@
 
         [Authorize]
         [HttpGet]
-        public IActionResult Messages()
+        public IActionResult Notification()
         {
             this.StarUp();
             var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
@@ -398,20 +400,26 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult MessagesChangePage(MessagesViewModel model, int id)
+        public IActionResult NotificationChangePage(MessagesViewModel model, int id)
         {
             this.StarUp();
             var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
             this.StarUp();
 
-            return this.View("Messages", returnModel);
+            return this.View("Notification", returnModel);
         }
 
         private void StarUp()
         {
             this.userId = this.userManager.GetUserId(this.User);
-            this.ViewBag.UserType = "libary";
-
+            this.ViewData["UserType"] = "library";
+            this.ViewData["UserId"] = this.userId;
+            var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "library");
+            if (chackProfile == false)
+            {
+                _ = this.LogOut();
+            }
+            
             var messages = this.messageService.GetMessagesNavBar(this.userId);
             this.ViewData["MessageNavBar"] = messages;
         }

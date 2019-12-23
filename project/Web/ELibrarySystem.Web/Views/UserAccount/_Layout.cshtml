@@ -54,9 +54,35 @@
 
                             <div class="classynav">
                                 <ul id="nav">
+                                    @{
+                                        var messages = ViewData["MessageNavBar"] as ELibrarySystem.Web.ViewModels.SharedResources.MessagesNavBarViewModel;
+
+                                    }
+                                    
+                                    <li>@ViewData["UserType"] @ViewData["UserId"]</li>
                                     <li>
-                                        <a asp-area="" asp-controller="UserAccount" asp-action="Index" title="Manage">
-                                            Начало
+                                        <a asp-area="" asp-controller="UserAccount" asp-action="Notification">
+                                            <div class="row align-items-center">
+                                                <div class="col-4">
+                                                    <input type="image" src="~/img/bg-img/Notification.png" name="name" style="width:35px; height:35px;" value="" />
+
+                                                </div>
+
+                                                @if (messages.CountMessages < 99)
+                                                {
+                                                    <div class="col-4">
+                                                        @messages.CountMessages
+
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-4">
+                                                        +99
+
+                                                    </div>
+                                                }
+                                            </div>
                                         </a>
                                     </li>
                                     <li>
@@ -64,6 +90,11 @@
                                             Здравейте, @UserManager.GetUserName(User)!
                                         </a>
                                         <ul class="dropdown">
+                                            <li>
+                                                <a asp-area="" asp-controller="UserAccount" asp-action="Index" title="Manage">
+                                                    Начало
+                                                </a>
+                                            </li>
                                             <li>
                                                 <a asp-area="" asp-controller="UserAccount" asp-action="TakenBooks">
                                                     Взети книги

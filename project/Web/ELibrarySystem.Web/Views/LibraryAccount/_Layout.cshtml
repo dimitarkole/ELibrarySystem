@@ -58,19 +58,15 @@
                                         var messages = ViewData["MessageNavBar"] as ELibrarySystem.Web.ViewModels.SharedResources.MessagesNavBarViewModel;
 
                                     }
-
+                                    <li>@ViewData["UserType"] @ViewData["UserId"]</li>
                                     <li>
                                         <a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook" class="btn btn-primary">
                                             +Добави книга
                                         </a>
                                     </li>
+
                                     <li>
-
-                                       
-
-
-
-                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="Messages">
+                                        <a asp-area="" asp-controller="LibraryAccount" asp-action="Notification">
                                             <div class="row align-items-center">
                                                 <div class="col-4">
                                                     <input type="image" src="~/img/bg-img/Notification.png" name="name" style="width:35px; height:35px;" value="" />
@@ -86,15 +82,12 @@
                                                 }
                                                 else
                                                 {
-                                                <div class="col-4">
-                                                   +99
+                                                    <div class="col-4">
+                                                        +99
 
-                                                </div>
-                                            }
+                                                    </div>
+                                                }
                                             </div>
-
-
-
                                         </a>
                                     </li>
 

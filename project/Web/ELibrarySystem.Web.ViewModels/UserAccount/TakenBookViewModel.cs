@@ -10,7 +10,6 @@
         {
             this.Id = null;
             this.LibraryId = null;
-            this.Library = null;
             this.BookName = null;
             this.Author = null;
             this.Genre = null;
@@ -22,8 +21,10 @@
 
         public string LibraryId { get; set; }
 
-        public LibraryViewModel Library { get; set; }
-
+        public string CatalogNumber { get; set; }
+        
+        public string LibraryEmail { get; set; }
+        
         public string BookName { get; set; }
 
         public string Author { get; set; }

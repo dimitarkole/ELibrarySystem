@@ -128,7 +128,6 @@
                             book.Author = author;
                             book.GenreId = genreId;
                             book.Genre = genreObj;
-                            book.UserId = userId;
                             book.CatalogNumber = catalogNumber;
                             book.Commentar = commentar;
 

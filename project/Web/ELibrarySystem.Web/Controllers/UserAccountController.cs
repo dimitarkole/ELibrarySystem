@@ -5,9 +5,11 @@
     using System.Linq;
     using System.Threading.Tasks;
     using ELibrarySystem.Data.Models;
+    using ELibrarySystem.Services.Contracts.Home;
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Web.Areas.Identity.Pages.Account;
+    using ELibrarySystem.Web.ViewModels.LibraryAccount;
     using ELibrarySystem.Web.ViewModels.UserAccount;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -20,13 +22,14 @@
         private ITakenBooksService takenBooksService;
         private IIndexUserService indexUserService;
         private IUserProfileService userProfileService;
-
+        private IMessageService messageService;
+        private IProfileChakerService profilChekerService;
 
         private SignInManager<ApplicationUser> SignInManager;
         private UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
-        private string UserId;
+        private string userId;
 
         public UserAccountController(
             SignInManager<ApplicationUser> signInManager,
@@ -35,7 +38,9 @@
             IIndexUserService indexUserService,
             ILogger<LogoutModel> logger,
             ITakenBooksService takenBooksService,
-            IUserProfileService userProfileService)
+            IUserProfileService userProfileService,
+            IMessageService messageService,
+            IProfileChakerService profilChekerService)
         {
             this.SignInManager = signInManager;
             this.UserManager = userManager;
@@ -45,12 +50,22 @@
             this.logger = logger;
             this.takenBooksService = takenBooksService;
             this.userProfileService = userProfileService;
+            this.messageService = messageService;
+            this.profilChekerService = profilChekerService;
         }
 
-        public void StarUp()
+        private void StarUp()
         {
-            this.UserId = this.UserManager.GetUserId(this.User);
-            this.ViewBag.UserType = "user";
+            this.userId = this.UserManager.GetUserId(this.User);
+            this.ViewData["UserType"] = "user";
+            this.ViewData["UserId"] = this.userId;
+            var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "user");
+            if (chackProfile == false)
+            {
+                this.LogOut();
+            }
+            var messages = this.messageService.GetMessagesNavBar(this.userId);
+            this.ViewData["MessageNavBar"] = messages;
         }
 
         [HttpGet]
@@ -58,7 +73,7 @@
         public IActionResult Index(string returnUrl = null)
         {
             this.StarUp();
-            var model = this.indexUserService.PreparedPage(this.UserId);
+            var model = this.indexUserService.PreparedPage(this.userId);
             return this.View(model);
         }
 
@@ -78,7 +93,7 @@
         public IActionResult TakenBooks()
         {
             this.StarUp();
-            var returModel = this.takenBooksService.PreparedPage(this.UserId);
+            var returModel = this.takenBooksService.PreparedPage(this.userId);
             return this.View(returModel);
         }
 
@@ -87,7 +102,7 @@
         public IActionResult TakenBooksSearch(TakenBooksViewModel model)
         {
             this.StarUp();
-            var returModel = this.takenBooksService.TakenBooks(model, this.UserId);
+            var returModel = this.takenBooksService.TakenBooks(model, this.userId);
             return this.View("TakenBooks", returModel);
         }
 
@@ -96,7 +111,7 @@
         public IActionResult ChangePageTakenBooks(TakenBooksViewModel model, int id)
         {
             this.StarUp();
-            var returModel = this.takenBooksService.ChangeActivePage(model, this.UserId, id);
+            var returModel = this.takenBooksService.ChangeActivePage(model, this.userId, id);
             return this.View("TakenBooks",returModel);
         }
 
@@ -105,7 +120,7 @@
         public IActionResult Profile()
         {
             this.StarUp();
-            var returModel = this.userProfileService.PreparedPage(this.UserId);
+            var returModel = this.userProfileService.PreparedPage(this.userId);
             return this.View(returModel);
         }
 
@@ -114,8 +129,29 @@
         public IActionResult Profile(ProfilUserViewModel model)
         {
             this.StarUp();
-            var returModel = this.userProfileService.SaveChanges(model, this.UserId);
+            var returModel = this.userProfileService.SaveChanges(model, this.userId);
             return this.View(returModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Notification()
+        {
+            this.StarUp();
+            var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
+            return this.View(returnModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult NotificationChangePage(MessagesViewModel model, int id)
+        {
+            this.StarUp();
+            var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
+            this.StarUp();
+
+
+            return this.View("Notification", returnModel);
         }
     }
 }

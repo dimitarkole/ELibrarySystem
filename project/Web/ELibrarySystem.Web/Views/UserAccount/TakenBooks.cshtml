@@ -58,8 +58,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group row">
-                        <label asp-for="SearchTakenBook.Library.LibraryEmail" class="control-label col-md-3">Библиотески Email</label>
-                        <input asp-for="SearchTakenBook.Library.LibraryEmail" class="form-control col-md-9" />
+                        <label asp-for="SearchTakenBook.LibraryEmail" class="control-label col-md-3">Библиотески Email</label>
+                        <input asp-for="SearchTakenBook.LibraryEmail" class="form-control col-md-9" />
                     </div>
                 </div>
             </div>
@@ -161,7 +161,7 @@
             <div class=" col-md-2">
                 <div class="row">
                     <span class=" col-md-2">  </span>
-                    <label class="control-label  col-md-8">Библиотекарски Email</label>
+                    <label class="control-label  col-md-8">Email</label>
                     <span class=" col-md-2">  </span>
 
                 </div>
@@ -190,15 +190,17 @@
 
         @foreach (var book in @Model.Books)
         {
-            <div class="row">
-                <label class="control-label  col-md-2">@book.BookName</label>
-                <label class="control-label  col-md-2">@book.Author</label>
-                <label class="control-label  col-md-2">@book.Genre</label>
-                <label class="control-label  col-md-2">@book.Library.LibraryName</label>
+    <div class="row">
+        <label class="control-label  col-md-2">@book.CatalogNumber</label>
 
-                <label class="control-label  col-md-2">@book.CreatedOn </label>
-                <label class="control-label  col-md-2">@book.ReturnedOn</label>
-            </div>
+        <label class="control-label  col-md-2">@book.BookName</label>
+        <label class="control-label  col-md-2">@book.Author</label>
+        <label class="control-label  col-md-2">@book.Genre</label>
+        <label class="control-label  col-md-2">@book.LibraryEmail</label>
+
+        <label class="control-label  col-md-2">@book.CreatedOn </label>
+        <label class="control-label  col-md-2">@book.ReturnedOn</label>
+    </div>
             <br />
         }
     </div>

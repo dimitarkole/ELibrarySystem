@@ -195,7 +195,6 @@
 
                 var book = this.context.Books.FirstOrDefault(b => b.Id == selectedBookId);
                 var user = this.context.Users.FirstOrDefault(u => u.Id == selectedUserId);
-
                 var chackGettetBook = this.ChackGivenBook(book);
                 if (string.IsNullOrEmpty(chackGettetBook))
                 {
@@ -209,8 +208,8 @@
                     this.context.GetBooks.Add(getBook);
                     this.context.SaveChanges();
 
-                    var library = this.context.Users.FirstOrDefault(u => u.Id == userId);
-                    var message = $"Успешно взета книга от {library.LibararyName} - {library.Email}!";
+                    var libraryMessage = this.context.Users.FirstOrDefault(u => u.Id == userId);
+                    var message = $"Успешно взета книга от {libraryMessage.LibararyName} - {libraryMessage.Email}!";
                     this.messageService.AddMessageAtDB(selectedUserId, message);
 
                     message = $"Успешно дадена книгана на {user.FirstName} {user.LastName} - {user.Email}!";

@@ -69,9 +69,8 @@
                     CreatedOn = b.CreatedOn,
                     ReturnedOn = b.ReturnedOn,
                     LibraryId = b.Book.UserId,
-                    Library = new LibraryViewModel(
-                        b.Book.User.LibararyName,
-                        b.Book.User.Email),
+                    LibraryEmail = b.Book.User.Email,
+                    CatalogNumber = b.Book.CatalogNumber,
                 });
 
             getbooks = this.SelectBooks(bookName, author, genreId, getbooks);
