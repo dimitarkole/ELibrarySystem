@@ -23,7 +23,7 @@
             {
                 CountReadedBooks = this.CountReadedBooks(userId),
                 CountTakenBooks = this.CountTakenBooks(userId),
-                CountReadingBooks = this.CountReadingBooks(userId),
+                CountLibrary = this.CountLibrary(userId),
             };
             return indexUserViewModel;
         }
@@ -34,6 +34,7 @@
                 .GetBooks
                 .Where(gb =>
                     gb.UserId == userId
+                    && gb.ReturnedOn != null
                     && gb.DeletedOn == null)
                 .Count();
             return count;
@@ -51,11 +52,13 @@
             return count;
         }
 
-        private int CountReadingBooks(string userId)
+
+        private int CountLibrary(string userId)
         {
-            var countReadedBooks = this.CountReadedBooks(userId);
-            var countTakenBooks = this.CountTakenBooks(userId);
-            int count = countReadedBooks - countTakenBooks;
+            var count = this.context.GetBooks
+                .Where(gb => gb.UserId == userId)
+                .GroupBy(gb => gb.Book.UserId)
+                .Count();
             return count;
         }
     }

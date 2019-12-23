@@ -55,6 +55,8 @@
             var sortMethodId = model.SortMethodId;
             var countBooksOfPage = model.CountBooksOfPage;
             var currentPage = model.CurrentPage;
+            var catalogNumber = model.SearchTakenBook.CatalogNumber;
+
 
             var getbooks = this.context.GetBooks.Where(b =>
                 b.DeletedOn == null
@@ -73,7 +75,7 @@
                     CatalogNumber = b.Book.CatalogNumber,
                 });
 
-            getbooks = this.SelectBooks(bookName, author, genreId, getbooks);
+            getbooks = this.SelectBooks(catalogNumber,bookName, author, genreId, getbooks);
 
             getbooks = this.SortBooks(sortMethodId, getbooks);
 
@@ -117,11 +119,17 @@
         }
 
         private IQueryable<TakenBookViewModel> SelectBooks(
+         string catalogNumber,
          string bookName,
          string author,
          string genreId,
          IQueryable<TakenBookViewModel> getbooks)
         {
+            if (catalogNumber != null)
+            {
+                getbooks = getbooks.Where(b => b.CatalogNumber.Contains(catalogNumber));
+            }
+
             if (bookName != null)
             {
                 getbooks = getbooks.Where(b => b.BookName.Contains(bookName));

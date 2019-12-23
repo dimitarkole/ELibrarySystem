@@ -8,6 +8,6 @@
 
     public interface IIndexAdminService
     {
-        IndexAdminViewModel PreparedPage(string userId);
+        IndexAdminViewModel PreparedPage();
     }
 }

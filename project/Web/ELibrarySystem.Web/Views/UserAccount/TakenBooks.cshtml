@@ -22,19 +22,28 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group row">
+                        <label asp-for="SearchTakenBook.CatalogNumber" class="control-label col-md-3">Кат номер</label>
+                        <input asp-for="SearchTakenBook.CatalogNumber" class="form-control col-md-9" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group row">
                         <label asp-for="SearchTakenBook.BookName" class="control-label col-md-3">Заглавие</label>
                         <input asp-for="SearchTakenBook.BookName" class="form-control col-md-9" />
                     </div>
                 </div>
+               
+            </div>
+
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label asp-for="SearchTakenBook.Author" class="control-label col-md-3">Автор</label>
                         <input asp-for="SearchTakenBook.Author" class="form-control col-md-9" />
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label asp-for="SearchTakenBook.GenreId" class="control-label  col-md-3">Жанр</label>
@@ -56,30 +65,18 @@
 
 
                 </div>
+            </div>
+
+
+            <div class="row" style="background:#f7f7f7">
+
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label asp-for="SearchTakenBook.LibraryEmail" class="control-label col-md-3">Библиотески Email</label>
                         <input asp-for="SearchTakenBook.LibraryEmail" class="form-control col-md-9" />
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group row">
-
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group row">
-
-
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" style="background:#f7f7f7">
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label asp-for="CountBooksOfPage" class="control-label  col-md-3">Покажи</label>
@@ -94,6 +91,11 @@
 
                     </div>
                 </div>
+              
+            </div>
+
+            <div class="row">
+
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label asp-for="SortMethodId" class="control-label  col-md-3">Сортирай по</label>
@@ -104,14 +106,6 @@
                                 <option value="@SortMethod">@SortMethod</option>
                             }
                         </select>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group row">
 
                     </div>
                 </div>
@@ -132,6 +126,13 @@
         </div>
 
         <div class="row">
+            <div class=" col-md-1">
+                <div class="row">
+
+                    Кат. номер
+
+                </div>
+            </div>
             <div class=" col-md-2">
                 <div class="row">
                     <span class=" col-md-2"></span>
@@ -141,7 +142,7 @@
 
                 </div>
             </div>
-            <div class=" col-md-2">
+            <div class=" col-md-1">
                 <div class="row">
                     <span class=" col-md-2">  </span>
                     <label class="control-label  col-md-8">Автор</label>
@@ -191,10 +192,10 @@
         @foreach (var book in @Model.Books)
         {
     <div class="row">
-        <label class="control-label  col-md-2">@book.CatalogNumber</label>
+        <label class="control-label  col-md-1">@book.CatalogNumber</label>
 
         <label class="control-label  col-md-2">@book.BookName</label>
-        <label class="control-label  col-md-2">@book.Author</label>
+        <label class="control-label  col-md-1">@book.Author</label>
         <label class="control-label  col-md-2">@book.Genre</label>
         <label class="control-label  col-md-2">@book.LibraryEmail</label>
 

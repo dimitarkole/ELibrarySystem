@@ -1,14 +1,173 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using ELibrarySystem.Data.Models;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Начало";
 }
 @model ELibrarySystem.Web.ViewModels.UserAccount.IndexUserViewModel
-<h1>Index</h1>
 
-@Model.CountReadedBooks
-<br />
-@Model.CountTakenBooks
-<br />
-@Model.CountReadingBooks
-<br />
 
+<h1>Начало</h1>
+
+<div class="container" style="background:#f7f7f7">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="bg-gradient-overlay " style="background-image: url(img/bg-img/giveBook.jpg);">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <!-- Welcome Text -->
+                            <div class="welcome-text">
+                                <div class="row">
+                                    <div class="col-md-9">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h4 style="color:white">
+                                            @Model.CountReadedBooks
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <h4 style="color:white">
+                                            Прочетени
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="bg-gradient-overlay " style="background-image: url(img/bg-img/readingBooks.jpg);">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <!-- Welcome Text -->
+                            <div class="welcome-text">
+                                <div class="row">
+                                    <div class="col-md-9">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h4 style="color:white">
+                                            @Model.CountTakenBooks
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 style="color:white">
+                                            Четящи се
+                                        </h4>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="bg-gradient-overlay " style="background-image: url(img/bg-img/readBooks.jpg);">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <!-- Welcome Text -->
+                            <div class="welcome-text">
+                                <div class="row">
+                                    <div class="col-md-9">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h4 style="color:white">
+                                           ???
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 style="color:white">
+                                         ??????
+                                        </h4>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="bg-gradient-overlay " style="background-image: url(img/bg-img/readers.jpg);">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <!-- Welcome Text -->
+                            <div class="welcome-text">
+                                <div class="row">
+                                    <div class="col-md-9">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h4 style="color:white">
+                                            @Model.CountLibrary
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 style="color:white">
+                                            Библиотеки
+                                        </h4>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<br />
+<div class="container" style="background:#f7f7f7">
+    <div class="row">
+        <a asp-area="" asp-controller="UserAccount" asp-action="Stats" class="btn btn-primary col-md-12">
+            Статистика
+        </a>
+
+
+    </div>
+</div>
+<form asp-action="Stats" asp-route-returnUrl="@ViewData["URL"]">
+</form>

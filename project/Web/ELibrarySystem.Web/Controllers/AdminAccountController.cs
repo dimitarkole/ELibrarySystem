@@ -29,7 +29,7 @@
         private IAdminProfileService adminProfileService;
         private IProfileChakerService profilChekerService;
         private IMessageService messageService;
-
+        private IIndexAdminService indexAdminService;
 
         public AdminAccountController(
             SignInManager<ApplicationUser> signInManager,
@@ -38,7 +38,8 @@
             IUsersService usersService,
             IAdminProfileService adminProfileService,
             IProfileChakerService profilChekerService,
-            IMessageService messageService)
+            IMessageService messageService,
+            IIndexAdminService indexAdminService)
         {
             this.SignInManager = signInManager;
             this.UserManager = userManager;
@@ -48,6 +49,7 @@
             this.adminProfileService = adminProfileService;
             this.profilChekerService = profilChekerService;
             this.messageService = messageService;
+            this.indexAdminService = indexAdminService;
         }
 
 
@@ -60,8 +62,9 @@
             {
                 return startUp;
             }
+            var model = this.indexAdminService.PreparedPage();
 
-            return this.View();
+            return this.View(model);
         }
 
         [HttpGet]
@@ -187,21 +190,7 @@
             return this.View(returnModel);
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Bar()
-        {
-            Random rnd = new Random();
-            var chartData = new List<ChartDataViewModel>();
-
-            chartData.Add(new ChartDataViewModel("Technology", 5));
-            chartData.Add(new ChartDataViewModel("Sales", 5));
-            chartData.Add(new ChartDataViewModel("Logistics", 12));
-
-            ChartViewModel model = new ChartViewModel("Title", chartData);
-
-            return this.View(model);
-        }
+       
 
         [Authorize]
         [HttpGet]
