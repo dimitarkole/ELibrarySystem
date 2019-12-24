@@ -18,21 +18,27 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
+    using Microsoft.AspNetCore.Hosting;
+    using System.IO;
+    using Microsoft.AspNetCore.Http;
+
     public class AdminAccountController : Controller
     {
-        private SignInManager<ApplicationUser> SignInManager;
-        private UserManager<ApplicationUser> UserManager;
+        private readonly SignInManager<ApplicationUser> SignInManager;
+        private readonly UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
         private string userId;
 
-        private IUsersService usersService;
-        private IAdminProfileService adminProfileService;
-        private IProfileChakerService profilChekerService;
-        private IMessageService messageService;
-        private IIndexAdminService indexAdminService;
-        private IStatsAdminService statsAdminService;
-        
+        private readonly IUsersService usersService;
+        private readonly IAdminProfileService adminProfileService;
+        private readonly IProfileChakerService profilChekerService;
+        private readonly IMessageService messageService;
+        private readonly IIndexAdminService indexAdminService;
+        private readonly IStatsAdminService statsAdminService;
+
+        private readonly IHostingEnvironment hostingEnvironment;
+
         public AdminAccountController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
@@ -42,6 +48,7 @@
             IProfileChakerService profilChekerService,
             IMessageService messageService,
             IIndexAdminService indexAdminService,
+            IHostingEnvironment hostingEnvironment,
             IStatsAdminService statsAdminService)
         {
             this.SignInManager = signInManager;
@@ -54,8 +61,8 @@
             this.messageService = messageService;
             this.statsAdminService = statsAdminService;
             this.indexAdminService = indexAdminService;
+            this.hostingEnvironment = hostingEnvironment;
         }
-
 
         [HttpGet]
         [AllowAnonymous]
@@ -188,6 +195,16 @@
             if (startUp != null)
             {
                 return startUp;
+            }
+
+            var pic = model.Photo;
+            if (pic != null)
+            {
+                var fileName = Path.Combine(
+                    this.hostingEnvironment.WebRootPath + "/img/Avatars",
+                    Path.GetFileName(this.userId + "_" + pic.FileName));
+                pic.CopyTo(new FileStream(fileName, FileMode.Create));
+                model.AvatarLocation = "/img/Avatars/" + Path.GetFileName(fileName);
             }
 
             var returnModel = this.adminProfileService.SaveChanges(model, this.userId);

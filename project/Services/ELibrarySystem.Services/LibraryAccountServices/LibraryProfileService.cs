@@ -32,7 +32,7 @@
             ProfilLibraryViewModel profil = new ProfilLibraryViewModel();
             if (user != null)
             {
-                profil.Avatar = user.Avatar;
+                profil.AvatarLocation = user.Avatar;
                 profil.LibararyName = user.LibararyName;
                 profil.LibraryLocation = user.LibraryLocation;
             }
@@ -51,8 +51,7 @@
             string resultTitle = "Неуспешно редактиран профил";
             if (user != null)
             {
-                //string uploadFile = Path.Combine(HostingEnvironment.WebRootPath);
-                user.Avatar = model.Avatar;
+                user.Avatar = model.AvatarLocation;
                 user.LibararyName = model.LibararyName;
                 user.LibraryLocation = model.LibraryLocation;
                 this.context.SaveChanges();

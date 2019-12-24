@@ -19,21 +19,25 @@
     using Microsoft.AspNetCore.Hosting;
     using ELibrarySystem.Services.Contracts.Home;
 
+    using Microsoft.AspNetCore.Hosting;
+    using System.IO;
+    using Microsoft.AspNetCore.Http;
+
     public class LibraryAccountController : Controller
     {
-        private IIndexLibraryService indexLibraryService;
-        private IBookService bookService;
-        private IMessageService messageService;
-        private IGenreService genreService;
-        private IAllBooksServices getAllBooks;
-        private IGiveBookService giveBookService;
-        private IGivenBooksService givenBooksService;
-        private ILibraryProfileService libraryProfileService;
-        private IStatsLibraryService statsLibraryService;
-        private IProfileChakerService profilChekerService;
+        private readonly IIndexLibraryService indexLibraryService;
+        private readonly IBookService bookService;
+        private readonly IMessageService messageService;
+        private readonly IGenreService genreService;
+        private readonly IAllBooksServices getAllBooks;
+        private readonly IGiveBookService giveBookService;
+        private readonly IGivenBooksService givenBooksService;
+        private readonly ILibraryProfileService libraryProfileService;
+        private readonly IStatsLibraryService statsLibraryService;
+        private readonly IProfileChakerService profilChekerService;
 
-        private IUserService userService;
-        private UserManager<ApplicationUser> userManager;
+        private readonly IUserService userService;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
         private string userId;
@@ -487,10 +491,19 @@
                 return startUp;
             }
 
+            var pic = model.Photo;
+            if (pic != null)
+            {
+                var fileName = Path.Combine(
+                    this.hostingEnvironment.WebRootPath + "/img/Avatars",
+                    Path.GetFileName(this.userId + "_" + pic.FileName));
+                pic.CopyTo(new FileStream(fileName, FileMode.Create));
+                model.AvatarLocation = "/img/Avatars/" + Path.GetFileName(fileName);
+            }
+
             var returnModel = this.libraryProfileService.SaveChanges(model, this.userId);
-            string uploadFile = Path.Combine(this.hostingEnvironment.WebRootPath, "/image");
-            this.ViewData["message"] = returnModel[0];
-            return this.View(returnModel[0]);
+
+            return this.View(model);
         }
 
         [Authorize]

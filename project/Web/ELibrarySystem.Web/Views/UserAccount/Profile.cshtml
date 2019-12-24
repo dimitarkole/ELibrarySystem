@@ -1,61 +1,54 @@
 ﻿@model ELibrarySystem.Web.ViewModels.UserAccount.ProfilUserViewModel
 
+
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Профил";
 }
 
-<div class=" container">
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Профил</h2>
+<form asp-action="Profile" asp-route-returnUrl="@ViewData["URL"]" enctype="multipart/form-data">
 
-        </div>
-        <div class="col-md-12">
-            <h3>@ViewData["message"]</h3>
+    <div class="container" style="background:#f7f7f7">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Профил</h2>
+                <h4>@ViewData["message"]</h4>
+                <hr />
+            </div>
         </div>
     </div>
 
-    <hr />
-    <div class="row">
+    <div class="container" style="background:#f7f7f7">
+        <div class="row">
+            <div class="col-md-5">
+                <img src="@Model.AvatarLocation" alt="Avatar" width="500px" height="500px" />
+            </div>
+            <div class="col-md-1">
 
-        <div class="col-md-12">
-            <form asp-action="Profile" asp-route-returnUrl="@ViewData["AddBook"]">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <!-- <div class="form-group row">
-        <label asp-for="Photos" class="control-label col-md-2"></label>
-        <input asp-for="Photos" class="form-control col-md-5" />
-        <label class="form-control col-md-5"></label>
-    </div>-->
+            </div>
 
-
+            <div class="col-md-6">
                 <div class="form-group row">
-                    <label asp-for="Avatar" class="control-label col-md-2">Аватар</label>
-                    <input asp-for="Avatar" class="form-control col-md-6" />
-                    <span asp-validation-for="Avatar" class="text-danger col-md-4"></span>
+                    <label asp-for="Photo" class="control-label col-md-5">Смени аватара</label>
+                    <input asp-for="Photo" class="form-control col-md-6" />
                 </div>
+
+
                 <div class="form-group row">
-                    <label asp-for="FirstName" class="control-label col-md-2">Име</label>
+                    <label asp-for="FirstName" class="control-label col-md-5">Име</label>
                     <input asp-for="FirstName" class="form-control col-md-6" />
                     <span asp-validation-for="FirstName" class="text-danger col-md-4"></span>
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="LastName" class="control-label col-md-2">Фамилия</label>
+                    <label asp-for="LastName" class="control-label col-md-5">Фамилия</label>
                     <input asp-for="LastName" class="form-control col-md-6" />
-                    <span asp-validation-for="LastName" class="text-danger col-md-4"></span>
                 </div>
                 <div class="form-group row">
-                    <span class="text-danger col-md-6"></span>
+                    <span class="text-danger col-md-9"></span>
 
-                    <input type="submit" value="Запази промените" class="btn btn-primary col-md-2" />
+                    <input type="submit" value="Запази" class="btn btn-primary col-md-2" />
                 </div>
-                <div class="form-group row">
-                    <span class="text-danger col-md-6"></span>
-                    <input type="submit" value="Направи ме библиотекар" asp-action="ReturnigGivenBook"  class="btn col-md-2" />
-                </div>
-
-
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</form>

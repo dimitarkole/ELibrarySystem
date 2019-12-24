@@ -39,4 +39,8 @@
     <ProjectReference Include="..\ELibrarySystem.Web.Infrastructure\ELibrarySystem.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\ELibrarySystem.Web.ViewModels\ELibrarySystem.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\Avatars\" />
+  </ItemGroup>
 </Project>

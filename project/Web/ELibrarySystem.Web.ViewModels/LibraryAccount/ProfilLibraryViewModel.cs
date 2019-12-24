@@ -9,12 +9,12 @@
 
     public class ProfilLibraryViewModel
     {
-        public string Avatar { get; set; }
+        public string AvatarLocation { get; set; }
 
         public string LibararyName { get; set; }
 
         public string LibraryLocation { get; set; }
 
-        public IFormFile Photos { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }

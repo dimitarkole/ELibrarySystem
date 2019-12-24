@@ -16,21 +16,26 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
+    using Microsoft.AspNetCore.Hosting;
+    using System.IO;
+    using Microsoft.AspNetCore.Http;
+
     public class UserAccountController : Controller
     {
-        private IUserService userService;
-        private IStatsUserService statsUserService;
-        private ITakenBooksService takenBooksService;
-        private IIndexUserService indexUserService;
-        private IUserProfileService userProfileService;
-        private IMessageService messageService;
-        private IProfileChakerService profilChekerService;
+        private readonly IUserService userService;
+        private readonly IStatsUserService statsUserService;
+        private readonly ITakenBooksService takenBooksService;
+        private readonly IIndexUserService indexUserService;
+        private readonly IUserProfileService userProfileService;
+        private readonly IMessageService messageService;
+        private readonly IProfileChakerService profilChekerService;
 
-        private SignInManager<ApplicationUser> SignInManager;
-        private UserManager<ApplicationUser> UserManager;
+        private readonly SignInManager<ApplicationUser> SignInManager;
+        private readonly UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LogoutModel> logger;
         private string userId;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public UserAccountController(
             SignInManager<ApplicationUser> signInManager,
@@ -41,6 +46,7 @@
             ITakenBooksService takenBooksService,
             IStatsUserService statsUserService,
             IUserProfileService userProfileService,
+            IHostingEnvironment hostingEnvironment,
             IMessageService messageService,
             IProfileChakerService profilChekerService)
         {
@@ -55,6 +61,7 @@
             this.messageService = messageService;
             this.profilChekerService = profilChekerService;
             this.statsUserService = statsUserService;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         private IActionResult StartUp()
@@ -169,6 +176,17 @@
             {
                 return startUp;
             }
+
+            var pic = model.Photo;
+            if (pic != null)
+            {
+                var fileName = Path.Combine(
+                    this.hostingEnvironment.WebRootPath + "/img/Avatars",
+                    Path.GetFileName(this.userId + "_" + pic.FileName));
+                pic.CopyTo(new FileStream(fileName, FileMode.Create));
+                model.AvatarLocation = "/img/Avatars/" + Path.GetFileName(fileName);
+            }
+
             var returModel = this.userProfileService.SaveChanges(model, this.userId);
             return this.View(returModel);
         }

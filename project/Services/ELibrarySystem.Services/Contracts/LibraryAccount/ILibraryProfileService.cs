@@ -9,7 +9,7 @@
     {
         ProfilLibraryViewModel PreparedPage(string userId);
 
-        List<object> SaveChanges(ProfilLibraryViewModel model,string userId);
+        List<object> SaveChanges(ProfilLibraryViewModel model, string userId);
 
     }
 }

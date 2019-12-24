@@ -32,7 +32,7 @@
              .FirstOrDefault(u => u.Id == userId);
             var model = new ProfilAdminViewModel()
             {
-                Avatar = user.Avatar,
+                AvatarLocation = user.Avatar,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
             };
@@ -43,7 +43,7 @@
         {
             var user = this.context.Users
                 .FirstOrDefault(u => u.Id == userId);
-            user.Avatar = model.Avatar;
+            user.Avatar = model.AvatarLocation;
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             this.context.SaveChanges();
