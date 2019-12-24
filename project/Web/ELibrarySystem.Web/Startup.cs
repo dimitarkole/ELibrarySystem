@@ -149,6 +149,9 @@
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IAdminProfileService, AdminProfileService>();
             services.AddTransient<IIndexAdminService, IndexAdminService>();
+            services.AddTransient<IStatsAdminService, StatsAdminService>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

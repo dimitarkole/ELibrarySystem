@@ -10,6 +10,7 @@
 
     public class IndexUserService : IIndexUserService
     {
+
         private ApplicationDbContext context;
 
         public IndexUserService(ApplicationDbContext context)
@@ -24,6 +25,7 @@
                 CountReadedBooks = this.CountReadedBooks(userId),
                 CountTakenBooks = this.CountTakenBooks(userId),
                 CountLibrary = this.CountLibrary(userId),
+                LoveGenre = this.LoveGenre(userId),
             };
             return indexUserViewModel;
         }
@@ -52,7 +54,6 @@
             return count;
         }
 
-
         private int CountLibrary(string userId)
         {
             var count = this.context.GetBooks
@@ -61,5 +62,23 @@
                 .Count();
             return count;
         }
+
+        private string LoveGenre(string userId)
+        {
+            var getBooks = this.context
+                .GetBooks
+                .Where(gb =>
+                    gb.UserId == userId
+                    && gb.DeletedOn == null)
+                .Select(gb => gb.Book.Genre.Name)
+                .ToList()
+                .GroupBy(i => i)
+                .OrderByDescending(grp => grp.Count())
+                .Select(grp => grp.Key)
+                .First();
+
+            return getBooks;
+        }
+
     }
 }

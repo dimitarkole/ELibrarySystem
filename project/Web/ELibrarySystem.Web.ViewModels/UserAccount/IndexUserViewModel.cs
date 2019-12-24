@@ -10,6 +10,7 @@
 
         public int CountTakenBooks { get; set; }
 
+        public string LoveGenre { get; set; }
 
         public int CountLibrary { get; set; }
 

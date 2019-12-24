@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ELibrarySystem.Web.ViewModels.LibraryAccount
+﻿namespace ELibrarySystem.Web.ViewModels.LibraryAccount
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     public class ChartGettenBookSinceSixМonthData
     {
         public ChartGettenBookSinceSixМonthData(string mounth, int gettenBookCount, int returnedBookCount)

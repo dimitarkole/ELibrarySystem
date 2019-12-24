@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.AdminAccount;
     using ELibrarySystem.Services.Contracts.Home;
@@ -30,7 +31,8 @@
         private IProfileChakerService profilChekerService;
         private IMessageService messageService;
         private IIndexAdminService indexAdminService;
-
+        private IStatsAdminService statsAdminService;
+        
         public AdminAccountController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
@@ -39,7 +41,8 @@
             IAdminProfileService adminProfileService,
             IProfileChakerService profilChekerService,
             IMessageService messageService,
-            IIndexAdminService indexAdminService)
+            IIndexAdminService indexAdminService,
+            IStatsAdminService statsAdminService)
         {
             this.SignInManager = signInManager;
             this.UserManager = userManager;
@@ -49,6 +52,7 @@
             this.adminProfileService = adminProfileService;
             this.profilChekerService = profilChekerService;
             this.messageService = messageService;
+            this.statsAdminService = statsAdminService;
             this.indexAdminService = indexAdminService;
         }
 
@@ -57,7 +61,7 @@
         [AllowAnonymous]
         public IActionResult Index(string returnUrl = null)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -78,7 +82,7 @@
         [AllowAnonymous]
         public IActionResult AllUsers()
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -92,7 +96,7 @@
         [AllowAnonymous]
         public IActionResult MakeUserLibrary(UsersViewModel model, string id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -107,7 +111,7 @@
         [AllowAnonymous]
         public IActionResult MakeLibraryUser(UsersViewModel model, string id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -122,7 +126,7 @@
         [AllowAnonymous]
         public IActionResult MakeUserAdmin(UsersViewModel model, string id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -137,7 +141,7 @@
         [AllowAnonymous]
         public IActionResult DeleteUser(UsersViewModel model, string id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -152,7 +156,7 @@
         [AllowAnonymous]
         public IActionResult ChangeActivePage(UsersViewModel model, int id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -166,7 +170,7 @@
         [AllowAnonymous]
         public IActionResult Profile()
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -180,7 +184,7 @@
         [AllowAnonymous]
         public IActionResult Profile(ProfilAdminViewModel model)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -190,17 +194,16 @@
             return this.View(returnModel);
         }
 
-       
-
         [Authorize]
         [HttpGet]
         public IActionResult Notification()
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
             }
+
             var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
             return this.View(returnModel);
         }
@@ -209,19 +212,47 @@
         [HttpPost]
         public IActionResult NotificationChangePage(MessagesViewModel model, int id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
             }
 
             var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
-            this.StarUp();
+            this.StartUp();
 
             return this.View("Notification", returnModel);
         }
 
-        private IActionResult StarUp()
+        public IActionResult Stats()
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            var returnModel = this.statsAdminService.PreparedPage(this.userId);
+            this.ViewData["message"] = this.userId;
+            return this.View(returnModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult StatsSearch(StatsAdminViewModel model)
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            var returnModel = this.statsAdminService.SearchStats(model, this.userId);
+            this.ViewData["message"] = this.userId;
+            return this.View("Stats", returnModel);
+        }
+
+        private IActionResult StartUp()
         {
             this.userId = this.UserManager.GetUserId(this.User);
 

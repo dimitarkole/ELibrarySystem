@@ -25,7 +25,7 @@
             this.genreService = genreService;
         }
 
-        StatsUserViewModel IStatsUserService.PreparedPage(string userId)
+        public StatsUserViewModel PreparedPage(string userId)
         {
             var model = new StatsUserViewModel();
             var returnModel = this.SearchStats(model, userId);

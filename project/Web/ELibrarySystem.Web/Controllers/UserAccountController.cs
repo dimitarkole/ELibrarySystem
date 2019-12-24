@@ -19,6 +19,7 @@
     public class UserAccountController : Controller
     {
         private IUserService userService;
+        private IStatsUserService statsUserService;
         private ITakenBooksService takenBooksService;
         private IIndexUserService indexUserService;
         private IUserProfileService userProfileService;
@@ -38,6 +39,7 @@
             IIndexUserService indexUserService,
             ILogger<LogoutModel> logger,
             ITakenBooksService takenBooksService,
+            IStatsUserService statsUserService,
             IUserProfileService userProfileService,
             IMessageService messageService,
             IProfileChakerService profilChekerService)
@@ -52,9 +54,10 @@
             this.userProfileService = userProfileService;
             this.messageService = messageService;
             this.profilChekerService = profilChekerService;
+            this.statsUserService = statsUserService;
         }
 
-        private IActionResult StarUp()
+        private IActionResult StartUp()
         {
             this.userId = this.UserManager.GetUserId(this.User);
             this.ViewData["UserType"] = "user";
@@ -88,7 +91,7 @@
         [AllowAnonymous]
         public IActionResult Index(string returnUrl = null)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -109,7 +112,7 @@
         [AllowAnonymous]
         public IActionResult TakenBooks()
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -122,7 +125,7 @@
         [AllowAnonymous]
         public IActionResult TakenBooksSearch(TakenBooksViewModel model)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -135,7 +138,7 @@
         [AllowAnonymous]
         public IActionResult ChangePageTakenBooks(TakenBooksViewModel model, int id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -148,7 +151,7 @@
         [AllowAnonymous]
         public IActionResult Profile()
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -161,7 +164,7 @@
         [AllowAnonymous]
         public IActionResult Profile(ProfilUserViewModel model)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -174,7 +177,7 @@
         [HttpGet]
         public IActionResult Notification()
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
@@ -184,18 +187,49 @@
             return this.View(returnModel);
         }
 
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Stats()
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            var returnModel = this.statsUserService.PreparedPage(this.userId);
+            this.ViewData["message"] = this.userId;
+            return this.View(returnModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult StatsSearch(StatsUserViewModel model)
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            var returnModel = this.statsUserService.SearchStats(model, this.userId);
+            this.ViewData["message"] = this.userId;
+            return this.View("Stats", returnModel);
+        }
+
         [Authorize]
         [HttpPost]
         public IActionResult NotificationChangePage(MessagesViewModel model, int id)
         {
-            var startUp = this.StarUp();
+            var startUp = this.StartUp();
             if (startUp != null)
             {
                 return startUp;
             }
 
             var returnModel = this.messageService.GetMessagesChangePage(model, this.userId, id);
-            this.StarUp();
+            this.StartUp();
 
             return this.View("Notification", returnModel);
         }
