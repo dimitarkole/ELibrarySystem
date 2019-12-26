@@ -53,5 +53,26 @@
             var returnModel = this.PreparedPage(userId);
             return returnModel;
         }
+
+        public List<object> ChangeType(string userId)
+        {
+            var result = new List<object>();
+            result.Add(this.PreparedPage(userId));
+            result.Add(this.ChangeTypeSendMessages(userId));
+            return result;
+        }
+
+        private string ChangeTypeSendMessages(string userId)
+        {
+            var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
+            var admins = this.context.Users.Where(u => u.Type == "admin").ToList();
+            var message = "Искам да стана библиотека - email =" + user.Email;
+            foreach (var admin in admins)
+            {
+                this.messageService.AddMessageAtDB(admin.Id, message);
+            }
+
+            return "Успешно изпратено заявление за промена на типа на акаунта!";
+        }
     }
 }

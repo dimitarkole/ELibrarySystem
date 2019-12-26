@@ -12,5 +12,6 @@
 
         ProfilUserViewModel SaveChanges(ProfilUserViewModel model, string userId);
 
+        List<object> ChangeType (string userId);
     }
 }

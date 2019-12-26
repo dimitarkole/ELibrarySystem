@@ -10,6 +10,7 @@
     using ELibrarySystem.Services.Contracts.LibraryAccount;
     using ELibrarySystem.Services.Contracts.UserAccount;
     using ELibrarySystem.Web.ViewModels.LibraryAccount;
+    using ELibrarySystem.Web.ViewModels.SharedResources;
     using ELibrarySystem.Web.ViewModels.UserAccount;
 
     public class StatsUserService : IStatsUserService
@@ -41,6 +42,7 @@
                 SearchBook = searchBook,
                 Genres = model.Genres,
                 ChartGettenBookSinceSixМonth = this.ChartGettenBookSinceSixМonth(searchBook, userId),
+                ChartGenres = this.ChartGenres(searchBook,userId),
             };
             return returnModel;
         }
@@ -97,6 +99,25 @@
 
             var chartGettenBookSinceSixМonth = new ChartGettenBookSinceSixМonth("Взети книги за последните 6 месеца", chartData);
             return chartGettenBookSinceSixМonth;
+        }
+
+        private ChartViewModel ChartGenres(Book searchBook, string userId)
+        {
+
+            var chartData = this.context
+               .GetBooks
+               .Where(gb =>
+                   gb.UserId == userId
+                   && gb.DeletedOn == null)
+               .Select(gb => gb.Book.Genre.Name)
+               .ToList()
+               .GroupBy(i => i)
+               .OrderByDescending(grp => grp.Count())
+               .Select(grp => new ChartDataViewModel(grp.Key, grp.Count()))
+               .ToList();
+
+            var chart = new ChartViewModel("Жанрове", chartData);
+            return chart;
         }
 
         private List<GenreListViewModel> GetGenre()

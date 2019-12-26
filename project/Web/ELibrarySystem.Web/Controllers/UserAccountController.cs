@@ -124,8 +124,8 @@
             {
                 return startUp;
             }
-            var returModel = this.takenBooksService.PreparedPage(this.userId);
-            return this.View(returModel);
+            var returnModel = this.takenBooksService.PreparedPage(this.userId);
+            return this.View(returnModel);
         }
 
         [HttpPost]
@@ -137,8 +137,8 @@
             {
                 return startUp;
             }
-            var returModel = this.takenBooksService.TakenBooks(model, this.userId);
-            return this.View("TakenBooks", returModel);
+            var returnModel = this.takenBooksService.TakenBooks(model, this.userId);
+            return this.View("TakenBooks", returnModel);
         }
 
         [HttpPost]
@@ -150,8 +150,8 @@
             {
                 return startUp;
             }
-            var returModel = this.takenBooksService.ChangeActivePage(model, this.userId, id);
-            return this.View("TakenBooks",returModel);
+            var returnModel = this.takenBooksService.ChangeActivePage(model, this.userId, id);
+            return this.View("TakenBooks",returnModel);
         }
 
         [HttpGet]
@@ -163,8 +163,8 @@
             {
                 return startUp;
             }
-            var returModel = this.userProfileService.PreparedPage(this.userId);
-            return this.View(returModel);
+            var returnModel = this.userProfileService.PreparedPage(this.userId);
+            return this.View(returnModel);
         }
 
         [HttpPost]
@@ -187,9 +187,26 @@
                 model.AvatarLocation = "/img/Avatars/" + Path.GetFileName(fileName);
             }
 
-            var returModel = this.userProfileService.SaveChanges(model, this.userId);
-            return this.View(returModel);
+            var returnModel = this.userProfileService.SaveChanges(model, this.userId);
+            return this.View(returnModel);
         }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ChangeType(ProfilUserViewModel model)
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            var returnModel = this.userProfileService.ChangeType(this.userId);
+            this.ViewData["message"] = returnModel[1];
+            return this.View(returnModel[0]);
+        }
+
 
         [Authorize]
         [HttpGet]
