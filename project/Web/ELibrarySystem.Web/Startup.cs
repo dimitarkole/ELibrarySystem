@@ -124,7 +124,7 @@
             // Home Services
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IProfileChakerService, ProfileChakerService>();
-
+            services.AddTransient<ISendMail, SendMail>();
 
             // Library Services
             services.AddTransient<IBookService, BookService>();

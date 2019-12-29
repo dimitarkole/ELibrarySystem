@@ -53,14 +53,6 @@
           string userId,
           string selectedBookId,
           string selectedUserId);
-
-        List<object> EditingGivinBook(
-          GiveBookViewModel model,
-          string userId,
-          string givenBookId,
-          string selectedBookId,
-          string selectedUserId);
-
      
     }
 }
