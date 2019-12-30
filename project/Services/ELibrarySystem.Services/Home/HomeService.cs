@@ -1,5 +1,11 @@
 ﻿namespace ELibrarySystem.Services.Home
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     using ELibrarySystem.Data;
     using ELibrarySystem.Data.Models;
     using ELibrarySystem.Services.Contracts.Home;
@@ -7,134 +13,81 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.Extensions.Logging;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class HomeService : IHomeService
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly IEmailSender emailSender;
-        private readonly ILogger logger;
-
         private readonly ApplicationDbContext context;
+        private readonly ISendMail sendMail;
+        private readonly string vetyficationEmailType = "VeryfiUserCode";
 
         public HomeService(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
-            ILogger<AccountController> logger,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            ISendMail sendMail)
         {
             this.context = context;
-            this.signInManager = signInManager;
-            this.emailSender = emailSender;
-            this.logger = logger;
+            this.sendMail = sendMail;
         }
 
-        /*public async Task<List<object>> LogInAsync(IndexViewModel indexModel)
+        public bool CheckVerifedEmail(string userEmail)
         {
-            LoginViewModel loginModel = indexModel.LoginViewModel;
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            List<object> returnResult = new List<object>();
-            if (this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null) != null)
+            var check = this.context.Users
+                .FirstOrDefault(u =>
+                    u.Email == userEmail
+                    && u.VerifiedOn == null);
+            if (check == null)
             {
-                var userName = this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null).UserName;
-
-                var result =await this.signInManager.PasswordSignInAsync(
-                    userName,
-                    loginModel.Password,
-                    loginModel.RememberMe,
-                    lockoutOnFailure: false);
-
-                if (result.Succeeded)
-                {
-                    this.logger.LogInformation("Успешно влизане!");
-                    var userId = this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
-                    var type = this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
-                    returnResult.Add(userId);
-                    returnResult.Add(type);
-                }
-
-                if (result.IsLockedOut)
-                {
-                    this.logger.LogWarning("Акаунта е блокиран");
-                    returnResult.Add("Акаунта е блокиран");
-                }
+                return false;
             }
             else
             {
-                returnResult.Add("Невалиден Email или парола!");
+                return false;
             }
-
-            return returnResult;
         }
 
-
-        public void LogOut()
+        public void SendVerifyCodeToEmail(string userEmail)
         {
-            this.signInManager.SignOutAsync();
-            this.logger.LogInformation("User logged out.");
+            var userId = this.context.Users.FirstOrDefault(u => u.Email == userEmail).Id;
+
+            IdentityUserClaim<string> claim = this.context.UserClaims
+                .FirstOrDefault(c =>
+                    c.UserId == userId
+                    && c.ClaimType == this.vetyficationEmailType);
+            claim.UserId = userId;
+
+            Random random = new Random();
+            var length = 5;
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            string code = userId.Substring(0, 3);
+            code += new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            claim.ClaimType = this.vetyficationEmailType;
+            claim.ClaimValue = code;
+            this.context.UserClaims.Add(claim);
+            this.context.SaveChanges();
+
+            Dictionary<string, string> info = new Dictionary<string, string>();
+            info.Add("code", code);
+            this.sendMail.SendMailByTemplate(userEmail, "VerifyMailTemplate", info);
         }
 
-        public void Register()
+        public bool VerifyEmail(VerifyEmailViewModel model)
         {
-            this.ViewBag.UserType = "guest";
-            this.ViewData["ReturnUrl"] = returnUrl;
-            var registerModel = indexModel.RegisterViewModel;
-            if (this.ModelState.IsValid)
+            var code = model.Code;
+            var check = this.context.UserClaims
+                .FirstOrDefault(c =>
+                    c.ClaimValue == code
+                    && c.ClaimType == this.vetyficationEmailType);
+            if (check != null)
             {
-                var userChack = this.context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
-                if (userChack == null)
-                {
-                    var type = "user";
-                    var user = new ApplicationUser
-                    {
-                        UserName = registerModel.Email,
-                        Email = registerModel.Email,
-                        Type = type,
-                        Avatar = " ",
-                    };
-                    var result = this.userManager.CreateAsync(user, registerModel.Password);
-                    //var result = await this.userManager.CreateAsync(user, registerModel.Password);
-                    this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
-
-                    if (result.Succeeded)
-                    {
-                        this.logger.LogInformation("Успешно регистриран потребител!");
-                        var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                        // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                        // await _emailSender.SendEmailConfirmationAsync(registerModel.Email, callbackUrl);
-
-                        await this.signInManager.SignInAsync(user, isPersistent: false);
-                        this.logger.LogInformation("Успешно регистриран потребител!");
-
-                        var userId = user.Id;
-                        Message message = new Message()
-                        {
-                            UserId = userId,
-                            User = user,
-                            TextOfMessage = "Успешно регистриран потребител!",
-                        };
-
-                        this.context.Messages.Add(message);
-                        this.context.SaveChanges();
-
-                        return this.RedirectToLocal(userId, type, returnUrl);
-                    }
-                }
-                else
-                {
-                    this.ViewBag.RegisterErr = "Email адреса е зает!";
-                }
+                var userId = check.UserId;
+                var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
+                user.VerifiedOn = DateTime.UtcNow;
+                this.context.SaveChanges();
+                return true;
             }
-            throw new NotImplementedException();
-        }*/
+
+            return false;
+        }
     }
 }

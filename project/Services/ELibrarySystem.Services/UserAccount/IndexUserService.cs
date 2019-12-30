@@ -65,20 +65,26 @@
 
         private string LoveGenre(string userId)
         {
-            var getBooks = this.context
-                .GetBooks
-                .Where(gb =>
-                    gb.UserId == userId
-                    && gb.DeletedOn == null)
-                .Select(gb => gb.Book.Genre.Name)
-                .ToList()
-                .GroupBy(i => i)
-                .OrderByDescending(grp => grp.Count())
-                .Select(grp => grp.Key)
-                .First();
+            try
+            {
+               var getBooks = this.context
+                   .GetBooks
+                   .Where(gb =>
+                       gb.UserId == userId
+                       && gb.DeletedOn == null)
+                   .Select(gb => gb.Book.Genre.Name)
+                   .ToList()
+                   .GroupBy(i => i)
+                   .OrderByDescending(grp => grp.Count())
+                   .Select(grp => grp.Key)
+                   .First();
 
-            return getBooks;
+               return getBooks;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
-
     }
 }

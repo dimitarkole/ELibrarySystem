@@ -1,5 +1,6 @@
 ﻿namespace ELibrarySystem.Web.Areas.Identity.Pages.Account
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
@@ -7,6 +8,7 @@
     using System.Threading.Tasks;
     using ELibrarySystem.Data;
     using ELibrarySystem.Data.Models;
+    using ELibrarySystem.Services.Contracts.Home;
     using ELibrarySystem.Web.Controllers;
     using ELibrarySystem.Web.ViewModels;
     using ELibrarySystem.Web.ViewModels.HomeViewModels;
@@ -23,23 +25,26 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly IEmailSender emailSender;
+        private readonly ISendMail sendMail;
         private readonly ILogger logger;
+        private readonly IHomeService homeService;
 
         private readonly ApplicationDbContext context;
 
         public HomeController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
+            ISendMail sendMail,
             ILogger<AccountController> logger,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            IHomeService homeService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.emailSender = emailSender;
+            this.sendMail = sendMail;
             this.logger = logger;
             this.context = context;
+            this.homeService = homeService;
         }
 
         [HttpGet]
@@ -52,7 +57,7 @@
                 var type = this.context.Users.FirstOrDefault(x => x.Id == userId).Type;
                 this.ViewBag.LoginErr = " ";
                 this.ViewBag.RegisterErr = " ";
-                return this.RedirectToLocal(userId, type, returnUrl);
+                return this.RedirectToLocal(userId, type);
             }
 
             return this.View();
@@ -90,6 +95,7 @@
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            bool flagLogIn = false;
             if (this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null) != null)
             {
                 var userName = this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null).UserName;
@@ -103,10 +109,17 @@
                 if (result.Succeeded)
                 {
                     this.logger.LogInformation("Успешно влизане!");
-                    var userId = this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
-                    var type = this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
+                    var email = loginModel.Email;
 
-                    return this.RedirectToLocal(userId, type, returnUrl);
+                    var userId = this.context.Users.FirstOrDefault(x => x.Email == email).Id;
+                    var type = this.context.Users.FirstOrDefault(x => x.Email == email).Type;
+
+                    if (this.homeService.CheckVerifedEmail(email) == false)
+                    {
+                        return this.VerifyEmail();
+                    }
+
+                    return this.RedirectToLocal(userId, type);
                 }
 
                 if (result.IsLockedOut)
@@ -138,7 +151,6 @@
                         Type = type,
                         Avatar = " ",
                     };
-                    this.ViewBag.RegisterErr = $"user.Id={user.Id} ";
                     var result = await this.userManager.CreateAsync(user, registerModel.Password);
                     this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
 
@@ -163,7 +175,7 @@
                         this.context.Messages.Add(message);
                         this.context.SaveChanges();
 
-                        return this.RedirectToLocal(userId, type, returnUrl);
+                        return this.RedirectToLocal(userId, type);
                     }
                 }
                 else
@@ -196,6 +208,23 @@
             return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult VerifyEmail()
+        {
+            VerifyEmailViewModel model = new VerifyEmailViewModel();
+            return this.View("VerifyEmail", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult VerifyEmail(VerifyEmailViewModel model)
+        {
+            //string userId = 
+           // this.homeService.VerifyEmail(userId,url);
+            return this.View();
+        }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -204,7 +233,7 @@
             }
         }
 
-        private IActionResult RedirectToLocal(string userId, string type, string returnUrl)
+        private IActionResult RedirectToLocal(string userId, string type)
         {
             this.HttpContext.Session.SetString("userId", userId);
             if (type == "admin")
@@ -217,6 +246,13 @@
             }
 
             return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
+        }
+
+        private bool CheckVeryfiUser(string userEmail)
+        {
+            this.homeService.CheckVerifedEmail(userEmail);
+
+            return true;
         }
     }
 }

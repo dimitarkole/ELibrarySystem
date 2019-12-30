@@ -4,13 +4,19 @@
     using System.Collections.Generic;
     using System.Net.Mail;
     using System.Text;
-
+    using ELibrarySystem.Data;
     using ELibrarySystem.Services.Contracts.Home;
 
     public class SendMail : ISendMail
     {
         private readonly string fromEmail = "elibrarysite2019@gmail.com";
         private readonly string password = "Elibrary2019!";
+        private readonly ApplicationDbContext context;
+
+        public SendMail(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
 
         public bool SendingMail(string toMail, string subject, string messageBody)
         {
@@ -49,6 +55,35 @@
             {
                 return false;
             }
+        }
+
+        public void SendMailByTemplate(string toMail, string templateName, Dictionary<string, string> info)
+        {
+            Dictionary<string, string> templateResult = new Dictionary<string, string>();
+            switch (templateName)
+            {
+                case "VerifyMailTemplate":
+                    templateResult = this.VerifyMailTemplate(info["url"]);
+                    break;
+                default:
+                    break;
+            }
+
+            var subject = templateResult["Subject"];
+            var message = templateResult["Message"];
+            this.SendingMail(toMail, subject, message);
+        }
+
+        public Dictionary<string, string> VerifyMailTemplate(string url)
+        {
+
+            var result = new Dictionary<string, string>();
+            result.Add("Subject", "Email за потвърждение на акаунт");
+            StringBuilder ms = new StringBuilder();
+            ms.AppendLine("Успешно регистриран email в системата на Elibrary<br/>");
+            ms.AppendLine($"Моля потвърдете своя акаунт чрез този линк: {url}<br/>");
+            result.Add("Message", "Email за потвърждение на акаунт");
+            return result;
         }
     }
 }

@@ -20,6 +20,9 @@ namespace ELibrarySystem.Data.Models
         }
 
         // Audit info
+        public DateTime? VerifiedOn { get; set; }
+
+        // Audit info
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }

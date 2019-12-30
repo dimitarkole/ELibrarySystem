@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class ConfirmProfilWhitPhoneViewModel
+    public class VerifyEmailViewModel
     {
-        public string RegisterViewModel { get; set; }
+        public string Code { get; set; }
     }
 }

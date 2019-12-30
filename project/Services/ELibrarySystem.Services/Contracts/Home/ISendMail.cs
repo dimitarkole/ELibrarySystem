@@ -7,5 +7,9 @@
     public interface ISendMail
     {
         public bool SendingMail(string toMail, string subject, string messageBody);
+
+        public Dictionary<string, string> VerifyMailTemplate(string url);
+
+        public void SendMailByTemplate(string toMail, string templateName, Dictionary<string, string> info);
     }
 }

@@ -1,18 +1,19 @@
 ﻿namespace ELibrarySystem.Services.Contracts.Home
 {
-    using ELibrarySystem.Data;
-    using ELibrarySystem.Web.ViewModels.HomeViewModels;
     using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
 
+    using ELibrarySystem.Data;
+    using ELibrarySystem.Web.ViewModels.HomeViewModels;
+
     public interface IHomeService
     {
-        /*public List<object>async Task<List<object>> LogInAsync(IndexViewModel indexModel);
+        public bool CheckVerifedEmail(string userEmail);
 
-        public void LogOut();
+        public void SendVerifyCodeToEmail(string userEmail);
 
-        public void Register();*/
+        public bool VerifyEmail(VerifyEmailViewModel model);
     }
 }
