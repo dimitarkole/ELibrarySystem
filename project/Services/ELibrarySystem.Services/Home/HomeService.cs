@@ -75,7 +75,7 @@
             info.Add("code", code);
             var userEmail = this.context.Users.FirstOrDefault(u => u.Id == userId).Email;
 
-            userEmail = "dim_kolev2002@abv.bg";
+            //userEmail = "dim_kolev2002@abv.bg";
 
             this.sendMail.SendMailByTemplate(userEmail, "VerifyMailTemplate", info);
         }

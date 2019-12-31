@@ -81,7 +81,7 @@
             result.Add("Subject", "Email за потвърждение на акаунт");
             StringBuilder ms = new StringBuilder();
             ms.AppendLine("Успешно регистриран email в системата на Elibrary<br/>");
-            ms.AppendLine($"Моля потвърдете своя акаунт чрез този линк: {url}<br/>");
+            ms.AppendLine($"Код за потвърждение: {url}<br/>");
             result.Add("Message", ms.ToString().Trim());
             return result;
         }
