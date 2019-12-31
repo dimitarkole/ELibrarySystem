@@ -35,6 +35,9 @@
 
         public DbSet<Message> Messages { get; set; }
 
+        public DbSet<VerificatedCode> VerificatedCodes { get; set; }
+
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

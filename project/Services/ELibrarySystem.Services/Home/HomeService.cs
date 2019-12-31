@@ -28,66 +28,78 @@
             this.sendMail = sendMail;
         }
 
-        public bool CheckVerifedEmail(string userEmail)
+        public bool CheckVerifedEmail(string userId)
         {
             var check = this.context.Users
                 .FirstOrDefault(u =>
-                    u.Email == userEmail
-                    && u.VerifiedOn == null);
+                    u.Id == userId).VerifiedOn;
             if (check == null)
             {
                 return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
 
-        public void SendVerifyCodeToEmail(string userEmail)
+        public void SendVerifyCodeToEmail(string userId)
         {
-            var userId = this.context.Users.FirstOrDefault(u => u.Email == userEmail).Id;
+            var checkVerificatedCode = this.context.VerificatedCodes
+                .FirstOrDefault(vc => vc.UserId == userId);
+            var verificatedCode = new VerificatedCode();
+            if (checkVerificatedCode != null)
+            {
+                verificatedCode = checkVerificatedCode;
+            }
 
-            IdentityUserClaim<string> claim = this.context.UserClaims
-                .FirstOrDefault(c =>
-                    c.UserId == userId
-                    && c.ClaimType == this.vetyficationEmailType);
-            claim.UserId = userId;
+            verificatedCode.UserId = userId;
 
             Random random = new Random();
-            var length = 5;
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            string code = userId.Substring(0, 3);
+            string code = userId.Substring(0, Math.Min(3, userId.Length));
+            var length = 8 - code.Length;
+
             code += new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
 
-            claim.ClaimType = this.vetyficationEmailType;
-            claim.ClaimValue = code;
-            this.context.UserClaims.Add(claim);
+            verificatedCode.Code = code;
+            if (checkVerificatedCode == null)
+            {
+                this.context.VerificatedCodes.Add(verificatedCode);
+            }
+
             this.context.SaveChanges();
 
             Dictionary<string, string> info = new Dictionary<string, string>();
             info.Add("code", code);
+            var userEmail = this.context.Users.FirstOrDefault(u => u.Id == userId).Email;
+
+            userEmail = "dim_kolev2002@abv.bg";
+
             this.sendMail.SendMailByTemplate(userEmail, "VerifyMailTemplate", info);
         }
 
-        public bool VerifyEmail(VerifyEmailViewModel model)
+        public Dictionary<string, string> VerifyEmail(VerifyEmailViewModel model)
         {
             var code = model.Code;
-            var check = this.context.UserClaims
-                .FirstOrDefault(c =>
-                    c.ClaimValue == code
-                    && c.ClaimType == this.vetyficationEmailType);
+            var check = this.context.VerificatedCodes
+                .FirstOrDefault(vf => vf.Code == code);
+            var result = new Dictionary<string, string>();
+            result.Add("verificating", "No");
             if (check != null)
             {
                 var userId = check.UserId;
                 var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
                 user.VerifiedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
-                return true;
+                result["verificating"] = "Yes";
+                result.Add("userId", user.Id);
+                result.Add("type", user.Type);
+
             }
 
-            return false;
+            return result;
         }
     }
 }

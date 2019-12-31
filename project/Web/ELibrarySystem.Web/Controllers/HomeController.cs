@@ -95,7 +95,6 @@
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            bool flagLogIn = false;
             if (this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null) != null)
             {
                 var userName = this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null).UserName;
@@ -114,10 +113,7 @@
                     var userId = this.context.Users.FirstOrDefault(x => x.Email == email).Id;
                     var type = this.context.Users.FirstOrDefault(x => x.Email == email).Type;
 
-                    if (this.homeService.CheckVerifedEmail(email) == false)
-                    {
-                        return this.VerifyEmail();
-                    }
+                   
 
                     return this.RedirectToLocal(userId, type);
                 }
@@ -149,7 +145,7 @@
                         UserName = registerModel.Email,
                         Email = registerModel.Email,
                         Type = type,
-                        Avatar = " ",
+                        Avatar = "/img/Avatars/defaultAvatar",
                     };
                     var result = await this.userManager.CreateAsync(user, registerModel.Password);
                     this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
@@ -220,9 +216,16 @@
         [AllowAnonymous]
         public IActionResult VerifyEmail(VerifyEmailViewModel model)
         {
-            //string userId = 
-           // this.homeService.VerifyEmail(userId,url);
-            return this.View();
+            var result = this.homeService.VerifyEmail(model);
+            var verification = result["verificating"];
+            var userId = this.TempData["userId"].ToString();
+            if (verification == "Yes")
+            {
+                var type = result["type"];
+                return this.RedirectToLocal(userId, type);
+            }
+            this.homeService.SendVerifyCodeToEmail(userId);
+            return this.VerifyEmail();
         }
 
         private void AddErrors(IdentityResult result)
@@ -236,6 +239,16 @@
         private IActionResult RedirectToLocal(string userId, string type)
         {
             this.HttpContext.Session.SetString("userId", userId);
+
+            var email = this.context.Users.FirstOrDefault(u => u.Id == userId).Email;
+
+            if (this.homeService.CheckVerifedEmail(userId) == false)
+            {
+                this.TempData["userId"] = userId;
+               // this.homeService.SendVerifyCodeToEmail(userId);
+                return this.VerifyEmail();
+            }
+
             if (type == "admin")
             {
                 return this.RedirectToAction(nameof(AdminAccountController.Index), "AdminAccount");

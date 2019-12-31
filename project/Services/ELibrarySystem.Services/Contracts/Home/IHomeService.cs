@@ -10,10 +10,10 @@
 
     public interface IHomeService
     {
-        public bool CheckVerifedEmail(string userEmail);
+        public bool CheckVerifedEmail(string userId);
 
-        public void SendVerifyCodeToEmail(string userEmail);
+        public void SendVerifyCodeToEmail(string userId);
 
-        public bool VerifyEmail(VerifyEmailViewModel model);
+        public Dictionary<string, string> VerifyEmail(VerifyEmailViewModel model);
     }
 }

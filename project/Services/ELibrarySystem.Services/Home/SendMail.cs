@@ -63,7 +63,7 @@
             switch (templateName)
             {
                 case "VerifyMailTemplate":
-                    templateResult = this.VerifyMailTemplate(info["url"]);
+                    templateResult = this.VerifyMailTemplate(info["code"]);
                     break;
                 default:
                     break;
@@ -82,7 +82,7 @@
             StringBuilder ms = new StringBuilder();
             ms.AppendLine("Успешно регистриран email в системата на Elibrary<br/>");
             ms.AppendLine($"Моля потвърдете своя акаунт чрез този линк: {url}<br/>");
-            result.Add("Message", "Email за потвърждение на акаунт");
+            result.Add("Message", ms.ToString().Trim());
             return result;
         }
     }
