@@ -67,32 +67,53 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel indexModel, string returnUrl = null)
         {
-            this.ViewBag.UserType = "guest";
-            if (this.ModelState.IsValid)
-            {
-                if (indexModel.LoginViewModel != null)
-                {
-                    // This doesn't count login failures towards account lockout
-                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                    this.ViewData["ReturnUrl"] = returnUrl;
-
-                    return await this.Login(indexModel, returnUrl);
-                }
-                else
-                {
-                    this.ViewData["ReturnUrl"] = returnUrl;
-                    return await this.Register(indexModel, returnUrl);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
             return this.View(indexModel);
         }
 
-        public async Task<IActionResult> Login(IndexViewModel indexModel, string returnUrl = null)
+        [HttpGet]
+        public IActionResult LogInPage()
         {
-            LoginViewModel loginModel = indexModel.LoginViewModel;
+            return this.View("LogIn");
+        }
 
+        [HttpGet]
+        public IActionResult RegesterAsUser()
+        {
+            return this.View("RegesterAsUser");
+        }
+
+        [HttpGet]
+        public IActionResult RegesterAsLibrary()
+        {
+            return this.View("RegesterAsLibrary");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegesterAsUser(RegisterViewModel model)
+        {
+            var result = this.Register(model, "user");
+            if (result != null)
+            {
+                return await result;
+            }
+
+            return this.View("RegesterAsUser");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegesterAsLibrary(RegisterViewModel model)
+        {
+            var result = this.Register(model, "library");
+            if (result != null)
+            {
+                return await result;
+            }
+
+            return this.View("RegesterAsLibrary");
+        }
+
+        public async Task<IActionResult> LogIn(LoginViewModel loginModel, string returnUrl = null)
+        {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
             if (this.context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null) != null)
@@ -113,8 +134,6 @@
                     var userId = this.context.Users.FirstOrDefault(x => x.Email == email).Id;
                     var type = this.context.Users.FirstOrDefault(x => x.Email == email).Type;
 
-                   
-
                     return this.RedirectToLocal(userId, type);
                 }
 
@@ -127,60 +146,7 @@
 
             this.ViewBag.LoginErr = "Невалиден Email или парола!";
 
-            return this.View(indexModel);
-        }
-
-        public async Task<IActionResult> Register(IndexViewModel indexModel, string returnUrl = null)
-        {
-            this.ViewBag.UserType = "guest";
-            this.ViewData["ReturnUrl"] = returnUrl;
-            var registerModel = indexModel.RegisterViewModel;
-            if (this.ModelState.IsValid)
-            {
-                var userChack = this.context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
-                if (userChack == null)
-                {
-                    var type = "user";
-                    var user = new ApplicationUser{
-                        UserName = registerModel.Email,
-                        Email = registerModel.Email,
-                        Type = type,
-                        Avatar = "/img/Avatars/defaultAvatar",
-                    };
-                    var result = await this.userManager.CreateAsync(user, registerModel.Password);
-                    this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
-
-                    if (result.Succeeded)
-                    {
-                        this.logger.LogInformation("Успешно регистриран потребител!");
-                        var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                        // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                        // await _emailSender.SendEmailConfirmationAsync(registerModel.Email, callbackUrl);
-                        await this.signInManager.SignInAsync(user, isPersistent: false);
-                        this.logger.LogInformation("Успешно регистриран потребител!");
-
-                        var userId = user.Id;
-                        Message message = new Message()
-                        {
-                            UserId = userId,
-                            User = user,
-                            TextOfMessage = "Успешно регистриран потребител!",
-                        };
-
-                        this.context.Messages.Add(message);
-                        this.context.SaveChanges();
-
-                        return this.RedirectToLocal(userId, type);
-                    }
-                }
-                else
-                {
-                    this.ViewBag.RegisterErr = "Email адреса е зает!";
-                }
-            }
-
-            return this.View(indexModel);
+            return this.View("LogIn", loginModel);
         }
 
         [HttpPost]
@@ -224,8 +190,18 @@
                 var type = result["type"];
                 return this.RedirectToLocal(userId, type);
             }
+
             this.homeService.SendVerifyCodeToEmail(userId);
             return this.VerifyEmail();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ForgotenPasswordSendCode(ForgotenPasswordViewModel model)
+        {
+            var result = this.homeService.ForgotenPasswordSendCode(model);
+            return this.View();
         }
 
         private void AddErrors(IdentityResult result)
@@ -266,6 +242,56 @@
             this.homeService.CheckVerifedEmail(userEmail);
 
             return true;
+        }
+
+        private async Task<IActionResult> Register(RegisterViewModel registerModel, string type)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var userChack = this.context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
+                if (userChack == null)
+                {
+                    var user = new ApplicationUser
+                    {
+                        UserName = registerModel.Email,
+                        Email = registerModel.Email,
+                        Type = type,
+                        Avatar = "/img/Avatars/defaultAvatar",
+                    };
+                    var result = await this.userManager.CreateAsync(user, registerModel.Password);
+                    this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
+
+                    if (result.Succeeded)
+                    {
+                        this.logger.LogInformation("Успешно регистриран потребител!");
+                        var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                        // await _emailSender.SendEmailConfirmationAsync(registerModel.Email, callbackUrl);
+                        await this.signInManager.SignInAsync(user, isPersistent: false);
+                        this.logger.LogInformation("Успешно регистриран потребител!");
+
+                        var userId = user.Id;
+                        Message message = new Message()
+                        {
+                            UserId = userId,
+                            User = user,
+                            TextOfMessage = "Успешно регистриран потребител!",
+                        };
+
+                        this.context.Messages.Add(message);
+                        this.context.SaveChanges();
+
+                        return this.RedirectToLocal(userId, type);
+                    }
+                }
+                else
+                {
+                    this.ViewBag.RegisterErr = "Email адреса е зает!";
+                }
+            }
+
+            return null;
         }
     }
 }

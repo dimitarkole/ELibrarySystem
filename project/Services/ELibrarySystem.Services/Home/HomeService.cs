@@ -37,10 +37,47 @@
             {
                 return false;
             }
-            else
+
+            return true;
+        }
+
+        public string ForgotenPasswordSendCode(ForgotenPasswordViewModel model)
+        {
+            var checkEmailAtDB = this.context.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (checkEmailAtDB == null)
             {
-                return true;
+                return "Няма регистриран потребител с такъв email";
             }
+
+            var userId = checkEmailAtDB.Email;
+            var claimType = "ForgotenPasswordSendCode";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            string code = userId.Substring(0, Math.Min(3, userId.Length));
+            var length = 8 - code.Length;
+            Random random = new Random();
+            code += new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+            var claim = new IdentityUserClaim<string>();
+            var checkClaimCode = this.context.UserClaims
+             .FirstOrDefault(c => c.UserId == userId
+              && c.ClaimType == claimType);
+            if (checkClaimCode != null)
+            {
+                claim = checkClaimCode;
+            }
+
+            claim.ClaimType = claimType;
+            claim.ClaimValue = code;
+            claim.UserId = userId;
+            this.context.SaveChanges();
+
+            var info = new Dictionary<string, string>();
+            info.Add("code", code);
+            var userEmail = model.Email;
+
+            userEmail = "dim_kolev2002@abv.bg";
+            this.sendMail.SendMailByTemplate(userEmail, claimType, info);
+            return " ";
         }
 
         public void SendVerifyCodeToEmail(string userId)
@@ -75,7 +112,7 @@
             info.Add("code", code);
             var userEmail = this.context.Users.FirstOrDefault(u => u.Id == userId).Email;
 
-            //userEmail = "dim_kolev2002@abv.bg";
+            userEmail = "dim_kolev2002@abv.bg";
 
             this.sendMail.SendMailByTemplate(userEmail, "VerifyMailTemplate", info);
         }

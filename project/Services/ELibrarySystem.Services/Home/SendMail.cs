@@ -18,6 +18,8 @@
             this.context = context;
         }
 
+       
+
         public bool SendingMail(string toMail, string subject, string messageBody)
         {
             try
@@ -65,6 +67,9 @@
                 case "VerifyMailTemplate":
                     templateResult = this.VerifyMailTemplate(info["code"]);
                     break;
+                case "ForgotenPasswordSendCode":
+                    templateResult = this.ForgotenPasswordSendCode(info["code"]);
+                    break;
                 default:
                     break;
             }
@@ -76,12 +81,21 @@
 
         public Dictionary<string, string> VerifyMailTemplate(string url)
         {
-
             var result = new Dictionary<string, string>();
             result.Add("Subject", "Email за потвърждение на акаунт");
             StringBuilder ms = new StringBuilder();
             ms.AppendLine("Успешно регистриран email в системата на Elibrary<br/>");
             ms.AppendLine($"Код за потвърждение: {url}<br/>");
+            result.Add("Message", ms.ToString().Trim());
+            return result;
+        }
+
+        public Dictionary<string, string> ForgotenPasswordSendCode(string url)
+        {
+            var result = new Dictionary<string, string>();
+            result.Add("Subject", "Email за забравена парола");
+            StringBuilder ms = new StringBuilder();
+            ms.AppendLine($"Моля използвайте този код: {url}<br/>");
             result.Add("Message", ms.ToString().Trim());
             return result;
         }

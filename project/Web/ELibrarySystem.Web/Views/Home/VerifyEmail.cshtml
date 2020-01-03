@@ -1,40 +1,47 @@
 ﻿
 @{
-    ViewData["Title"] = "VerifyEmail";
+    ViewData["Title"] = "Потвърждаване на email";
 }
 @model ELibrarySystem.Web.ViewModels.HomeViewModels.VerifyEmailViewModel
 
 
-<div class=" container">
-    <div class="row" style="background:#f7f7f7">
-        <div class="col-md-12">
-            <h2>Потвъждваване на Email адрес чрез код</h2>
-            <h3>TempData["userId"] = @TempData["userId"] </h3>
-        </div>
-        <div class="col-md-12">
-            <h3>@ViewData["message"]</h3>
-        </div>
-    </div>
-
-    <hr />
-    <div class="row">
-
-        <div class="col-md-12">
-            <form asp-action="VerifyEmail">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group row">
-                    <label asp-for="Code" class="control-label col-md-2">Код</label>
-                    <input asp-for="Code" class="form-control col-md-6" />
-                    <span asp-validation-for="Code" class="text-danger col-md-4"></span>
+    <div class=" container">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <div class="row" style="background:#f7f7f7">
+                    <div class="col-md-12">
+                        <h4>Потвъждваване на Email адрес:</h4>
+                    </div>
+                    
                 </div>
 
-                <div class="form-group row">
-                    <span class="text-danger col-md-7"></span>
 
-                    <input type="submit" value="Потвърди" class="btn btn-primary col-md-1" />
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>@ViewData["message"]</h3>
+                    </div>
+                    <div class="col-md-12">
+                        <form asp-action="VerifyEmail">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group row">
+                                <label asp-for="Code" class="control-label col-md-5">Код за потвърждение:</label>
+                                <input asp-for="Code" class="form-control col-md-7" />
+                            </div>
+
+                            <div class="form-group row">
+                                <span class="text-danger col-md-10"></span>
+
+                                <input type="submit" value="Потвърди" class="btn btn-primary col-md-2" />
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </form>
+
+            </div>
+            <div class="col-md-3">
+            </div>
         </div>
     </div>
-</div>
-

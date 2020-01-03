@@ -10,6 +10,8 @@
 
         public Dictionary<string, string> VerifyMailTemplate(string url);
 
+        public Dictionary<string, string> ForgotenPasswordSendCode(string url);
+
         public void SendMailByTemplate(string toMail, string templateName, Dictionary<string, string> info);
     }
 }

@@ -15,5 +15,7 @@
         public void SendVerifyCodeToEmail(string userId);
 
         public Dictionary<string, string> VerifyEmail(VerifyEmailViewModel model);
+
+        public string ForgotenPasswordSendCode(ForgotenPasswordViewModel model);
     }
 }
