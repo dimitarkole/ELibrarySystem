@@ -31,6 +31,7 @@ namespace ELibrarySystem.Web.ViewModels.HomeViewModels
         [StringLength(100, ErrorMessage = "Дължината на паролата {0} трябва да бъде между {2} и {1} знака!", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Парола")]
+        [MaxLength(20)]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]

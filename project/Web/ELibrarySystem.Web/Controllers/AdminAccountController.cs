@@ -154,7 +154,7 @@
                 return startUp;
             }
 
-            var returnModel = this.usersService.MakeUserAdmin(model, id);
+            var returnModel = this.usersService.DeleteUser(model, id, this.userId);
             this.ViewData["message"] = returnModel[1].ToString();
             return this.View("AllUsers", returnModel[0]);
         }

@@ -81,18 +81,31 @@
             return result;
         }
 
-        public List<object> DeleteUser(UsersViewModel model, string userId)
+        public List<object> DeleteUser(UsersViewModel model, string userId, string adminId)
         {
-            var user = this.context.Users
-                .FirstOrDefault(u => u.Id == userId && u.DeletedOn == null);
-            user.DeletedOn = DateTime.UtcNow;
-            this.context.SaveChanges();
-            var returnMoodel = this.GetUsers(model);
             List<object> result = new List<object>();
+            var flag = false;
+            if (userId != adminId)
+            {
+                var user = this.context.Users
+                    .FirstOrDefault(u => u.Id == userId && u.DeletedOn == null);
+                user.DeletedOn = DateTime.UtcNow;
+                this.context.SaveChanges();
+                flag = true;
+            }
+          
+            var returnMoodel = this.GetUsers(model);
             result.Add(result);
-            result.Add("Успешно изтрит потребител!");
-            var message = $"Вашият профил беше изтрит";
-            this.messageService.AddMessageAtDB(userId, message);
+            if (flag == true)
+            {
+                result.Add("Успешно изтрит потребител!");
+                var message = $"Вашият профил беше изтрит успешно";
+                this.messageService.AddMessageAtDB(userId, message);
+            }
+            else
+            {
+                result.Add("Не може да си изтриите собствения профил!");
+            }
             return result;
         }
 

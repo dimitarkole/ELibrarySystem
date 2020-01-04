@@ -16,11 +16,10 @@
 
         List<object> MakeUserAdmin(UsersViewModel model, string userId);
 
-        List<object> DeleteUser(UsersViewModel model, string userId);
+        List<object> DeleteUser(UsersViewModel model, string userId, string adminId);
 
         UsersViewModel ChangeActivePage(
          UsersViewModel model,
          int newPage);
-
     }
 }

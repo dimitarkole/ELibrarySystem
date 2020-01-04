@@ -87,24 +87,14 @@
         public async Task<IActionResult> RegesterAsUser(RegisterViewModel model)
         {
             var result = this.Register(model, "user");
-            if (result != null)
-            {
-                return await result;
-            }
-
-            return this.View("RegesterAsUser");
+            return await result;
         }
 
         [HttpPost]
         public async Task<IActionResult> RegesterAsLibrary(RegisterViewModel model)
         {
             var result = this.Register(model, "library");
-            if (result != null)
-            {
-                return await result;
-            }
-
-            return this.View("RegesterAsLibrary");
+            return await result;
         }
 
         public async Task<IActionResult> LogIn(LoginViewModel loginModel, string returnUrl = null)
@@ -286,7 +276,14 @@
                 }
             }
 
-            return null;
+            if (type == "user")
+            {
+                return this.View("RegesterAsUser");
+            }
+            else
+            {
+                return this.View("RegesterAsLibrary");
+            }
         }
     }
 }
