@@ -60,14 +60,9 @@
                 return this.RedirectToLocal(userId, type);
             }
 
-            return this.View();
-        }
+            var model = this.homeService.GetDataForIndexPage();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(IndexViewModel indexModel, string returnUrl = null)
-        {
-            return this.View(indexModel);
+            return this.View(model);
         }
 
         [HttpGet]

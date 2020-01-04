@@ -17,5 +17,8 @@
         public Dictionary<string, string> VerifyEmail(VerifyEmailViewModel model);
 
         public string ForgotenPasswordSendCode(ForgotenPasswordViewModel model);
+
+        public IndexViewModel GetDataForIndexPage();
+
     }
 }

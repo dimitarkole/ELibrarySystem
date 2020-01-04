@@ -80,6 +80,19 @@
             return " ";
         }
 
+        public IndexViewModel GetDataForIndexPage()
+        {
+            var model = new IndexViewModel()
+            {
+                CountAddedBook = this.CountAddedBook(),
+                CountLibraries = this.CountLibraries(),
+                CountReaders = this.CountReaders(),
+                CountReadBook = this.CountReadBook(),
+
+            };
+            return model;
+        }
+
         public void SendVerifyCodeToEmail(string userId)
         {
             var checkVerificatedCode = this.context.VerificatedCodes
@@ -138,5 +151,38 @@
 
             return result;
         }
+
+        private int CountAddedBook()
+        {
+            var count = this.context.Books
+                .Where(b => b.DeletedOn == null)
+                .Count();
+            return count;
+        }
+
+        private int CountLibraries()
+        {
+            var count = this.context.Users
+                .Where(u => u.DeletedOn == null && u.Type=="library")
+                .Count();
+            return count;
+        }
+
+        private int CountReaders()
+        {
+            var count = this.context.Users
+                .Where(u => u.DeletedOn == null && u.Type == "user")
+                .Count();
+            return count;
+        }
+
+        private int CountReadBook()
+        {
+            var count = this.context.GetBooks
+                .Where(gb => gb.DeletedOn == null)
+                .Count();
+            return count;
+        }
+
     }
 }

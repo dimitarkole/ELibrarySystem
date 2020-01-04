@@ -6,8 +6,15 @@
 
     public class IndexViewModel
     {
-        public RegisterViewModel RegisterViewModel { get; set; }
+        public int CountLibraries { get; set; }
 
-        public LoginViewModel LoginViewModel { get; set; }
+
+        public int CountReadBook { get; set; }
+
+        public int CountAddedBook { get; set; }
+
+        public int CountReaders { get; set; }
+
+
     }
 }
