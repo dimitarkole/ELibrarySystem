@@ -74,5 +74,12 @@
 
             return "Успешно изпратено заявление за промена на типа на акаунта!";
         }
+
+        public List<object> ResetPassword(ProfilUserViewModel model, string userId)
+        {
+            
+
+            throw new NotImplementedException();
+        }
     }
 }

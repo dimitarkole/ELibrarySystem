@@ -12,6 +12,8 @@
 
         public Dictionary<string, string> ForgotenPasswordSendCode(string url);
 
+        public Dictionary<string, string> NewRegesterUser(string email, string password);
+
         public void SendMailByTemplate(string toMail, string templateName, Dictionary<string, string> info);
     }
 }

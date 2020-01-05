@@ -5,7 +5,7 @@
     ViewData["Title"] = "Профил";
 }
 
-<form asp-action="Profile" asp-route-returnUrl="@ViewData["URL"]" enctype="multipart/form-data">
+
 
     <div class="container" style="background:#f7f7f7">
         <div class="row">
@@ -27,34 +27,63 @@
             </div>
 
             <div class="col-md-6">
-                <div class="form-group row">
-                    <label asp-for="Photo" class="control-label col-md-5">Смени аватара</label>
-                    <input asp-for="Photo" class="form-control col-md-6" />
-                </div>
+                <form asp-action="Profile" asp-route-returnUrl="@ViewData["URL"]" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <h3 class="col-md-12">Основна информация</h3>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Photo" class="control-label col-md-5">Смени аватара</label>
+                        <input asp-for="Photo" class="form-control col-md-6" />
+                    </div>
 
 
-                <div class="form-group row">
-                    <label asp-for="FirstName" class="control-label col-md-5">Име</label>
-                    <input asp-for="FirstName" class="form-control col-md-6" />
-                    <span asp-validation-for="FirstName" class="text-danger col-md-4"></span>
-                </div>
+                    <div class="form-group row">
+                        <label asp-for="FirstName" class="control-label col-md-5">Име</label>
+                        <input asp-for="FirstName" class="form-control col-md-6" />
+                        <span asp-validation-for="FirstName" class="text-danger col-md-4"></span>
+                    </div>
 
-                <div class="form-group row">
-                    <label asp-for="LastName" class="control-label col-md-5">Фамилия</label>
-                    <input asp-for="LastName" class="form-control col-md-6" />
-                </div>
-                <div class="form-group row">
-                    <span class="text-danger col-md-9"></span>
+                    <div class="form-group row">
+                        <label asp-for="LastName" class="control-label col-md-5">Фамилия</label>
+                        <input asp-for="LastName" class="form-control col-md-6" />
+                    </div>
+                    <div class="form-group row">
+                        <input type="submit" value="Искам да съм библиотека" asp-action="ChangeType" class="btn btn-primary col-md-5" />
 
-                    <input type="submit" value="Запази" class="btn btn-primary col-md-2" />
-                </div>
-                <div class="form-group row">
-                    <span class="text-danger col-md-9"></span>
+                        <span class="text-danger col-md-5"></span>
+                        <input type="submit" value="Запази" class="btn btn-primary col-md-2" />
+                    </div>
+                </form>
 
-                    <input type="submit" value="Промяна на типа" asp-action="ChangeType" class="btn btn-primary col-md-2" />
-                </div>
+                <form asp-action="Profile" asp-route-returnUrl="@ViewData["URL"]" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <h3 class="col-md-12">Смяна на парола</h3>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label asp-for="ResetPasswordViewModel.OldPassword" class="control-label col-md-5"></label>
+                        <input asp-for="ResetPasswordViewModel.OldPassword" class="form-control col-md-6" />
+                        <span asp-validation-for="ResetPasswordViewModel.OldPassword" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="ResetPasswordViewModel.NewPassword" class="control-label col-md-5"></label>
+                        <input asp-for="ResetPasswordViewModel.NewPassword" class="form-control col-md-6" />
+                        <span asp-validation-for="ResetPasswordViewModel.NewPassword" class="text-danger col-md-4"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ResetPasswordViewModel.ConfirmNewPassword" class="control-label col-md-5"></label>
+                        <input asp-for="ResetPasswordViewModel.ConfirmNewPassword" class="form-control col-md-6" />
+                        <span asp-validation-for="ResetPasswordViewModel.ConfirmNewPassword" class="text-danger col-md-4"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <input type="submit" value="Смени паролата" asp-action="ResetPassword" class="btn btn-primary col-md-5" />
+
+                    </div>
+                </form>
                 
             </div>
         </div>
     </div>
-</form>

@@ -30,12 +30,12 @@ namespace ELibrarySystem.Web.ViewModels.HomeViewModels
         [Required]
         [StringLength(100, ErrorMessage = "Дължината на паролата {0} трябва да бъде между {2} и {1} знака!", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Парола")]
+        [Display(Name = "Нова парола")]
         [MaxLength(20)]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Повтори паролата")]
+        [Display(Name = "Повтори новата паролата")]
         [Compare("Password", ErrorMessage = "Паролите не съвпадат!")]
         public string ConfirmPassword { get; set; }
 

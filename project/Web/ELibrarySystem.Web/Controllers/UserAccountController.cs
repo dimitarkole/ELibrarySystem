@@ -22,6 +22,8 @@
 
     public class UserAccountController : Controller
     {
+
+
         private readonly IUserService userService;
         private readonly IStatsUserService statsUserService;
         private readonly ITakenBooksService takenBooksService;
@@ -30,9 +32,8 @@
         private readonly IMessageService messageService;
         private readonly IProfileChakerService profilChekerService;
 
-        private readonly SignInManager<ApplicationUser> SignInManager;
-        private readonly UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<LogoutModel> logger;
         private string userId;
         private readonly IHostingEnvironment hostingEnvironment;
@@ -50,8 +51,8 @@
             IMessageService messageService,
             IProfileChakerService profilChekerService)
         {
-            this.SignInManager = signInManager;
-            this.UserManager = userManager;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
             this.userService = userService;
             this.signInManager = signInManager;
             this.indexUserService = indexUserService;
@@ -66,7 +67,7 @@
 
         private IActionResult StartUp()
         {
-            this.userId = this.UserManager.GetUserId(this.User);
+            this.userId = this.userManager.GetUserId(this.User);
             this.ViewData["UserType"] = "user";
             var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "user");
             if (chackProfile != null)
@@ -190,7 +191,44 @@
             var returnModel = this.userProfileService.SaveChanges(model, this.userId);
             return this.View(returnModel);
         }
+        
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ProfilUserViewModel model)
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
 
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
+            }
+
+            var changPassword = model.ResetPasswordViewModel;
+
+            var changePasswordResult = await this.userManager.ChangePasswordAsync(user, changPassword.OldPassword, changPassword.NewPassword);
+            var returnModel = this.userProfileService.PreparedPage(this.userId);
+
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                this.ViewData["message"] = "Неуспешно сменяне на парола!";
+                return this.View("Profile", returnModel);
+            }
+
+            await this.signInManager.RefreshSignInAsync(user);
+            this.ViewData["message"] = "Успешно сменена на парола!";
+            return this.View("Profile", returnModel);
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -204,9 +242,8 @@
 
             var returnModel = this.userProfileService.ChangeType(this.userId);
             this.ViewData["message"] = returnModel[1];
-            return this.View(returnModel[0]);
+            return this.View("Profile", returnModel[0]);
         }
-
 
         [Authorize]
         [HttpGet]
@@ -221,7 +258,6 @@
             var returnModel = this.messageService.GetMessagesPreparedPage(this.userId);
             return this.View(returnModel);
         }
-
 
         [Authorize]
         [HttpGet]
@@ -268,5 +304,6 @@
 
             return this.View("Notification", returnModel);
         }
+
     }
 }

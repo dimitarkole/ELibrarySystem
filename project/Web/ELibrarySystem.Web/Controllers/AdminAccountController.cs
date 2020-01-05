@@ -24,9 +24,8 @@
 
     public class AdminAccountController : Controller
     {
-        private readonly SignInManager<ApplicationUser> SignInManager;
-        private readonly UserManager<ApplicationUser> UserManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<LogoutModel> logger;
         private string userId;
 
@@ -51,8 +50,8 @@
             IHostingEnvironment hostingEnvironment,
             IStatsAdminService statsAdminService)
         {
-            this.SignInManager = signInManager;
-            this.UserManager = userManager;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.usersService = usersService;
@@ -211,6 +210,43 @@
             return this.View(returnModel);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ChangePassword(ProfilAdminViewModel model)
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
+            }
+
+            var changPassword = model.ResetPasswordViewModel;
+
+            var changePasswordResult = await this.userManager.ChangePasswordAsync(user, changPassword.OldPassword, changPassword.NewPassword);
+            var returnModel = this.adminProfileService.PreparedPage(this.userId);
+
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                this.ViewData["message"] = "Неуспешно сменяне на парола!";
+                return this.View("Profile", returnModel);
+            }
+
+            await this.signInManager.RefreshSignInAsync(user);
+            this.ViewData["message"] = "Успешно сменена на парола!";
+
+            return this.View("Profile", returnModel);
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult Notification()
@@ -271,7 +307,7 @@
 
         private IActionResult StartUp()
         {
-            this.userId = this.UserManager.GetUserId(this.User);
+            this.userId = this.userManager.GetUserId(this.User);
 
             var chackProfile = this.profilChekerService.CheckCurrectAccount(this.userId, "admin");
             if (chackProfile != null)
@@ -289,6 +325,7 @@
                     return this.RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
 
                 }
+
                 else
                 {
                     return this.LogOut();

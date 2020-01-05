@@ -241,7 +241,7 @@
                         UserName = registerModel.Email,
                         Email = registerModel.Email,
                         Type = type,
-                        Avatar = "/img/Avatars/defaultAvatar",
+                        Avatar = "../img/Avatars/defaultAvatar.png",
                     };
                     var result = await this.userManager.CreateAsync(user, registerModel.Password);
                     this.ViewBag.RegisterErr += $"result.Succeeded= {result.Succeeded}";
@@ -266,6 +266,12 @@
 
                         this.context.Messages.Add(message);
                         this.context.SaveChanges();
+
+                        var email = user.Email;
+                        var info = new Dictionary<string, string>();
+                        info.Add("password", registerModel.Password);
+
+                        this.sendMail.SendMailByTemplate(email, "NewRegesterUser", info);
 
                         return this.RedirectToLocal(userId, type);
                     }

@@ -506,6 +506,44 @@
             return this.View(model);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ChangePassword(ProfilLibraryViewModel model)
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
+            }
+
+            var changPassword = model.ResetPasswordViewModel;
+
+            var changePasswordResult = await this.userManager.ChangePasswordAsync(user, changPassword.OldPassword, changPassword.NewPassword);
+            var returnModel = this.libraryProfileService.PreparedPage(this.userId);
+
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                this.ViewData["message"] = "Неуспешно сменяне на парола!";
+                return this.View("Profile", returnModel);
+            }
+
+            await this.signInManager.RefreshSignInAsync(user);
+            this.ViewData["message"] = "Успешно сменена на парола!";
+
+            return this.View("Profile", returnModel);
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult Stats()
