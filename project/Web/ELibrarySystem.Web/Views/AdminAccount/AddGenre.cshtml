@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Добавяне на жанр";
+}
+@model ELibrarySystem.Web.ViewModels.AdminAccount.AddGenreViewModel
+<div class="container">
+    <div class="row" style="background:#f7f7f7">
+        <div class="col-md-12">
+            <h2>Добавяне на жанр</h2>
+
+        </div>
+        <div class="col-md-12">
+            <h3>@ViewData["message"]</h3>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+
+        <div class="col-md-12">
+            <form asp-action="AddGenre" asp-route-returnUrl="@ViewData["AddBook"]">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <label asp-for="GenreName" class="control-label col-md-2">Караложен номер</label>
+                    <input asp-for="GenreName" class="form-control col-md-6" />
+                    <span asp-validation-for="GenreName" class="text-danger col-md-4"></span>
+                </div>
+
+                <div class="form-group row">
+                    <span class="text-danger col-md-7"></span>
+
+                    <input type="submit" value="Добави" class="btn btn-primary col-md-1" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

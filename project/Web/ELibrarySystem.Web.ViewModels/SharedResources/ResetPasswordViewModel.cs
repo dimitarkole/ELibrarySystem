@@ -14,21 +14,17 @@
             this.ConfirmNewPassword = null;
         }
 
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Стара парола")]
         public string OldPassword { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "Дължината на паролата {0} трябва да бъде между {2} и {1} знака!", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Парола")]
         [MaxLength(20)]
         public string NewPassword { get; set; }
 
-        [DataType(DataType.Password)]
         [Display(Name = "Повтори паролата")]
-        [Compare("NewPassword", ErrorMessage = "Паролите не съвпадат!")]
+        [DataType(DataType.Password)]
         public string ConfirmNewPassword { get; set; }
     }
 }

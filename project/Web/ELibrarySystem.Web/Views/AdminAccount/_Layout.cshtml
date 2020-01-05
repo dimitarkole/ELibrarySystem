@@ -89,7 +89,7 @@
                                     </li>
                                     <li>
                                         <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
-                                            Hello @UserManager.GetUserName(User)!
+                                            Здравей, @UserManager.GetUserName(User)!
                                         </a>
                                         <ul class="dropdown">
                                             <li>
@@ -101,6 +101,11 @@
                                             <li>
                                                 <a asp-area="" asp-controller="AdminAccount" asp-action="AllUsers">
                                                     Всички потребители
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="" asp-controller="AdminAccount" asp-action="AddGenre">
+                                                    Добавяне на жанр
                                                 </a>
                                             </li>
                                         </ul>

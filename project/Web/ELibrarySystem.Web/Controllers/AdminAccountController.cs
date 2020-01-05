@@ -35,6 +35,8 @@
         private readonly IMessageService messageService;
         private readonly IIndexAdminService indexAdminService;
         private readonly IStatsAdminService statsAdminService;
+        private readonly IAdminGenreService adminGenreService;
+
 
         private readonly IHostingEnvironment hostingEnvironment;
 
@@ -48,7 +50,8 @@
             IMessageService messageService,
             IIndexAdminService indexAdminService,
             IHostingEnvironment hostingEnvironment,
-            IStatsAdminService statsAdminService)
+            IStatsAdminService statsAdminService,
+            IAdminGenreService adminGenreService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -61,6 +64,7 @@
             this.statsAdminService = statsAdminService;
             this.indexAdminService = indexAdminService;
             this.hostingEnvironment = hostingEnvironment;
+            this.adminGenreService = adminGenreService;
         }
 
         [HttpGet]
@@ -303,6 +307,33 @@
             var returnModel = this.statsAdminService.SearchStats(model, this.userId);
             this.ViewData["message"] = this.userId;
             return this.View("Stats", returnModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult AddGenre()
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            return this.View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddGenre(AddGenreViewModel model)
+        {
+            var startUp = this.StartUp();
+            if (startUp != null)
+            {
+                return startUp;
+            }
+
+            this.ViewData["message"] = this.adminGenreService.AddGenre(model);
+            return this.View();
         }
 
         private IActionResult StartUp()

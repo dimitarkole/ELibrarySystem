@@ -150,8 +150,9 @@
             services.AddTransient<IAdminProfileService, AdminProfileService>();
             services.AddTransient<IIndexAdminService, IndexAdminService>();
             services.AddTransient<IStatsAdminService, StatsAdminService>();
+            services.AddTransient<IAdminGenreService, AdminGenreService>();
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
