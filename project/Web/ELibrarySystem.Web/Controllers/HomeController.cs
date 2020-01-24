@@ -169,7 +169,7 @@
         {
             var result = this.homeService.VerifyEmail(model);
             var verification = result["verificating"];
-            var userId = this.TempData["userId"].ToString();
+            var userId = this.HttpContext.Session.GetString("userId");
             if (verification == "Yes")
             {
                 var type = result["type"];
@@ -203,12 +203,12 @@
 
             var email = this.context.Users.FirstOrDefault(u => u.Id == userId).Email;
 
-            if (this.homeService.CheckVerifedEmail(userId) == false)
+         /*   if (this.homeService.CheckVerifedEmail(userId) == false)
             {
-                this.TempData["userId"] = userId;
-               // this.homeService.SendVerifyCodeToEmail(userId);
+                this.HttpContext.Session.SetString("userId", userId);
+                this.homeService.SendVerifyCodeToEmail(userId);
                 return this.VerifyEmail();
-            }
+            }*/
 
             if (type == "admin")
             {
@@ -267,7 +267,7 @@
                         this.context.Messages.Add(message);
                         this.context.SaveChanges();
 
-                        var email = user.Email;
+                        var email = registerModel.Email;
                         var info = new Dictionary<string, string>();
                         info.Add("password", registerModel.Password);
 

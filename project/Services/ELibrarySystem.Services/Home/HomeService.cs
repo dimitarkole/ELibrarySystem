@@ -75,7 +75,6 @@
             info.Add("code", code);
             var userEmail = model.Email;
 
-            userEmail = "dim_kolev2002@abv.bg";
             this.sendMail.SendMailByTemplate(userEmail, claimType, info);
             return " ";
         }
@@ -124,9 +123,6 @@
             Dictionary<string, string> info = new Dictionary<string, string>();
             info.Add("code", code);
             var userEmail = this.context.Users.FirstOrDefault(u => u.Id == userId).Email;
-
-            userEmail = "dim_kolev2002@abv.bg";
-
             this.sendMail.SendMailByTemplate(userEmail, "VerifyMailTemplate", info);
         }
 
@@ -163,7 +159,7 @@
         private int CountLibraries()
         {
             var count = this.context.Users
-                .Where(u => u.DeletedOn == null && u.Type=="library")
+                .Where(u => u.DeletedOn == null && u.Type == "library")
                 .Count();
             return count;
         }

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ELibrarySystem.Data.Models
+﻿namespace ELibrarySystem.Data.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     public class Book
     {
         public Book()

@@ -43,7 +43,7 @@
                         </a>
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
-                            <span class="navbarToggler"></span>
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
                         </div>
                         <!-- Menu -->
                         <div class="classy-menu">
@@ -51,14 +51,14 @@
                             <div class="classycloseIcon">
                                 <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
                             </div>
-
+                            <!-- Nav Start -->
                             <div class="classynav">
-                                <ul id="nav">
+                                <ul>
                                     @{
                                         var messages = ViewData["MessageNavBar"] as ELibrarySystem.Web.ViewModels.SharedResources.MessagesNavBarViewModel;
 
                                     }
-                                    
+
                                     <li>
                                         <a asp-area="" asp-controller="UserAccount" asp-action="Notification">
                                             <div class="row align-items-center">

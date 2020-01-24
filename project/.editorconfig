@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# SA1214: Readonly fields should appear before non-readonly fields
+dotnet_diagnostic.SA1214.severity = none
