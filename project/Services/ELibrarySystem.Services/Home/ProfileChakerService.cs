@@ -19,11 +19,14 @@
         public string CheckCurrectAccount(string userId, string type)
         {
             var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
-            if (type == user.Type)
+            if (user == null) return null;
             {
-                return null;
-            }
-            return user.Type;
+                if (type == user.Type)
+                {
+                    return null;
+                }
+                return user.Type;
+            }         
         }
     }
 }

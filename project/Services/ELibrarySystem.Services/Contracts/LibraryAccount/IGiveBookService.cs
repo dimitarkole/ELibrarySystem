@@ -11,7 +11,7 @@
         GiveBookViewModel PreparedPage(string userId);
 
         GiveBookViewModel GiveBookSearchBook(
-            GiveBookViewModel model, 
+            GiveBookViewModel model,
             string userId,
             string selectedBookId,
             string selectedUserId);
@@ -53,6 +53,5 @@
           string userId,
           string selectedBookId,
           string selectedUserId);
-     
     }
 }

@@ -1,12 +1,13 @@
 ﻿namespace ELibrarySystem.Services.LibraryAccountServices
 {
-    using ELibrarySystem.Data;
-    using ELibrarySystem.Services.Contracts.LibraryAccount;
-    using ELibrarySystem.Web.ViewModels.LibraryAccount;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+
+    using ELibrarySystem.Data;
+    using ELibrarySystem.Services.Contracts.LibraryAccount;
+    using ELibrarySystem.Web.ViewModels.LibraryAccount;
 
     public class UserService : IUserService
     {

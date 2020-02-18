@@ -203,12 +203,12 @@
 
             var email = this.context.Users.FirstOrDefault(u => u.Id == userId).Email;
 
-         /*   if (this.homeService.CheckVerifedEmail(userId) == false)
+            if (this.homeService.CheckVerifedEmail(userId) == false)
             {
                 this.HttpContext.Session.SetString("userId", userId);
                 this.homeService.SendVerifyCodeToEmail(userId);
                 return this.VerifyEmail();
-            }*/
+            }
 
             if (type == "admin")
             {

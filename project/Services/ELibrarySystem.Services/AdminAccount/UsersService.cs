@@ -127,16 +127,16 @@
             var currentPage = model.CurrentPage;
 
             var users = this.context.Users.Where(u =>
-              u.DeletedOn == null)
-              .Select(u => new UserViewModel()
-              {
-                  Email = u.Email,
-                  FirstName = u.FirstName,
-                  LastName = u.LastName,
-                  UserId = u.Id,
-                  LibraryName = u.LibararyName,
-                  Type = u.Type,
-              });
+                u.DeletedOn == null)
+                .Select(u => new UserViewModel()
+                {
+                    Email = u.Email,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    UserId = u.Id,
+                    LibraryName = u.LibararyName,
+                    Type = u.Type,
+                });
 
             users = this.SelectUsers(
                 users,
@@ -190,11 +190,11 @@
         }
 
         private IQueryable<UserViewModel> SelectUsers(
-           IQueryable<UserViewModel> users,
-           string email,
-           string firstName,
-           string lastName,
-           string libraryName)
+            IQueryable<UserViewModel> users,
+            string email,
+            string firstName,
+            string lastName,
+            string libraryName)
         {
             if (email != null)
             {
